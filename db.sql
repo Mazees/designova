@@ -5,7 +5,6 @@ CREATE TABLE users (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NULL,
-    google_id VARCHAR(255) NULL UNIQUE,
     role ENUM('admin', 'juri', 'peserta') DEFAULT 'peserta',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
