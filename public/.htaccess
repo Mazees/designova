@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Jangan rewrite jika file atau direktori fisik ada
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Kirim semua request lain ke index.php
+    RewriteRule ^(.*)$ index.php [L,QSA]
+</IfModule>

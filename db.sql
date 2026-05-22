@@ -1,0 +1,52 @@
+CREATE DATABASE designova;
+USE designova;
+CREATE TABLE users (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NULL,
+    google_id VARCHAR(255) NULL UNIQUE,
+    role ENUM('admin', 'juri', 'peserta') DEFAULT 'peserta',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE teams (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL,
+    team_name VARCHAR(255) NOT NULL,
+    members JSON NOT NULL,
+    payment_status ENUM('unpaid', 'pending', 'verified') DEFAULT 'unpaid',
+    payment_amount INT NOT NULL,
+    submission_figma VARCHAR(255) NULL,
+    submission_gdrive VARCHAR(255) NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE assessments (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    team_id BIGINT UNSIGNED NOT NULL,
+    juri_id BIGINT UNSIGNED NOT NULL,
+    score_ui DECIMAL(5,2) NOT NULL,
+    score_ux DECIMAL(5,2) NOT NULL,
+    score_figma DECIMAL(5,2) NOT NULL,
+    final_score DECIMAL(5,2) GENERATED ALWAYS AS ((score_ui * 0.5) + (score_ux * 0.4) + (score_figma * 0.1)) STORED,
+    feedback TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE,
+    FOREIGN KEY (juri_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE settings (
+    id TINYINT NOT NULL DEFAULT 1,
+    is_registration_open BOOLEAN DEFAULT TRUE,
+    base_price INT NOT NULL DEFAULT 50000,
+    submission_deadline DATETIME NULL,
+    is_winner_published BOOLEAN DEFAULT FALSE,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    CHECK (id = 1) 
+);

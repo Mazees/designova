@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Cegah loop tak terbatas
+    RewriteCond %{ENV:REDIRECT_STATUS} ^$
+
+    # Mengarahkan request root atau subfolder langsung ke folder public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
