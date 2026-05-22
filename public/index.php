@@ -58,7 +58,6 @@ $router = new Router();
 $router->add('/', 'HomeController', 'index', ['GET']);
 $router->add('/login', 'AuthController', 'login', ['GET', 'POST']);
 $router->add('/register', 'AuthController', 'register', ['GET', 'POST']);
-$router->add('/auth/google', 'AuthController', 'googleSSO', ['GET']);
 
 // 2. Halaman Peserta (Dashboard Tim)
 $router->add('/dashboard', 'DashboardController', 'index', ['GET']);
