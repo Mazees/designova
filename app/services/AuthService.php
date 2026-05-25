@@ -22,22 +22,18 @@ class AuthService
         $email = trim((string) ($data['email'] ?? ''));
         $password = trim((string) ($data['password'] ?? ''));
 
-        $errors = [];
-
         if ($email === '') {
-            $errors[] = 'Email wajib diisi.';
+            $error = 'Email wajib diisi.';
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'Format email tidak valid.';
+            $error = 'Format email tidak valid.';
+        } elseif ($password === '') {
+            $error = 'Password wajib diisi.';
         }
 
-        if ($password === '') {
-            $errors[] = 'Password wajib diisi.';
-        }
-
-        if (!empty($errors)) {
+        if (isset($error)) {
             return [
                 'success' => false,
-                'errors' => $errors,
+                'error' => $error,
             ];
         }
 
@@ -52,7 +48,7 @@ class AuthService
 
         return [
             'success' => false,
-            'errors' => ['Email atau password salah.'],
+            'error' => 'Email atau password salah.',
         ];
     }
 
@@ -61,42 +57,39 @@ class AuthService
         $name = trim((string) ($data['name'] ?? ''));
         $email = trim((string) ($data['email'] ?? ''));
         $password = trim((string) ($data['password'] ?? ''));
-
-        $errors = [];
+        $team_name = trim((string) ($data['team_name'] ?? ''));
+        $members = trim((string) ($data['members'] ?? ''));
 
         if ($name === '') {
-            $errors[] = 'Nama wajib diisi.';
-        }
-
-        if ($email === '') {
-            $errors[] = 'Email wajib diisi.';
+            $error = 'Nama wajib diisi.';
+        } elseif ($email === '') {
+            $error = 'Email wajib diisi.';
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'Format email tidak valid.';
-        }
-
-        if ($password === '') {
-            $errors[] = 'Password wajib diisi.';
+            $error = 'Format email tidak valid.';
+        } elseif ($password === '') {
+            $error = 'Password wajib diisi.';
         } elseif (strlen($password) < 6) {
-            $errors[] = 'Password minimal 6 karakter.';
+            $error = 'Password minimal 6 karakter.';
         }
 
-        if (!empty($errors)) {
+        if (isset($error)) {
             return [
                 'success' => false,
-                'errors' => $errors,
+                'error' => $error,
             ];
         }
 
         if ($this->userModel->findByEmail($email)) {
             return [
                 'success' => false,
-                'errors' => ['Email sudah terdaftar.'],
+                'error' => 'Email sudah terdaftar.',
             ];
         }
 
         $userId = $this->userModel->addUser($name, $email, $password);
 
         if ($userId) {
+            $this->userModel->addTeams($userId, $team_name, $members);
             return [
                 'success' => true,
                 'user_id' => $userId,
@@ -105,11 +98,7 @@ class AuthService
 
         return [
             'success' => false,
-            'errors' => ['Gagal mendaftarkan user. Silakan coba lagi.'],
-            'old' => [
-                'name' => $name,
-                'email' => $email,
-            ],
+            'error' => 'Gagal mendaftarkan user. Silakan coba lagi.',
         ];
     }
 

@@ -4,6 +4,9 @@
     # Cegah loop tak terbatas
     RewriteCond %{ENV:REDIRECT_STATUS} ^$
 
+    # Jangan alihkan jika request adalah ke folder src/ (seperti src/output.css)
+    RewriteCond %{REQUEST_URI} !^/(.+/)?src/
+
     # Mengarahkan request root atau subfolder langsung ke folder public/
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>

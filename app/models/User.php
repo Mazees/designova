@@ -56,23 +56,23 @@ class User
         }
         return null;
     }
-    // public function addTeams($user_id, $team_name, $password)
-    // {
-    //     $user_id = trim((string) $user_id);
-    //     $team_name = trim((string) $team_name);
-    //     $connection = $this->db->getConnection();
-    //     if ($connection) {
-    //         $stmt = $connection->prepare("INSERT INTO users(name, email, password)
-    //         VALUES (?, ?, ?);");
-    //         $stmt->bind_param("sss", $name, $email, $pass);
-    //         $execute = $stmt->execute();
-    //         if ($execute) {
-    //             $insertId = $connection->insert_id;
-    //             $stmt->close();
-    //             return $insertId > 0 ? (int) $insertId : null;
-    //         }
-    //         $stmt->close();
-    //     }
-    //     return null;
-    // }
+    public function addTeams($user_id, $team_name, $members)
+    {
+        $user_id = trim((string) $user_id);
+        $team_name = trim((string) $team_name);
+        $connection = $this->db->getConnection();
+        if ($connection) {
+            $stmt = $connection->prepare("INSERT INTO users(user_id, team_name, members)
+            VALUES (?, ?, ?);");
+            $stmt->bind_param("sss", $user_id, $team_name, $members);
+            $execute = $stmt->execute();
+            if ($execute) {
+                $insertId = $connection->insert_id;
+                $stmt->close();
+                return $insertId > 0 ? (int) $insertId : null;
+            }
+            $stmt->close();
+        }
+        return null;
+    }
 }
