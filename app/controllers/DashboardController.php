@@ -2,20 +2,102 @@
 
 class DashboardController extends Controller {
     public function index() {
+        $this->protectRoute(['peserta'], true);
+        
+        $team = $_SESSION['team'] ?? null;
+        $submission = null;
+        if ($team) {
+            $db = new Database();
+            $conn = $db->getConnection();
+            if ($conn) {
+                $stmt = $conn->prepare("SELECT * FROM submissions WHERE team_id = ? LIMIT 1");
+                $stmt->bind_param("i", $team['id']);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $submission = $result ? $result->fetch_assoc() : null;
+                $stmt->close();
+            }
+        }
+
         $this->view('participant/dashboard', [
-            'title' => 'Overview Tim - Designova'
+            'title' => 'Overview Tim - Designova',
+            'submission' => $submission
         ]);
     }
 
     public function payment() {
+        $this->protectRoute(['peserta'], false);
         $this->view('participant/payment', [
             'title' => 'Instruksi Pembayaran - Designova'
         ]);
     }
 
     public function submission() {
+        $this->protectRoute(['peserta'], true);
+        
+        $team = $_SESSION['team'] ?? null;
+        $db = new Database();
+        $conn = $db->getConnection();
+        $error = '';
+        $success = '';
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $team) {
+            $figma_link = $_POST['figma_link'] ?? '';
+            $docs_link = $_POST['docs_link'] ?? '';
+
+            if (empty($figma_link) || empty($docs_link)) {
+                $error = 'Semua field wajib diisi!';
+            } else {
+                if ($conn) {
+                    // Cek apakah sudah ada submisi
+                    $stmt = $conn->prepare("SELECT id FROM submissions WHERE team_id = ? LIMIT 1");
+                    $stmt->bind_param("i", $team['id']);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $existing = $result ? $result->fetch_assoc() : null;
+                    $stmt->close();
+
+                    if ($existing) {
+                        // Update
+                        $stmt = $conn->prepare("UPDATE submissions SET figma_link = ?, docs_link = ? WHERE team_id = ?");
+                        $stmt->bind_param("ssi", $figma_link, $docs_link, $team['id']);
+                        if ($stmt->execute()) {
+                            $success = 'Karya Anda berhasil diperbarui!';
+                        } else {
+                            $error = 'Gagal menyimpan karya. Silakan coba lagi.';
+                        }
+                        $stmt->close();
+                    } else {
+                        // Insert
+                        $stmt = $conn->prepare("INSERT INTO submissions (team_id, figma_link, docs_link) VALUES (?, ?, ?)");
+                        $stmt->bind_param("iss", $team['id'], $figma_link, $docs_link);
+                        if ($stmt->execute()) {
+                            $success = 'Karya Anda berhasil dikirim!';
+                        } else {
+                            $error = 'Gagal mengirim karya. Silakan coba lagi.';
+                        }
+                        $stmt->close();
+                    }
+                }
+            }
+        }
+
+        $submission = null;
+        if ($team && $conn) {
+            $stmt = $conn->prepare("SELECT * FROM submissions WHERE team_id = ? LIMIT 1");
+            $stmt->bind_param("i", $team['id']);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $submission = $result ? $result->fetch_assoc() : null;
+            $stmt->close();
+        }
+
         $this->view('participant/submission', [
-            'title' => 'Pengumpulan Karya - Designova'
+            'title' => 'Pengumpulan Karya - Designova',
+            'submission' => $submission,
+            'error' => $error,
+            'success' => $success
         ]);
     }
 }
+

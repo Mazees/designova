@@ -58,7 +58,7 @@ class AuthService
         $email = trim((string) ($data['email'] ?? ''));
         $password = trim((string) ($data['password'] ?? ''));
         $team_name = trim((string) ($data['team_name'] ?? ''));
-        $members = trim((string) ($data['members'] ?? ''));
+        $members = json_encode([trim((string) ($data['member_1'] ?? '')), trim((string) ($data['member_2'] ?? ''))]);
 
         if ($name === '') {
             $error = 'Nama wajib diisi.';
