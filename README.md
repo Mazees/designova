@@ -5,15 +5,24 @@ Designova adalah aplikasi web berbasis **PHP Native (OOP)** dengan arsitektur **
 ---
 
 ## 👥 Kelompok 5 - Anggota Tim
+
 - MUHAMMAD RIZKY PUSPOJATI (24081010019)
 - MOCH.RAIHAN ARDANI (24081010174)
 - MADA PUTRA ADHADRIYANTO (24081010192)
+
+## Pembagian Tugas :
+
+- Halaman Publik : Mada
+- Halaman Peserta (Dashboard Tim) : Raihan
+- Halaman Juri (Dashboard Penilaian) :
+- Halaman Pengelola (Dashboard Admin) : Mada
 
 ---
 
 ## 📂 Struktur Direktori Proyek
 
 Proyek ini terbagi menjadi dua bagian utama:
+
 1. **`app/`**: Berisi seluruh file inti aplikasi (logic bisnis, data model, helper, dan file tampilan).
 2. **`public/`**: Titik masuk utama aplikasi (Front Controller) serta direktori untuk berkas statis (assets).
 
@@ -60,33 +69,37 @@ designova/
 Aplikasi menggunakan custom router dengan pola regex yang didaftarkan pada [public/index.php](file:///D:/laragon/www/designova/public/index.php):
 
 ### 1. Halaman Publik
-| URL | Controller & Method | Tampilan File View | Deskripsi |
-| :--- | :--- | :--- | :--- |
-| `/` | `HomeController::index()` | `home/index.php` | Beranda / Landing Page utama |
-| `/login` | `AuthController::login()` | `auth/login.php` | Form login multi-role |
-| `/register` | `AuthController::register()` | `auth/register.php` | Pendaftaran tim baru |
-| `/auth/google` | `AuthController::googleSSO()` | *Inline transitioning text* | Autentikasi via Google |
+
+| URL            | Controller & Method           | Tampilan File View          | Deskripsi                    |
+| :------------- | :---------------------------- | :-------------------------- | :--------------------------- |
+| `/`            | `HomeController::index()`     | `home/index.php`            | Beranda / Landing Page utama |
+| `/login`       | `AuthController::login()`     | `auth/login.php`            | Form login multi-role        |
+| `/register`    | `AuthController::register()`  | `auth/register.php`         | Pendaftaran tim baru         |
+| `/auth/google` | `AuthController::googleSSO()` | _Inline transitioning text_ | Autentikasi via Google       |
 
 ### 2. Dashboard Peserta (Tim)
-| URL | Controller & Method | Tampilan File View | Deskripsi |
-| :--- | :--- | :--- | :--- |
-| `/dashboard` | `DashboardController::index()` | `participant/dashboard.php` | Informasi status tim |
-| `/payment` | `DashboardController::payment()` | `participant/payment.php` | Detail instruksi & QRIS |
+
+| URL           | Controller & Method                 | Tampilan File View           | Deskripsi                  |
+| :------------ | :---------------------------------- | :--------------------------- | :------------------------- |
+| `/dashboard`  | `DashboardController::index()`      | `participant/dashboard.php`  | Informasi status tim       |
+| `/payment`    | `DashboardController::payment()`    | `participant/payment.php`    | Detail instruksi & QRIS    |
 | `/submission` | `DashboardController::submission()` | `participant/submission.php` | Unggah link Figma & GDrive |
 
 ### 3. Dashboard Juri
-| URL | Controller & Method | Tampilan File View | Deskripsi |
-| :--- | :--- | :--- | :--- |
-| `/juri/dashboard` | `JuriController::index()` | `juri/dashboard.php` | Daftar tim yang perlu dinilai |
+
+| URL                          | Controller & Method                    | Tampilan File View    | Deskripsi                     |
+| :--------------------------- | :------------------------------------- | :-------------------- | :---------------------------- |
+| `/juri/dashboard`            | `JuriController::index()`              | `juri/dashboard.php`  | Daftar tim yang perlu dinilai |
 | `/juri/assessment/{team_id}` | `JuriController::assessment($team_id)` | `juri/assessment.php` | Form input nilai tim tertentu |
 
 ### 4. Dashboard Admin
-| URL | Controller & Method | Tampilan File View | Deskripsi |
-| :--- | :--- | :--- | :--- |
-| `/admin/dashboard` | `AdminController::index()` | `admin/dashboard.php` | Halaman ringkasan statistik |
-| `/admin/teams` | `AdminController::teams()` | `admin/teams.php` | Verifikasi manual pembayaran |
-| `/admin/leaderboard` | `AdminController::leaderboard()` | `admin/leaderboard.php` | Rekapitulasi & tombol ekspor |
-| `/admin/settings` | `AdminController::settings()` | `admin/settings.php` | Pengaturan harga & timeline event |
+
+| URL                  | Controller & Method              | Tampilan File View      | Deskripsi                         |
+| :------------------- | :------------------------------- | :---------------------- | :-------------------------------- |
+| `/admin/dashboard`   | `AdminController::index()`       | `admin/dashboard.php`   | Halaman ringkasan statistik       |
+| `/admin/teams`       | `AdminController::teams()`       | `admin/teams.php`       | Verifikasi manual pembayaran      |
+| `/admin/leaderboard` | `AdminController::leaderboard()` | `admin/leaderboard.php` | Rekapitulasi & tombol ekspor      |
+| `/admin/settings`    | `AdminController::settings()`    | `admin/settings.php`    | Pengaturan harga & timeline event |
 
 ---
 
