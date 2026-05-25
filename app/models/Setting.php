@@ -1,18 +1,23 @@
 <?php
 
-class Setting {
-    private $db;
+class Setting
+{
+    private Database $db;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = new Database();
     }
 
     // Stub method untuk mendapatkan data konfigurasi sistem global
-    public function getSystemSettings() {
+    public function getSystemSettings()
+    {
         $connection = $this->db->getConnection();
         if ($connection) {
-            $stmt = $connection->query("SELECT * FROM settings WHERE id = 1 LIMIT 1");
-            return $stmt->fetch();
+            $result = $connection->query("SELECT * FROM settings WHERE id = 1 LIMIT 1");
+            if ($result) {
+                return $result->fetch_assoc();
+            }
         }
         return [];
     }

@@ -1,40 +1,37 @@
 <?php
 
-class Database {
+class Database
+{
     private $host = DB_HOST;
     private $user = DB_USER;
     private $pass = DB_PASS;
     private $dbname = DB_NAME;
-
-    private $dbh;
     private $error;
 
-    public function __construct() {
-        // Tentukan DSN (Data Source Name)
-        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname . ';charset=utf8mb4';
-        $options = [
-            PDO::ATTR_PERSISTENT => true,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-        ];
-
-        // Inisialisasi PDO Instance
+    protected $conn;
+    public function __construct()
+    {
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         try {
-            $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
-        } catch (PDOException $e) {
-            $this->error = $e->getMessage();
-            // Jika database belum dibuat/dikonfigurasi, kita tangkap error-nya agar tidak langsung crash
+            $this->conn = mysqli_connect($this->host, $this->user, $this->pass, $this->dbname);
+        } catch (\mysqli_sql_exception $e) {
+            $error = $e;
         }
     }
+    // public function errorCheck($errorCode, $message, $actualCode = null)
+    // {
+    //     $code = $actualCode ?? $this->conn->errno;
+    //     if ((int) $code === (int) $errorCode) {
+    //         $safeMessage = json_encode($message, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
+    //         echo "<script>alert($safeMessage + $errorCode)</script>";
+    //     }
+    // }
 
-    /**
-     * Dapatkan koneksi PDO
-     * @return PDO|null
-     */
-    public function getConnection() {
-        if ($this->dbh === null && $this->error !== null) {
+    public function getConnection()
+    {
+        if ($this->conn === null && $this->error !== null) {
             die("Koneksi Database Gagal: " . $this->error);
         }
-        return $this->dbh;
+        return $this->conn;
     }
 }
