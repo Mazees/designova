@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Mazees/designova#readme",
   "dependencies": {
     "daisyui": "^5.5.20",
+    "i": "^0.3.7",
     "tailwindcss": "^4.3.0"
   }
 }
