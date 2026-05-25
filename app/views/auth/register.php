@@ -1,102 +1,177 @@
-<?php require_once '../app/views/layouts/header.php'; ?>
+<?php require_once __DIR__ . '/../layouts/header.php'; ?>
 
-<div class="max-w-2xl mx-auto my-10 px-4">
-    <!-- Card Container with clean shadow & gradient border top -->
-    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden transform transition-all duration-300 hover:shadow-2xl">
-        
-        <!-- Header Brand Accent -->
-        <div class="h-2.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+<div class="card lg:card-side w-full max-w-5xl bg-base-100 shadow-2xl border border-base-200 overflow-hidden mx-auto my-6 min-h-[650px]"
+    x-data="{
+         name: '',
+         email: '',
+         password: '',
+         confirmPassword: '',
+         teamName: '',
+         member1: '',
+         member2: '',
+         get membersJson() {
+             return JSON.stringify([this.member1, this.member2].filter(m => m.trim() !== ''));
+         }
+     }">
+    <!-- Left Column (Branding Panel) -->
+    <div
+        class="lg:w-5/12 bg-gradient-to-br from-neutral to-accent p-10 flex flex-col justify-between text-left text-white relative overflow-hidden">
+        <!-- Glow accents -->
+        <div class="absolute -top-24 -left-24 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
 
-        <div class="p-8 sm:p-10">
-            <h2 class="text-3xl font-extrabold text-gray-800 text-center tracking-tight mb-2">Pendaftaran Tim Baru</h2>
-            <p class="text-sm text-gray-500 text-center mb-8">Lengkapi formulir di bawah ini untuk mendaftarkan tim Anda di kompetisi Designova</p>
+        <!-- Header logo -->
+        <div class="relative z-10">
+            <span class="text-3xl font-black text-primary tracking-wider">designova</span>
+        </div>
 
-            <!-- Alert Error jika ada data tidak valid -->
+        <!-- Center geometric art (SVG) -->
+        <div class="relative py-12 flex items-center justify-center opacity-65">
+            <svg class="w-40 h-40 text-primary/40 animate-pulse" viewBox="0 0 100 100" fill="none" stroke="currentColor"
+                stroke-width="0.5">
+                <rect x="25" y="25" width="50" height="50" transform="rotate(45 50 50)" />
+                <rect x="30" y="30" width="40" height="40" transform="rotate(30 50 50)" />
+                <circle cx="50" cy="50" r="8" />
+            </svg>
+        </div>
+
+        <!-- Footer text -->
+        <div class="space-y-3 relative z-10">
+            <h3 class="text-2xl font-black tracking-tight text-white leading-tight">Mulai Perjalananmu.</h3>
+            <p class="text-xs text-muted leading-relaxed max-w-xs font-medium">
+                Daftarkan tim kreatif terbaikmu, tunjukkan inovasi antarmuka digitalmu, dan raih penghargaan bergengsi
+                tingkat nasional.
+            </p>
+        </div>
+    </div>
+
+    <!-- Right Column (Form Panel) -->
+    <div class="lg:w-7/12 p-8 sm:p-10 flex items-center justify-center bg-base-100">
+        <div class="w-full space-y-6">
+            <div class="text-center lg:text-left space-y-1">
+                <h2 class="text-2xl font-extrabold text-neutral-content tracking-tight">Pendaftaran Tim Baru</h2>
+                <p class="text-xs text-gray-400 font-medium">Lengkapi data ketua dan nama tim untuk mendaftar kompetisi.
+                </p>
+            </div>
+
+            <!-- Alert Error jika registrasi gagal -->
             <?php if (!empty($error)): ?>
-                <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-xl text-red-800 text-sm animate-pulse">
-                    <div class="flex items-center mb-1">
-                        <svg class="w-5 h-5 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span class="font-semibold">Mohon perbaiki kesalahan berikut:</span>
+                <div class="alert alert-error text-xs rounded-xl p-4 flex items-start gap-3">
+                    <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <div>
+                        <span class="font-bold block text-error-content">Terjadi kesalahan:</span>
+                        <span class="text-error-content/90"><?= htmlspecialchars($error); ?></span>
                     </div>
-                    <p class="pl-7"><?= htmlspecialchars($error); ?></p>
                 </div>
             <?php endif; ?>
 
             <!-- Form Pendaftaran -->
-            <form method="post" action="<?= BASE_URL; ?>/register" class="space-y-6">
-                
+            <form method="post" action="<?= BASE_URL; ?>/register" class="space-y-5"
+                @submit="if(password !== confirmPassword) { alert('Password dan konfirmasi password tidak cocok!'); $event.preventDefault(); }">
+                <!-- Hidden input untuk members JSON -->
+                <input type="hidden" name="members" :value="membersJson" />
+
                 <!-- SECTION 1: Akun Ketua Tim -->
-                <div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center">
-                        <span class="bg-indigo-100 text-indigo-600 rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2 font-mono">1</span>
+                <div class="space-y-3">
+                    <h3
+                        class="text-sm font-extrabold text-neutral-content flex items-center border-b border-base-200 pb-2.5">
+                        <span class="badge badge-primary font-bold text-xs mr-2 w-5 h-5 font-mono p-0">1</span>
                         Informasi Akun Ketua
                     </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <!-- Input Nama Ketua -->
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Nama Ketua Tim</label>
-                            <input type="text" name="name" required
-                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-gray-700" 
+                        <div class="form-control w-full gap-1">
+                            <label class="label py-0">
+                                <span
+                                    class="label-text font-bold text-[10px] uppercase text-gray-500 tracking-wider">Nama
+                                    Lengkap Ketua</span>
+                            </label>
+                            <input type="text" name="name" x-model="name" required
+                                class="input input-bordered w-full text-xs h-10 font-medium"
                                 placeholder="Nama lengkap ketua" />
                         </div>
 
                         <!-- Input Email -->
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Email Ketua (Untuk Login)</label>
-                            <input type="email" name="email" required
-                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-gray-700" 
+                        <div class="form-control w-full gap-1">
+                            <label class="label py-0">
+                                <span
+                                    class="label-text font-bold text-[10px] uppercase text-gray-500 tracking-wider">Email
+                                    Ketua (Untuk Login)</span>
+                            </label>
+                            <input type="email" name="email" x-model="email" required
+                                class="input input-bordered w-full text-xs h-10 font-medium"
                                 placeholder="nama@email.com" />
                         </div>
 
                         <!-- Input Password -->
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Kata Sandi</label>
-                            <input type="password" name="password" required
-                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-gray-700" 
+                        <div class="form-control w-full gap-1">
+                            <label class="label py-0">
+                                <span
+                                    class="label-text font-bold text-[10px] uppercase text-gray-500 tracking-wider">Kata
+                                    Sandi</span>
+                            </label>
+                            <input type="password" name="password" x-model="password" required
+                                class="input input-bordered w-full text-xs h-10 font-medium"
                                 placeholder="Minimal 6 karakter" />
                         </div>
 
                         <!-- Input Konfirmasi Password -->
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Konfirmasi Sandi</label>
-                            <input type="password" name="confirm_password" required
-                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-gray-700" 
+                        <div class="form-control w-full gap-1">
+                            <label class="label py-0">
+                                <span
+                                    class="label-text font-bold text-[10px] uppercase text-gray-500 tracking-wider">Konfirmasi
+                                    Sandi</span>
+                            </label>
+                            <input type="password" x-model="confirmPassword" required
+                                class="input input-bordered w-full text-xs h-10 font-medium"
                                 placeholder="Ketik ulang sandi" />
                         </div>
                     </div>
                 </div>
 
-                <hr class="border-gray-100 my-6">
-
                 <!-- SECTION 2: Informasi Tim -->
-                <div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center">
-                        <span class="bg-indigo-100 text-indigo-600 rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2 font-mono">2</span>
+                <div class="space-y-3 pt-2">
+                    <h3
+                        class="text-sm font-extrabold text-neutral-content flex items-center border-b border-base-200 pb-2.5">
+                        <span class="badge badge-primary font-bold text-xs mr-2 w-5 h-5 font-mono p-0">2</span>
                         Detail Tim & Anggota
                     </h3>
-                    <div class="space-y-4">
+                    <div class="space-y-3">
                         <!-- Input Nama Tim -->
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Nama Tim Kompetisi</label>
-                            <input type="text" name="team_name" required
-                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-gray-700" 
+                        <div class="form-control w-full gap-1">
+                            <label class="label py-0">
+                                <span
+                                    class="label-text font-bold text-[10px] uppercase text-gray-500 tracking-wider">Nama
+                                    Tim Kompetisi</span>
+                            </label>
+                            <input type="text" name="team_name" x-model="teamName" required
+                                class="input input-bordered w-full text-xs h-10 font-medium"
                                 placeholder="Masukkan nama tim kreatif Anda" />
                         </div>
 
                         <!-- Input Anggota Lainnya -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Anggota Tim 1 (Opsional)</label>
-                                <input type="text" name="member_1"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-gray-700" 
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="form-control w-full gap-1">
+                                <label class="label py-0">
+                                    <span
+                                        class="label-text font-bold text-[10px] uppercase text-gray-500 tracking-wider">Anggota
+                                        Tim 1 (Opsional)</span>
+                                </label>
+                                <input type="text" x-model="member1"
+                                    class="input input-bordered w-full text-xs h-10 font-medium"
                                     placeholder="Nama anggota kedua" />
                             </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Anggota Tim 2 (Opsional)</label>
-                                <input type="text" name="member_2"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-gray-700" 
+                            <div class="form-control w-full gap-1">
+                                <label class="label py-0">
+                                    <span
+                                        class="label-text font-bold text-[10px] uppercase text-gray-500 tracking-wider">Anggota
+                                        Tim 2 (Opsional)</span>
+                                </label>
+                                <input type="text" x-model="member2"
+                                    class="input input-bordered w-full text-xs h-10 font-medium"
                                     placeholder="Nama anggota ketiga" />
                             </div>
                         </div>
@@ -104,20 +179,23 @@
                 </div>
 
                 <!-- Button Submit -->
-                <button type="submit" 
-                    class="w-full mt-4 py-3.5 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg hover:shadow-indigo-500/30 transition-all duration-200 transform hover:-translate-y-0.5">
-                    Daftarkan Tim Kami
+                <button type="submit" class="btn btn-primary btn-block text-sm h-12 font-extrabold mt-4">
+                    <span>Daftarkan Tim Kami</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
                 </button>
             </form>
 
             <!-- Link Alternatif -->
-            <div class="mt-8 pt-6 border-t border-gray-100 text-center text-sm">
-                <p class="text-gray-500">Sudah memiliki akun? 
-                    <a href="<?= BASE_URL; ?>/login" class="text-indigo-600 hover:text-indigo-700 font-semibold hover:underline">Masuk di sini</a>
+            <div class="pt-4 border-t border-base-200 text-center text-sm">
+                <p class="text-gray-400">Sudah memiliki akun?
+                    <a href="<?= BASE_URL; ?>/login" class="text-primary font-bold hover:underline">Masuk di sini</a>
                 </p>
             </div>
         </div>
     </div>
 </div>
 
-<?php require_once '../app/views/layouts/footer.php'; ?>
+<?php require_once __DIR__ . '/../layouts/footer.php'; ?>

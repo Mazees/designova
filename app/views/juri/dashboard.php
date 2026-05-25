@@ -1,40 +1,113 @@
 <?php require_once '../app/views/layouts/header.php'; ?>
 
-<div class="max-w-6xl mx-auto">
-    <h2 class="text-3xl font-bold text-gray-800 mb-6">Dashboard Penilaian Juri</h2>
-    
-    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-        <h3 class="text-xl font-bold text-gray-800 mb-4">Daftar Karya Tim Peserta</h3>
-        
+<div class="max-w-5xl mx-auto space-y-8">
+    <!-- Header -->
+    <div class="space-y-1">
+        <h2 class="text-3xl font-extrabold text-neutral-content tracking-tight">Evaluasi Tim</h2>
+        <p class="text-xs text-gray-400 font-medium">Berikan nilai objektif terbaik Anda untuk setiap karya yang dikumpulkan.</p>
+    </div>
+
+    <!-- Table Card -->
+    <div class="card bg-base-100 border border-base-200 shadow-md overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="table-auto w-full text-left border-collapse">
+            <table class="table w-full">
+                <!-- head -->
                 <thead>
-                    <tr class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
-                        <th class="p-3 border-b">ID Tim</th>
-                        <th class="p-3 border-b">Nama Tim</th>
-                        <th class="p-3 border-b">Status Penilaian</th>
-                        <th class="p-3 border-b">Aksi</th>
+                    <tr class="bg-base-200 border-b border-base-300 text-gray-500 text-[10px] font-bold uppercase tracking-wider">
+                        <th class="py-4 pl-8">Nama Tim</th>
+                        <th class="py-4">Kategori</th>
+                        <th class="py-4">Status Penilaian</th>
+                        <th class="py-4">Skor Akhir</th>
+                        <th class="py-4 pr-8 text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="text-sm text-gray-600">
-                    <tr>
-                        <td class="p-3 border-b">#101</td>
-                        <td class="p-3 border-b font-medium text-gray-800">Tim UIUX Mantap</td>
-                        <td class="p-3 border-b"><span class="px-2 py-1 bg-red-100 text-red-800 rounded text-xs font-semibold">Belum Dinilai</span></td>
-                        <td class="p-3 border-b">
-                            <a href="<?= BASE_URL; ?>/juri/assessment/101" class="text-indigo-600 hover:underline">Mulai Nilai</a>
+                <tbody class="divide-y divide-base-200 text-xs font-semibold text-gray-700">
+                    <!-- Row 1 -->
+                    <tr class="hover:bg-base-200/40 transition-colors">
+                        <td class="py-5 pl-8">
+                            <div class="flex items-center space-x-3.5">
+                                <div class="avatar placeholder">
+                                    <div class="w-8 h-8 rounded-full bg-base-200 text-gray-500 font-black text-xs">
+                                        AC
+                                    </div>
+                                </div>
+                                <span class="font-extrabold text-neutral-content text-sm">Alpha Creatives</span>
+                            </div>
+                        </td>
+                        <td class="py-5">
+                            <div class="badge bg-base-200 text-gray-500 border-none font-bold text-[9px] py-2 px-3">UI/UX Design</div>
+                        </td>
+                        <td class="py-5">
+                            <div class="badge badge-warning text-white font-bold text-[9px] py-2 px-3 uppercase tracking-wide">Belum Dinilai</div>
+                        </td>
+                        <td class="py-5 text-gray-450 font-bold">-</td>
+                        <td class="py-5 pr-8 text-right">
+                            <a href="<?= BASE_URL; ?>/juri/assessment/1" class="btn btn-primary btn-xs font-extrabold text-primary-content px-4 py-1.5 h-auto">Nilai Sekarang</a>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="p-3 border-b">#102</td>
-                        <td class="p-3 border-b font-medium text-gray-800">Tim Kreatif Jaya</td>
-                        <td class="p-3 border-b"><span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-semibold">Sudah Dinilai</span></td>
-                        <td class="p-3 border-b">
-                            <a href="<?= BASE_URL; ?>/juri/assessment/102" class="text-indigo-600 hover:underline">Edit Nilai</a>
+                    
+                    <!-- Row 2 -->
+                    <tr class="hover:bg-base-200/40 transition-colors">
+                        <td class="py-5 pl-8">
+                            <div class="flex items-center space-x-3.5">
+                                <div class="avatar placeholder">
+                                    <div class="w-8 h-8 rounded-full bg-base-200 text-gray-500 font-black text-xs">
+                                        BI
+                                    </div>
+                                </div>
+                                <span class="font-extrabold text-neutral-content text-sm">Beta Innovators</span>
+                            </div>
+                        </td>
+                        <td class="py-5">
+                            <div class="badge bg-base-200 text-gray-500 border-none font-bold text-[9px] py-2 px-3">UI/UX Design</div>
+                        </td>
+                        <td class="py-5">
+                            <div class="badge badge-success text-white font-bold text-[9px] py-2 px-3 uppercase tracking-wide">Sudah Dinilai</div>
+                        </td>
+                        <td class="py-5 text-neutral-content font-black text-sm">92.40<span class="text-xs text-gray-400 font-bold">/100</span></td>
+                        <td class="py-5 pr-8 text-right">
+                            <a href="<?= BASE_URL; ?>/juri/assessment/2" class="btn btn-outline btn-xs font-bold px-4 py-1.5 h-auto">Edit Nilai</a>
+                        </td>
+                    </tr>
+
+                    <!-- Row 3 -->
+                    <tr class="hover:bg-base-200/40 transition-colors">
+                        <td class="py-5 pl-8">
+                            <div class="flex items-center space-x-3.5">
+                                <div class="avatar placeholder">
+                                    <div class="w-8 h-8 rounded-full bg-base-200 text-gray-500 font-black text-xs">
+                                        NS
+                                    </div>
+                                </div>
+                                <span class="font-extrabold text-neutral-content text-sm">Nova Studios</span>
+                            </div>
+                        </td>
+                        <td class="py-5">
+                            <div class="badge bg-base-200 text-gray-500 border-none font-bold text-[9px] py-2 px-3">UI/UX Design</div>
+                        </td>
+                        <td class="py-5">
+                            <div class="badge badge-warning text-white font-bold text-[9px] py-2 px-3 uppercase tracking-wide">Belum Dinilai</div>
+                        </td>
+                        <td class="py-5 text-gray-450 font-bold">-</td>
+                        <td class="py-5 pr-8 text-right">
+                            <a href="<?= BASE_URL; ?>/juri/assessment/3" class="btn btn-primary btn-xs font-extrabold text-primary-content px-4 py-1.5 h-auto">Nilai Sekarang</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <!-- Table Footer/Pagination -->
+        <div class="p-4 bg-base-200 border-t border-base-300 flex justify-between items-center px-8 text-[11px] text-gray-400 font-semibold">
+            <span>Menampilkan 1-3 dari 3 tim terdaftar</span>
+            <div class="flex items-center space-x-2">
+                <button class="btn btn-ghost btn-xs p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50" disabled>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <button class="btn btn-ghost btn-xs p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50" disabled>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+            </div>
         </div>
     </div>
 </div>
