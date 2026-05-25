@@ -42,7 +42,7 @@ designova/
 │   │   ├── Database.php        # Helper Koneksi PDO MySQL
 │   │   └── Router.php          # Custom Regex Router
 │   ├── models/                 # Representasi entitas tabel (Model stubs)
-│   │   ├── Assessment.php
+│   │   ├── Submissions.php
 │   │   ├── Setting.php
 │   │   ├── Team.php
 │   │   └── User.php
@@ -92,7 +92,7 @@ Aplikasi menggunakan custom router dengan pola regex yang didaftarkan pada [publ
 | URL                          | Controller & Method                    | Tampilan File View    | Deskripsi                     |
 | :--------------------------- | :------------------------------------- | :-------------------- | :---------------------------- |
 | `/juri/dashboard`            | `JuriController::index()`              | `juri/dashboard.php`  | Daftar tim yang perlu dinilai |
-| `/juri/assessment/{team_id}` | `JuriController::assessment($team_id)` | `juri/assessment.php` | Form input nilai tim tertentu |
+| `/juri/assessment/{team_id}` | `JuriController::assessment($team_id)` | `juri/Submissions.php` | Form input nilai tim tertentu |
 
 ### 4. Dashboard Admin
 
