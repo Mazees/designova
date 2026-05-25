@@ -7,11 +7,6 @@
          password: '',
          confirmPassword: '',
          teamName: '',
-         member1: '',
-         member2: '',
-         get membersJson() {
-             return JSON.stringify([this.member1, this.member2].filter(m => m.trim() !== ''));
-         }
      }">
     <!-- Left Column (Branding Panel) -->
     <div
@@ -69,10 +64,7 @@
             <?php endif; ?>
 
             <!-- Form Pendaftaran -->
-            <form method="post" action="<?= BASE_URL; ?>/register" class="space-y-5"
-                @submit="if(password !== confirmPassword) { alert('Password dan konfirmasi password tidak cocok!'); $event.preventDefault(); }">
-                <!-- Hidden input untuk members JSON -->
-                <input type="hidden" name="members" :value="membersJson" />
+            <form method="post" action="<?= BASE_URL; ?>/register" class="space-y-5">
 
                 <!-- SECTION 1: Akun Ketua Tim -->
                 <div class="space-y-3">
@@ -160,7 +152,7 @@
                                         class="label-text font-bold text-[10px] uppercase text-gray-500 tracking-wider">Anggota
                                         Tim 1 (Opsional)</span>
                                 </label>
-                                <input type="text" x-model="member1"
+                                <input type="text" x-model="member_1"
                                     class="input input-bordered w-full text-xs h-10 font-medium"
                                     placeholder="Nama anggota kedua" />
                             </div>
@@ -170,7 +162,7 @@
                                         class="label-text font-bold text-[10px] uppercase text-gray-500 tracking-wider">Anggota
                                         Tim 2 (Opsional)</span>
                                 </label>
-                                <input type="text" x-model="member2"
+                                <input type="text" x-model="member_2"
                                     class="input input-bordered w-full text-xs h-10 font-medium"
                                     placeholder="Nama anggota ketiga" />
                             </div>
