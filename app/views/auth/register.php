@@ -152,7 +152,7 @@
                                         class="label-text font-bold text-[10px] uppercase text-gray-500 tracking-wider">Anggota
                                         Tim 1 (Opsional)</span>
                                 </label>
-                                <input type="text" x-model="member_1"
+                                <input type="text" name="member_1"
                                     class="input input-bordered w-full text-xs h-10 font-medium"
                                     placeholder="Nama anggota kedua" />
                             </div>
@@ -162,7 +162,7 @@
                                         class="label-text font-bold text-[10px] uppercase text-gray-500 tracking-wider">Anggota
                                         Tim 2 (Opsional)</span>
                                 </label>
-                                <input type="text" x-model="member_2"
+                                <input type="text" name="member_2"
                                     class="input input-bordered w-full text-xs h-10 font-medium"
                                     placeholder="Nama anggota ketiga" />
                             </div>
