@@ -15,28 +15,37 @@ CREATE TABLE teams (
     user_id BIGINT UNSIGNED NOT NULL,
     team_name VARCHAR(255) NOT NULL,
     members JSON NOT NULL,
-    payment_status ENUM('unpaid', 'pending', 'verified') DEFAULT 'unpaid',
-    payment_amount INT NOT NULL,
-    submission_figma VARCHAR(255) NULL,
-    submission_gdrive VARCHAR(255) NULL,
+    is_active TINYINT(1) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE assessments (
+CREATE TABLE submissions (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    team_id BIGINT UNSIGNED NOT NULL,
-    juri_id BIGINT UNSIGNED NOT NULL,
-    score_ui DECIMAL(5,2) NOT NULL,
-    score_ux DECIMAL(5,2) NOT NULL,
-    score_figma DECIMAL(5,2) NOT NULL,
-    final_score DECIMAL(5,2) GENERATED ALWAYS AS ((score_ui * 0.5) + (score_ux * 0.4) + (score_figma * 0.1)) STORED,
-    feedback TEXT NOT NULL,
+    team_id BIGINT UNSIGNED NOT NULL UNIQUE,
+    figma_link VARCHAR(255) NOT NULL,
+    docs_link VARCHAR(255) NOT NULL,
+    score_ui DECIMAL(5,2) NOT NULL DEFAULT 0,
+    score_ux DECIMAL(5,2) NOT NULL DEFAULT 0,
+    score_figma DECIMAL(5,2) NOT NULL DEFAULT 0,
+    final_score DECIMAL(5,2) GENERATED ALWAYS AS (
+        (score_ui * 0.5) + (score_ux * 0.4) + (score_figma * 0.1)
+    ) STORED,
+    feedback TEXT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE,
-    FOREIGN KEY (juri_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE
+);
+
+CREATE TABLE payments (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    team_id BIGINT UNSIGNED NOT NULL,
+    amount INT NOT NULL,
+    status ENUM('pending', 'confirmed', 'rejected') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE
 );
 
 CREATE TABLE settings (
