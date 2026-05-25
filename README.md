@@ -14,7 +14,7 @@ Designova adalah aplikasi web berbasis **PHP Native (OOP)** dengan arsitektur **
 
 - Halaman Publik : Mada
 - Halaman Peserta (Dashboard Tim) : Raihan
-- Halaman Juri (Dashboard Penilaian) :
+- Halaman Juri (Dashboard Penilaian) : Rizky
 - Halaman Pengelola (Dashboard Admin) : Mada
 
 ---
