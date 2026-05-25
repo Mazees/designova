@@ -12,8 +12,7 @@ $hasSubmitted = !empty($submission);
 
 <div class="max-w-6xl mx-auto space-y-8 pb-12">
     <!-- Hero Welcome Banner -->
-    <div
-        class="relative bg-accent text-white p-8 rounded-3xl">
+    <div class="relative bg-accent text-white p-8 rounded-3xl">
         <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div class="space-y-2">
                 <div
@@ -177,130 +176,131 @@ $hasSubmitted = !empty($submission);
                         <li class="step">Proses Penilaian Juri</li>
                         <li class="step">Pengumuman Pemenang</li>
                     </ul>
+                </div>
             </div>
-        </div>
 
-        <!-- Download Resources & Documents -->
-        <div class="card bg-base-100 border border-base-200/60 shadow-sm">
-            <div class="card-body p-6 gap-4">
-                <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Resource &amp;
-                    Dokumen Acuan</span>
+            <!-- Download Resources & Documents -->
+            <div class="card bg-base-100 border border-base-200/60 shadow-sm">
+                <div class="card-body p-6 gap-4">
+                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Resource &amp;
+                        Dokumen Acuan</span>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- Resource 1 -->
-                    <div
-                        class="flex items-center gap-3.5 p-3.5 border border-base-200 rounded-2xl hover:bg-base-200/40 hover:border-base-300 transition-all duration-200 group">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Resource 1 -->
                         <div
-                            class="shrink-0 w-10 h-10 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                            <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
+                            class="flex items-center gap-3.5 p-3.5 border border-base-200 rounded-2xl hover:bg-base-200/40 hover:border-base-300 transition-all duration-200 group">
+                            <div
+                                class="shrink-0 w-10 h-10 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                                <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <span
+                                    class="text-xs font-extrabold text-base-content block truncate">Guidebook.pdf</span>
+                                <span class="text-[9px] text-gray-400 block font-medium">Panduan Teknis Lomba</span>
+                            </div>
+                            <a href="#" class="btn btn-ghost btn-square btn-sm text-gray-400 hover:text-primary">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                </svg>
+                            </a>
                         </div>
-                        <div class="min-w-0 flex-1">
-                            <span class="text-xs font-extrabold text-base-content block truncate">Guidebook.pdf</span>
-                            <span class="text-[9px] text-gray-400 block font-medium">Panduan Teknis Lomba</span>
+
+                        <!-- Resource 2 -->
+                        <div
+                            class="flex items-center gap-3.5 p-3.5 border border-base-200 rounded-2xl hover:bg-base-200/40 hover:border-base-300 transition-all duration-200 group">
+                            <div
+                                class="shrink-0 w-10 h-10 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                                <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <span
+                                    class="text-xs font-extrabold text-base-content block truncate">Template_Pitch.ppt</span>
+                                <span class="text-[9px] text-gray-400 block font-medium">Format Presentasi</span>
+                            </div>
+                            <a href="#" class="btn btn-ghost btn-square btn-sm text-gray-400 hover:text-primary">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                </svg>
+                            </a>
                         </div>
-                        <a href="#" class="btn btn-ghost btn-square btn-sm text-gray-400 hover:text-primary">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
-                        </a>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Resource 2 -->
-                    <div
-                        class="flex items-center gap-3.5 p-3.5 border border-base-200 rounded-2xl hover:bg-base-200/40 hover:border-base-300 transition-all duration-200 group">
+            <!-- Papan Pengumuman -->
+            <div class="card bg-base-100 border border-base-200/60 shadow-sm">
+                <div class="card-body p-6 gap-4">
+                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Informasi &amp;
+                        Pengumuman Terbaru</span>
+
+                    <div class="space-y-3.5">
+                        <!-- Notice Item 1 -->
                         <div
-                            class="shrink-0 w-10 h-10 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                            <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                            </svg>
-                        </div>
-                        <div class="min-w-0 flex-1">
+                            class="p-3.5 rounded-2xl bg-base-200/50 hover:bg-base-200 transition-colors border border-base-200/30 flex gap-3.5 items-start">
                             <span
-                                class="text-xs font-extrabold text-base-content block truncate">Template_Pitch.ppt</span>
-                            <span class="text-[9px] text-gray-400 block font-medium">Format Presentasi</span>
+                                class="badge badge-error text-[8px] font-black uppercase tracking-wider py-1 px-1.5 mt-0.5 shrink-0">Penting</span>
+                            <div class="space-y-1">
+                                <p class="text-xs font-semibold text-base-content leading-relaxed">
+                                    Batas akhir (deadline) pengumpulan karya ditetapkan pada <strong>24 November
+                                        2023</strong> pukul 23:59 WIB. Tidak ada perpanjangan waktu otomatis.
+                                </p>
+                                <span class="text-[9px] text-gray-400 block font-medium">Diposting: 25 Mei 2026</span>
+                            </div>
                         </div>
-                        <a href="#" class="btn btn-ghost btn-square btn-sm text-gray-400 hover:text-primary">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+
+                        <!-- Notice Item 2 -->
+                        <div
+                            class="p-3.5 rounded-2xl bg-base-200/50 hover:bg-base-200 transition-colors border border-base-200/30 flex gap-3.5 items-start">
+                            <span
+                                class="badge badge-info text-[8px] font-black uppercase tracking-wider py-1 px-1.5 mt-0.5 shrink-0">Informasi</span>
+                            <div class="space-y-1">
+                                <p class="text-xs font-semibold text-base-content leading-relaxed">
+                                    Pastikan link Figma Prototype dan Google Drive diatur ke mode publik agar Juri dapat
+                                    mengakses karya Anda tanpa kendala saat penilaian.
+                                </p>
+                                <span class="text-[9px] text-gray-400 block font-medium">Diposting: 21 Mei 2026</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Helpdesk WhatsApp Admin -->
+            <div class="card bg-gradient-to-r from-success/15 to-transparent border border-success/20 shadow-sm">
+                <div class="card-body p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center space-x-3.5">
+                        <div
+                            class="w-11 h-11 rounded-full bg-success/20 text-success flex items-center justify-center shadow-inner">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.47L0 24zm5.706-3.8l.374.223c1.55.922 3.327 1.409 5.167 1.411 5.485 0 9.948-4.464 9.952-9.953.002-2.66-1.033-5.16-2.91-7.04C16.47 2.96 13.97 1.92 11.999 1.92c-5.498 0-9.96 4.46-9.964 9.949-.002 1.916.501 3.791 1.458 5.408l.254.432-.975 3.562 3.65-.957z" />
                             </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Papan Pengumuman -->
-        <div class="card bg-base-100 border border-base-200/60 shadow-sm">
-            <div class="card-body p-6 gap-4">
-                <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Informasi &amp;
-                    Pengumuman Terbaru</span>
-
-                <div class="space-y-3.5">
-                    <!-- Notice Item 1 -->
-                    <div
-                        class="p-3.5 rounded-2xl bg-base-200/50 hover:bg-base-200 transition-colors border border-base-200/30 flex gap-3.5 items-start">
-                        <span
-                            class="badge badge-error text-[8px] font-black uppercase tracking-wider py-1 px-1.5 mt-0.5 shrink-0">Penting</span>
-                        <div class="space-y-1">
-                            <p class="text-xs font-semibold text-base-content leading-relaxed">
-                                Batas akhir (deadline) pengumpulan karya ditetapkan pada <strong>24 November
-                                    2023</strong> pukul 23:59 WIB. Tidak ada perpanjangan waktu otomatis.
-                            </p>
-                            <span class="text-[9px] text-gray-400 block font-medium">Diposting: 25 Mei 2026</span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-extrabold text-base-content block">Butuh bantuan Admin?</span>
+                            <span class="text-[10px] text-gray-500 block font-medium mt-0.5">Hubungi kami via WhatsApp
+                                jika mengalami kendala sistem atau pendaftaran.</span>
                         </div>
                     </div>
-
-                    <!-- Notice Item 2 -->
-                    <div
-                        class="p-3.5 rounded-2xl bg-base-200/50 hover:bg-base-200 transition-colors border border-base-200/30 flex gap-3.5 items-start">
-                        <span
-                            class="badge badge-info text-[8px] font-black uppercase tracking-wider py-1 px-1.5 mt-0.5 shrink-0">Informasi</span>
-                        <div class="space-y-1">
-                            <p class="text-xs font-semibold text-base-content leading-relaxed">
-                                Pastikan link Figma Prototype dan Google Drive diatur ke mode publik agar Juri dapat
-                                mengakses karya Anda tanpa kendala saat penilaian.
-                            </p>
-                            <span class="text-[9px] text-gray-400 block font-medium">Diposting: 21 Mei 2026</span>
-                        </div>
-                    </div>
+                    <a href="https://wa.me/6281234567890?text=Halo%20Admin%20Designova,%20saya%20mengalami%20kendala%20pada%20dashboard%20peserta."
+                        target="_blank"
+                        class="btn btn-success text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shrink-0 gap-2 hover:scale-[1.02] transition-transform duration-200">
+                        Chat WhatsApp
+                    </a>
                 </div>
             </div>
-        </div>
 
-        <!-- Helpdesk WhatsApp Admin -->
-        <div class="card bg-gradient-to-r from-success/15 to-transparent border border-success/20 shadow-sm">
-            <div class="card-body p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div class="flex items-center space-x-3.5">
-                    <div
-                        class="w-11 h-11 rounded-full bg-success/20 text-success flex items-center justify-center shadow-inner">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.47L0 24zm5.706-3.8l.374.223c1.55.922 3.327 1.409 5.167 1.411 5.485 0 9.948-4.464 9.952-9.953.002-2.66-1.033-5.16-2.91-7.04C16.47 2.96 13.97 1.92 11.999 1.92c-5.498 0-9.96 4.46-9.964 9.949-.002 1.916.501 3.791 1.458 5.408l.254.432-.975 3.562 3.65-.957z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <span class="text-xs font-extrabold text-base-content block">Butuh bantuan Admin?</span>
-                        <span class="text-[10px] text-gray-500 block font-medium mt-0.5">Hubungi kami via WhatsApp
-                            jika mengalami kendala sistem atau pendaftaran.</span>
-                    </div>
-                </div>
-                <a href="https://wa.me/6281234567890?text=Halo%20Admin%20Designova,%20saya%20mengalami%20kendala%20pada%20dashboard%20peserta."
-                    target="_blank"
-                    class="btn btn-success text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shrink-0 gap-2 hover:scale-[1.02] transition-transform duration-200">
-                    Chat WhatsApp
-                </a>
-            </div>
         </div>
 
     </div>
-
-</div>
 </div>
 
 <?php require_once '../app/views/layouts/header.php'; // Wait, layout uses footer.php at the end, but the original code had: require_once '../app/views/layouts/footer.php'; ?>
