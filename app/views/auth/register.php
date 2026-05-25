@@ -12,7 +12,7 @@
             <p class="text-sm text-gray-500 text-center mb-8">Lengkapi formulir di bawah ini untuk mendaftarkan tim Anda di kompetisi Designova</p>
 
             <!-- Alert Error jika ada data tidak valid -->
-            <?php if (!empty($errors) && is_array($errors)): ?>
+            <?php if (!empty($error)): ?>
                 <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-xl text-red-800 text-sm animate-pulse">
                     <div class="flex items-center mb-1">
                         <svg class="w-5 h-5 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -20,11 +20,7 @@
                         </svg>
                         <span class="font-semibold">Mohon perbaiki kesalahan berikut:</span>
                     </div>
-                    <ul class="list-disc list-inside space-y-0.5 pl-2">
-                        <?php foreach ($errors as $err): ?>
-                            <li><?= htmlspecialchars($err); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
+                    <p class="pl-7"><?= htmlspecialchars($error); ?></p>
                 </div>
             <?php endif; ?>
 
@@ -41,7 +37,7 @@
                         <!-- Input Nama Ketua -->
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Nama Ketua Tim</label>
-                            <input type="text" name="name" value="<?= htmlspecialchars($old['name'] ?? '') ?>" required
+                            <input type="text" name="name" required
                                 class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-gray-700" 
                                 placeholder="Nama lengkap ketua" />
                         </div>
@@ -49,7 +45,7 @@
                         <!-- Input Email -->
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Email Ketua (Untuk Login)</label>
-                            <input type="email" name="email" value="<?= htmlspecialchars($old['email'] ?? '') ?>" required
+                            <input type="email" name="email" required
                                 class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-gray-700" 
                                 placeholder="nama@email.com" />
                         </div>
@@ -84,7 +80,7 @@
                         <!-- Input Nama Tim -->
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Nama Tim Kompetisi</label>
-                            <input type="text" name="team_name" value="<?= htmlspecialchars($old['team_name'] ?? '') ?>" required
+                            <input type="text" name="team_name" required
                                 class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-gray-700" 
                                 placeholder="Masukkan nama tim kreatif Anda" />
                         </div>
@@ -93,13 +89,13 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Anggota Tim 1 (Opsional)</label>
-                                <input type="text" name="member_1" value="<?= htmlspecialchars($old['member_1'] ?? '') ?>"
+                                <input type="text" name="member_1"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-gray-700" 
                                     placeholder="Nama anggota kedua" />
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Anggota Tim 2 (Opsional)</label>
-                                <input type="text" name="member_2" value="<?= htmlspecialchars($old['member_2'] ?? '') ?>"
+                                <input type="text" name="member_2"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-gray-700" 
                                     placeholder="Nama anggota ketiga" />
                             </div>

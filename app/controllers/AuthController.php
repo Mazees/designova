@@ -4,15 +4,13 @@ class AuthController extends Controller
 {
     public function login()
     {
-        $errors = [];
-        $old = [];
+        $error = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $authService = new AuthService(new User());
             $result = $authService->login($_POST);
 
-            $errors = $result['errors'] ?? [];
-            $old = $result['old'] ?? [];
+            $error = $result['error'] ?? '';
 
             if (!empty($result['success'])) {
                 $_SESSION['user'] = $result['user'];
@@ -23,22 +21,19 @@ class AuthController extends Controller
 
         $this->view('auth/login', [
             'title' => 'Login - Designova',
-            'errors' => $errors,
-            'old' => $old,
+            'error' => $error,
         ]);
     }
 
     public function register()
     {
-        $errors = [];
-        $old = [];
+        $error = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $authService = new AuthService(new User());
             $result = $authService->register($_POST);
 
-            $errors = $result['errors'] ?? [];
-            $old = $result['old'] ?? [];
+            $error = $result['error'] ?? '';
 
             if (!empty($result['success'])) {
                 header('Location: ' . BASE_URL . '/login');
@@ -48,8 +43,7 @@ class AuthController extends Controller
 
         $this->view('auth/register', [
             'title' => 'Register - Designova',
-            'errors' => $errors,
-            'old' => $old,
+            'error' => $error,
         ]);
     }
 }

@@ -1,0 +1,26 @@
+{
+  "name": "designova",
+  "version": "1.0.0",
+  "description": "Designova adalah aplikasi web berbasis **PHP Native (OOP)** dengan arsitektur **MVC (Model-View-Controller)** yang dirancang untuk mengelola siklus penuh kompetisi desain.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mazees/designova.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Mazees/designova/issues"
+  },
+  "homepage": "https://github.com/Mazees/designova#readme",
+  "dependencies": {
+    "daisyui": "^5.5.20",
+    "tailwindcss": "^4.3.0"
+  }
+}

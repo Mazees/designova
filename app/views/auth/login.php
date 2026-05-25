@@ -12,7 +12,7 @@
             <p class="text-sm text-gray-500 text-center mb-8">Masuk ke akun Designova Anda untuk melanjutkan kompetisi</p>
 
             <!-- Alert Error jika login gagal -->
-            <?php if (!empty($errors) && is_array($errors)): ?>
+            <?php if (!empty($error)): ?>
                 <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg text-red-800 text-sm animate-pulse">
                     <div class="flex items-center mb-1">
                         <svg class="w-5 h-5 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -20,11 +20,7 @@
                         </svg>
                         <span class="font-semibold">Terjadi kesalahan:</span>
                     </div>
-                    <ul class="list-disc list-inside space-y-0.5 pl-2">
-                        <?php foreach ($errors as $err): ?>
-                            <li><?= htmlspecialchars($err); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
+                    <p class="pl-7"><?= htmlspecialchars($error); ?></p>
                 </div>
             <?php endif; ?>
 
@@ -40,7 +36,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>
                         </span>
-                        <input type="email" name="email" value="<?= htmlspecialchars($old['email'] ?? '') ?>" required
+                        <input type="email" name="email" required
                             class="pl-10 w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-gray-700" 
                             placeholder="nama@email.com" />
                     </div>
