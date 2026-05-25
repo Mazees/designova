@@ -62,7 +62,7 @@ class User
         $team_name = trim((string) $team_name);
         $connection = $this->db->getConnection();
         if ($connection) {
-            $stmt = $connection->prepare("INSERT INTO users(user_id, team_name, members)
+            $stmt = $connection->prepare("INSERT INTO teams(user_id, team_name, members)
             VALUES (?, ?, ?);");
             $stmt->bind_param("sss", $user_id, $team_name, $members);
             $execute = $stmt->execute();
