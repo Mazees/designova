@@ -1,6 +1,6 @@
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
 
-<div class="card lg:card-side w-full max-w-5xl bg-base-100 shadow-2xl border border-base-200 overflow-hidden mx-auto my-6 min-h-[650px]"
+<div class="card lg:card-side gap-5 w-full max-w-5xl bg-base-100 shadow-2xl border border-base-200 overflow-hidden mx-auto my-6 min-h-[650px]"
     x-data="{
          name: '',
          email: '',
@@ -41,7 +41,7 @@
     </div>
 
     <!-- Right Column (Form Panel) -->
-    <div class="lg:w-7/12 p-8 sm:p-10 flex items-center justify-center bg-base-100">
+    <div class="lg:w-7/12 px-8 sm:px-10 flex items-center justify-center bg-base-100">
         <div class="w-full space-y-6">
             <div class="text-center lg:text-left space-y-1">
                 <h2 class="text-2xl font-extrabold text-neutral-content tracking-tight">Pendaftaran Tim Baru</h2>
