@@ -4,10 +4,10 @@
 @source "../../app/**/*.php";
 @source "../index.php";
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 
-@theme {
-  --font-sans: "Poppins", sans-serif;
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 @plugin "daisyui/theme" {
@@ -16,17 +16,17 @@
   prefersdark: false;
   color-scheme: "light";
   --color-base-100: oklch(92% 0.004 286.32);
-  --color-base-200: #F3F0EF;
+  --color-base-200: #f3f0ef;
   --color-base-300: oklch(98% 0 0);
-  --color-base-content: #221B00;
-  --color-primary: #E9C400;
+  --color-base-content: #221b00;
+  --color-primary: #e9c400;
   --color-primary-content: oklch(96% 0.007 247.896);
-  --color-secondary: #F3F0EF;
+  --color-secondary: #f3f0ef;
   --color-secondary-content: oklch(12.895% 0.04 359.339);
-  --color-accent: #221B00;
+  --color-accent: #221b00;
   --color-accent-content: oklch(98% 0.003 247.858);
   --color-neutral: oklch(98% 0.003 247.858);
-  --color-neutral-content: #221B00;
+  --color-neutral-content: #221b00;
   --color-info: oklch(62% 0.214 259.815);
   --color-info-content: oklch(98% 0.003 247.858);
   --color-success: oklch(72% 0.219 149.579);
