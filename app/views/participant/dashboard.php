@@ -12,7 +12,7 @@ $hasSubmitted = !empty($submission);
 
 <div class="max-w-6xl mx-auto space-y-8 pb-12">
     <!-- Hero Welcome Banner -->
-    <div class="relative bg-accent text-white p-8 rounded-3xl">
+    <div class="relative bg-neutral border border-base-200 text-base-content p-8 rounded-3xl">
         <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div class="space-y-2">
                 <div
@@ -23,7 +23,7 @@ $hasSubmitted = !empty($submission);
                 <h2 class="text-3xl md:text-4xl font-black tracking-tight">
                     Hello, <?= htmlspecialchars($user['name'] ?? 'User'); ?>!
                 </h2>
-                <p class="text-sm text-gray-300 max-w-xl italic leading-relaxed">
+                <p class="text-sm text-base-content/75 max-w-xl italic leading-relaxed">
                     Selamat datang di Hub Peserta Designova. Kelola berkas tim, pantau proses penilaian, dan unduh
                     dokumen penting dalam satu dasbor.
                 </p>
@@ -274,7 +274,7 @@ $hasSubmitted = !empty($submission);
             </div>
 
             <!-- Helpdesk WhatsApp Admin -->
-            <div class="card bg-gradient-to-r from-success/15 to-transparent border border-success/20 shadow-sm">
+            <div class="card bg-success/10 border border-success/20 shadow-sm">
                 <div class="card-body p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div class="flex items-center space-x-3.5">
                         <div

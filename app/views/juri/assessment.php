@@ -1,6 +1,6 @@
 <?php require_once '../app/views/layouts/header.php'; ?>
 
-<div class="max-w-5xl mx-auto space-y-6">
+<div class="max-w-5xl mx-auto space-y-6 pb-12" data-aos="fade-up">
     <!-- Breadcrumbs -->
     <div class="text-xs breadcrumbs text-gray-400">
         <ul>
@@ -10,78 +10,82 @@
     </div>
 
     <!-- Header -->
-    <div class="space-y-1">
-        <h2 class="text-3xl font-extrabold text-neutral-content tracking-tight">Formulir Penilaian Karya</h2>
-        <p class="text-xs text-gray-400 font-medium">Berikan penilaian profesional berdasarkan bobot parameter yang telah ditentukan.</p>
+    <div class="space-y-2">
+        <h2 class="text-3xl font-black text-neutral-content tracking-tight">Formulir Penilaian Karya</h2>
+        <p class="text-xs text-gray-400 font-medium max-w-2xl leading-relaxed">
+            Berikan penilaian profesional berdasarkan bobot parameter yang telah ditentukan secara objektif.
+        </p>
     </div>
 
     <!-- Main Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <!-- Left: Evaluation Form -->
-        <div class="lg:col-span-7 card bg-base-100 border border-base-200 shadow-md">
+        <!-- Left: Evaluation Form (col-span-7) -->
+        <div class="lg:col-span-7 card bg-base-100 border border-base-200 shadow-sm rounded-2xl">
             <div class="card-body p-6 sm:p-8 gap-5">
                 <h3 class="card-title text-lg font-black text-neutral-content">Masukkan Skor Evaluasi</h3>
                 
                 <!-- Parameter Weight Info Alert -->
-                <div class="alert alert-info text-[10px] p-3 gap-2.5 rounded-xl border border-blue-200 bg-blue-50/50 text-blue-800 leading-normal">
-                    <svg class="w-4.5 h-4.5 text-info shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div class="alert alert-info text-[10px] p-3.5 gap-3 rounded-xl border border-blue-200 bg-blue-50/50 text-blue-800 leading-relaxed flex items-start">
+                    <svg class="w-4.5 h-4.5 text-info shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
                     <div>
-                        <span class="font-bold block">Bobot Parameter:</span>
-                        <span>UI/Visual Design (50%), UX/User Flow (40%), Kerapian Figma File (10%). Skor dinilai dari skala 1 - 100.</span>
+                        <span class="font-bold block">Kriteria Pembobotan Parameter:</span>
+                        <p class="mt-0.5 font-medium">UI/Visual Design (50%), UX/User Flow (40%), Kerapian Berkas Figma (10%). Penilaian menggunakan skala skor 1 - 100.</p>
                     </div>
                 </div>
 
                 <form method="post" action="" class="space-y-5">
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <!-- UI Score -->
-                        <div class="form-control w-full gap-1">
+                        <div class="form-control w-full gap-2">
                             <label class="label py-0">
-                                <span class="label-text font-bold text-[10px] uppercase text-gray-500">UI / Visual (50%)</span>
+                                <span class="label-text font-black text-[10px] uppercase text-gray-500 tracking-wider">UI / Visual (50%)</span>
                             </label>
                             <input type="number" min="0" max="100" required
-                                class="input input-bordered w-full text-xs h-10 font-medium" 
-                                placeholder="Skor 1-100" />
+                                   class="input input-bordered w-full text-xs h-11 font-medium bg-base-200/30 focus:outline-none focus:border-primary rounded-xl" 
+                                   placeholder="Skor 1-100" />
                         </div>
 
                         <!-- UX Score -->
-                        <div class="form-control w-full gap-1">
+                        <div class="form-control w-full gap-2">
                             <label class="label py-0">
-                                <span class="label-text font-bold text-[10px] uppercase text-gray-500">UX / Flow (40%)</span>
+                                <span class="label-text font-black text-[10px] uppercase text-gray-500 tracking-wider">UX / Flow (40%)</span>
                             </label>
                             <input type="number" min="0" max="100" required
-                                class="input input-bordered w-full text-xs h-10 font-medium" 
-                                placeholder="Skor 1-100" />
+                                   class="input input-bordered w-full text-xs h-11 font-medium bg-base-200/30 focus:outline-none focus:border-primary rounded-xl" 
+                                   placeholder="Skor 1-100" />
                         </div>
 
                         <!-- Figma Cleanliness Score -->
-                        <div class="form-control w-full gap-1">
+                        <div class="form-control w-full gap-2">
                             <label class="label py-0">
-                                <span class="label-text font-bold text-[10px] uppercase text-gray-500">Kerapian Figma (10%)</span>
+                                <span class="label-text font-black text-[10px] uppercase text-gray-500 tracking-wider">Kerapian Figma (10%)</span>
                             </label>
                             <input type="number" min="0" max="100" required
-                                class="input input-bordered w-full text-xs h-10 font-medium" 
-                                placeholder="Skor 1-100" />
+                                   class="input input-bordered w-full text-xs h-11 font-medium bg-base-200/30 focus:outline-none focus:border-primary rounded-xl" 
+                                   placeholder="Skor 1-100" />
                         </div>
                     </div>
 
                     <!-- Feedback Textarea -->
-                    <div class="form-control w-full gap-1">
+                    <div class="form-control w-full gap-2">
                         <label class="label py-0">
-                            <span class="label-text font-bold text-[10px] uppercase text-gray-500">Ulasan & Feedback Konstruktif</span>
+                            <span class="label-text font-black text-[10px] uppercase text-gray-500 tracking-wider">Ulasan &amp; Feedback Konstruktif</span>
                         </label>
                         <textarea required minlength="50"
-                            class="textarea textarea-bordered w-full text-xs h-28 font-medium leading-relaxed" 
-                            placeholder="Berikan ulasan detail mengenai aspek desain yang sudah baik serta area yang perlu diperbaiki (minimal 50 karakter)..."></textarea>
+                                  class="textarea textarea-bordered w-full text-xs h-28 font-medium leading-relaxed bg-base-200/30 focus:outline-none focus:border-primary rounded-xl" 
+                                  placeholder="Berikan ulasan detail mengenai aspek desain yang sudah baik serta area yang perlu diperbaiki (minimal 50 karakter)..."></textarea>
                     </div>
 
                     <!-- Submit Actions -->
-                    <div class="flex gap-3 pt-2">
+                    <div class="flex items-center justify-end gap-3 pt-4 border-t border-base-200">
                         <a href="<?= BASE_URL; ?>/juri/dashboard" 
-                            class="btn bg-base-200 hover:bg-base-300 text-base-content border-none flex-1 font-bold text-xs h-10">
+                           class="btn btn-ghost font-bold text-xs h-10 px-5 rounded-xl">
                             Kembali
                         </a>
                         <button type="submit" 
-                            class="btn btn-primary flex-2 font-extrabold text-xs h-10 text-primary-content">
+                                class="btn btn-primary font-black text-xs text-primary-content h-10 px-6 rounded-xl shadow-sm shadow-primary/20 hover:scale-[1.02] transition-transform duration-200">
                             Simpan Penilaian
                         </button>
                     </div>
@@ -89,63 +93,78 @@
             </div>
         </div>
 
-        <!-- Right: Team Card Summary -->
+        <!-- Right: Team Card Summary (col-span-5) -->
         <div class="lg:col-span-5 space-y-6">
-            <div class="card bg-base-100 border border-base-200 shadow-md">
-                <div class="card-body p-6 gap-4">
-                    <span class="text-xs font-black text-neutral-content block tracking-tight uppercase border-b border-base-200 pb-2">Detail Tim</span>
+            <div class="card bg-base-100 border border-base-200 shadow-sm rounded-2xl">
+                <div class="card-body p-6 gap-5">
+                    <span class="text-[10px] font-black text-gray-400 block tracking-widest uppercase border-b border-base-200 pb-2.5">Detail Tim</span>
                     
                     <div class="space-y-1.5">
-                        <h4 class="text-xl font-extrabold text-neutral-content leading-none">Beta Innovators</h4>
-                        <div class="badge badge-sm badge-outline font-bold text-[9px] uppercase tracking-wide">UI/UX Design</div>
+                        <h4 class="text-xl font-black text-neutral-content leading-none">Beta Innovators</h4>
+                        <div class="badge badge-sm badge-outline font-bold text-[9px] uppercase tracking-wider py-2 px-2.5 rounded-lg border-base-300">
+                            UI/UX Design
+                        </div>
                     </div>
 
                     <!-- Members list -->
-                    <div class="space-y-3.5 border-t border-b border-base-200 py-4.5 my-1">
-                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">Anggota Tim:</span>
-                        <div class="flex items-center space-x-3.5">
+                    <div class="space-y-3.5 border-t border-b border-base-200 py-4 my-1">
+                        <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest block">Anggota Tim</span>
+                        
+                        <div class="flex items-center space-x-3">
                             <div class="avatar placeholder">
-                                <div class="w-8 h-8 rounded-full bg-base-200 text-gray-600 font-bold text-[10px]">
+                                <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary font-black text-xs flex items-center justify-center">
                                     JD
                                 </div>
                             </div>
                             <div>
-                                <span class="text-xs font-bold text-gray-800 block">John Doe</span>
-                                <span class="text-[9px] text-gray-400">Ketua Tim</span>
+                                <span class="text-xs font-bold text-base-content block">John Doe</span>
+                                <span class="text-[9px] text-gray-400 font-medium">Ketua Tim</span>
                             </div>
                         </div>
-                        <div class="flex items-center space-x-3.5">
+
+                        <div class="flex items-center space-x-3">
                             <div class="avatar placeholder">
-                                <div class="w-8 h-8 rounded-full bg-base-200 text-gray-600 font-bold text-[10px]">
+                                <div class="w-8 h-8 rounded-lg bg-base-200 text-gray-500 font-black text-xs flex items-center justify-center">
                                     JS
                                 </div>
                             </div>
                             <div>
-                                <span class="text-xs font-bold text-gray-800 block">Jane Smith</span>
-                                <span class="text-[9px] text-gray-400">Anggota</span>
+                                <span class="text-xs font-bold text-base-content block">Jane Smith</span>
+                                <span class="text-[9px] text-gray-400 font-medium">Anggota</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Submission Links -->
                     <div class="space-y-3">
-                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">Tautan Peninjauan:</span>
+                        <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest block">Tautan Peninjauan</span>
                         <div class="flex flex-col gap-2">
+                            <!-- Figma Button -->
                             <a href="https://figma.com" target="_blank" 
-                               class="btn btn-outline btn-sm rounded-xl text-left justify-between items-center text-xs h-10 w-full hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200">
-                                <span class="flex items-center space-x-2">
-                                    <svg class="w-4 h-4 text-orange-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                               class="btn btn-outline btn-sm rounded-xl text-left justify-between items-center text-xs h-11 w-full border-base-300 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200 transition-colors">
+                                <span class="flex items-center space-x-2.5">
+                                    <svg class="w-4.5 h-4.5 text-orange-500 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                                    </svg>
                                     <span class="font-extrabold text-neutral-content">Prototype Figma</span>
                                 </span>
-                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
                             </a>
+
+                            <!-- Drive Button -->
                             <a href="https://drive.google.com" target="_blank" 
-                               class="btn btn-outline btn-sm rounded-xl text-left justify-between items-center text-xs h-10 w-full hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200">
-                                <span class="flex items-center space-x-2">
-                                    <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/></svg>
-                                    <span class="font-extrabold text-neutral-content">File Drive & PDF</span>
+                               class="btn btn-outline btn-sm rounded-xl text-left justify-between items-center text-xs h-11 w-full border-base-300 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-colors">
+                                <span class="flex items-center space-x-2.5">
+                                    <svg class="w-4.5 h-4.5 text-blue-500 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/>
+                                    </svg>
+                                    <span class="font-extrabold text-neutral-content">File Drive &amp; PDF</span>
                                 </span>
-                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
                             </a>
                         </div>
                     </div>
