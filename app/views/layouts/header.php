@@ -74,7 +74,7 @@ $is_dashboard = (
 
                             <body class="bg-base-100 min-h-screen flex flex-col font-sans">
                                 <!-- Navbar Landing Page -->
-                                <div class="navbar bg-base-100 h-16 text-base-content sticky px-10 top-0 z-50 border-b border-base-200 transition-all duration-300"
+                                <div class="navbar bg-base-100 h-16 text-base-content sticky sm:px-10 top-0 z-50 border-b border-base-200 transition-all duration-300"
                                     id="main-navbar">
                                     <div class="navbar-start">
                                         <!-- Mobile hamburger dropdown -->
