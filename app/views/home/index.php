@@ -133,7 +133,7 @@
         </div>
 
         <ul class="timeline timeline-vertical lg:timeline-horizontal" data-aos="fade-up" data-aos-delay="200">
-            </li>>
+            </li>
             <li>
                 <div class="timeline-start">20 Mei 2026</div>
                 <div class="timeline-middle">
