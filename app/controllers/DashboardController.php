@@ -25,13 +25,6 @@ class DashboardController extends Controller {
         ]);
     }
 
-    public function payment() {
-        $this->protectRoute(['peserta'], false);
-        $this->view('participant/payment', [
-            'title' => 'Instruksi Pembayaran - Designova'
-        ]);
-    }
-
     public function submission() {
         $this->protectRoute(['peserta'], true);
         
