@@ -24,6 +24,8 @@ $is_dashboard = (
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <!-- Alpine.js for interactive UI state management -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Sweet Alert -->
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- AOS JS -->
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script>
@@ -35,7 +37,8 @@ $is_dashboard = (
 
 <?php if ($is_auth || $is_payment): ?>
 
-    <body class="bg-base-200 min-h-screen font-sans flex items-center justify-center p-4 sm:p-8">
+    <body
+        class="bg-base-200 min-h-screen font-sans flex items-center justify-center p-4 sm:p-8 <?php echo $is_payment ? 'overflow-hidden' : ''; ?>">
         <main class="w-full">
 
         <?php elseif ($is_dashboard): ?>
@@ -74,7 +77,7 @@ $is_dashboard = (
 
                             <body class="bg-base-100 min-h-screen flex flex-col font-sans">
                                 <!-- Navbar Landing Page -->
-                                <div class="navbar bg-base-100 h-16 text-base-content sticky sm:px-10 top-0 z-50 border-b border-base-200 transition-all duration-300"
+                                <div class="navbar bg-base-100 h-16 text-base-content sticky lg:px-10 top-0 z-50 border-b border-base-200 transition-all duration-300"
                                     id="main-navbar">
                                     <div class="navbar-start">
                                         <!-- Mobile hamburger dropdown -->

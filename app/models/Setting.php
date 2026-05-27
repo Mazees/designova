@@ -21,4 +21,16 @@ class Setting
         }
         return [];
     }
+    public function getBasePrice()
+    {
+        $connection = $this->db->getConnection();
+        if ($connection) {
+            $result = $connection->query("SELECT base_price FROM settings WHERE id = 1 LIMIT 1");
+            if ($result) {
+                $result = $result->fetch_assoc();
+                return $result['base_price'];
+            }
+        }
+        return [];
+    }
 }

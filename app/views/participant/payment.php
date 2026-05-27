@@ -6,16 +6,15 @@ $team = $_SESSION['team'] ?? null;
 $teamName = $team['team_name'] ?? 'Tim Anda';
 $teamId = $team['id'] ?? 1;
 
-$settingModel = new Setting();
-$settings = $settingModel->getSystemSettings();
-$basePrice = $settings['base_price'] ?? 50000;
+$basePrice = isset($price) ? (int) $price : 0;
+$totalAmount = $basePrice;
 
-// Buat nominal unik berdasarkan team ID
-$uniqueCode = str_pad($teamId % 1000, 3, '0', STR_PAD_LEFT);
-$totalAmount = $basePrice + ($teamId % 1000);
+// Generate dynamic QRIS string
+$qrisPayload = QrisService::generateDynamicQris($totalAmount);
+$qrisQrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . urlencode($qrisPayload);
 ?>
 
-<div class="max-w-md mx-auto" x-data="{
+<div class="min-h-[calc(100vh-2rem)] flex items-center justify-center" x-data="{
     step: 1,
     name: '',
     bank: '',
@@ -25,6 +24,28 @@ $totalAmount = $basePrice + ($teamId % 1000);
     copyToClipboard(text) {
         navigator.clipboard.writeText(text);
         alert('Nomor rekening ' + text + ' berhasil disalin ke clipboard!');
+    },
+    confirmLogout() {
+        Swal.fire({
+            title: 'Eitsss',
+            text: 'Apakah anda yakin untuk keluar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, logout',
+            cancelButtonText: 'Batal',
+            buttonsStyling: false,
+            customClass: {
+                popup: '!rounded-[24px] !p-6',
+                title: '!text-2xl !font-bold',
+                actions: 'flex flex-col !w-full !mt-6 gap-3',
+                confirmButton: 'btn btn-primary w-[90%]',
+                cancelButton: 'btn btn-dash w-[90%]',
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logoutForm').submit();
+            }
+        });
     },
     confirmPayment() {
         const nameVal = this.name.trim();
@@ -41,16 +62,24 @@ $totalAmount = $basePrice + ($teamId % 1000);
     }
 }">
     <!-- Clean Centered DaisyUI Card -->
-    <div class="card bg-base-100 border border-base-200 shadow-xl">
-        <div class="card-body p-6 sm:p-8 gap-6">
+    <div class="card bg-base-100 border border-base-200 shadow-xl w-full max-w-md">
+        <div class="card-body p-5 sm:p-6 gap-5">
 
             <!-- Header Info inside the card -->
-            <div class="text-center pb-4 border-b border-base-200 gap-1.5 flex flex-col items-center">
-                <h2 class="card-title text-2xl font-black text-neutral-content tracking-tight">Pembayaran Kompetisi</h2>
-                <div class="flex items-center space-x-1.5">
-                    <span class="text-xs text-muted font-medium">Tim:</span>
-                    <div class="badge badge-primary font-bold text-[10px]"><?= htmlspecialchars($teamName); ?></div>
-                </div>
+            <div class="pb-4 border-b border-base-200 gap-3 flex items-center">
+                <h2
+                    class="card-title text-2xl text-center mx-auto w-full font-black text-neutral-content tracking-tight">
+                    Pembayaran Kompetisi
+                </h2>
+                <form id="logoutForm" method="post" action="<?= BASE_URL; ?>/logout">
+                    <button type="button" @click="confirmLogout()"
+                        class="btn btn-ghost btn-circle btn-sm text-error self-end" aria-label="Logout">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                    </button>
+                </form>
             </div>
 
             <!-- Steps Progress -->
@@ -67,34 +96,31 @@ $totalAmount = $basePrice + ($teamId % 1000);
             <div x-show="step === 1" x-transition class="gap-5 flex flex-col items-center w-full">
                 <!-- Dynamic QRIS Card -->
                 <div
-                    class="w-full bg-base-200 border border-base-300 rounded-2xl p-5 text-center gap-4 flex flex-col items-center shadow-sm">
+                    class="w-full bg-base-200 border border-base-300 rounded-2xl p-4 text-center gap-3 flex flex-col items-center shadow-sm">
                     <div class="flex justify-between items-center border-b border-base-300 pb-2.5 w-full">
-                        <span class="text-[10px] font-black text-base-content tracking-wider">QRIS DINAMIS</span>
+                        <div class="flex flex-col items-start gap-0.5 text-left">
+                            <span class="text-[10px] font-black text-base-content tracking-wider">QRIS PAYMENT</span>
+                            <span class="text-[9px] text-muted font-semibold">Scan untuk melakukan pembayaran:</span>
+                        </div>
                         <div class="badge badge-xs bg-primary/20 text-primary-content border-none font-bold">Designova
                         </div>
                     </div>
-
-                    <!-- QRIS Mockup Image -->
-                    <div
-                        class="bg-base-100 p-3 rounded-xl border border-base-300 inline-block overflow-hidden max-w-[170px]">
-                        <img src="<?= BASE_URL; ?>/assets/images/qris_mockup.png" alt="QRIS Mockup"
-                            class="w-full h-auto rounded-lg object-contain shadow-sm" />
+                    <div class="bg-white p-3 rounded-xl w-full max-w-50 min-w-50 min-h-50 mx-auto">
+                        <img class="w-full h-auto" src="<?= htmlspecialchars($qrisQrUrl, ENT_QUOTES); ?>"
+                            alt="QR Code" />
                     </div>
-
-                    <div class="gap-0.5 flex flex-col">
-                        <span class="text-[9px] text-muted font-semibold uppercase tracking-wider block">Total
-                            Tagihan</span>
-                        <span class="text-2xl font-black text-neutral-content block">Rp
+                    <div class="w-full bg-base-100 border border-base-300 rounded-xl p-3 flex flex-col gap-1">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-muted">Nominal
+                            Pembayaran</span>
+                        <span class="text-xl sm:text-2xl font-black text-neutral-content">Rp
                             <?= number_format($totalAmount, 0, ',', '.'); ?></span>
-                        <span class="text-[9px] text-red-500 font-semibold block">*Termasuk kode unik
-                            (<?= $uniqueCode; ?>)</span>
                     </div>
                 </div>
 
                 <!-- Actions -->
-                <div class="w-full pt-2">
+                <div class="w-full pt-2 flex flex-col gap-5">
                     <button type="button" @click="step = 2"
-                        class="btn btn-primary btn-block font-extrabold text-sm h-12">
+                        class="btn btn-primary btn-blocktext-sm h-12">
                         <span>Lanjut ke Konfirmasi</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
@@ -146,11 +172,13 @@ $totalAmount = $basePrice + ($teamId % 1000);
                         Kembali
                     </button>
                     <button type="button" @click="confirmPayment()"
-                        class="btn btn-primary flex-2 font-extrabold text-xs h-10 gap-1.5 text-primary-content">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.47L0 24zm5.706-3.8l.374.223c1.55.922 3.327 1.409 5.167 1.411 5.485 0 9.948-4.464 9.952-9.953.002-2.66-1.033-5.16-2.91-7.04C16.47 2.96 13.97 1.92 11.999 1.92c-5.498 0-9.96 4.46-9.964 9.949-.002 1.916.501 3.791 1.458 5.408l.254.432-.975 3.562 3.65-.957zM17.487 14.39c-.314-.157-1.858-.917-2.143-1.02-.284-.105-.49-.157-.698.156-.206.314-.8.156-.98.363-.18.207-.36.23-.674.074-.315-.158-1.33-.49-2.532-1.562-.936-.83-1.568-1.856-1.75-2.17-.183-.315-.02-.485.137-.642.142-.143.315-.367.472-.55.157-.185.21-.317.315-.525.105-.207.052-.39-.026-.547-.078-.157-.698-1.683-.956-2.308-.25-.6-.525-.52-.722-.53-.186-.01-.397-.01-.61-.01-.212 0-.557.08-.85.4.293.32 1.134 1.11 1.134 2.71 0 1.6-1.164 3.15-1.32 3.36-.157.21-2.288 3.49-5.548 4.9-1.026.44-1.826.7-2.45.9-.997.32-1.9.27-2.61.16-.8-.12-2.45-.6-2.79-.88c-.34-.28-.56-.47-.56-.8 0-.32.05-.48.2-.64l1.3-1.3z" />
+                        class="btn btn-primary flex-2 text-xs h-10 gap-1.5 text-primary-content">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path fill="currentColor"
+                                d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01m-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18l-3.12.82l.83-3.04l-.2-.31a8.26 8.26 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24c2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c.02 4.54-3.68 8.23-8.22 8.23m4.52-6.16c-.25-.12-1.47-.72-1.69-.81c-.23-.08-.39-.12-.56.12c-.17.25-.64.81-.78.97c-.14.17-.29.19-.54.06c-.25-.12-1.05-.39-1.99-1.23c-.74-.66-1.23-1.47-1.38-1.72c-.14-.25-.02-.38.11-.51c.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31c-.22.25-.86.85-.86 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.23 3.74c.59.26 1.05.41 1.41.52c.59.19 1.13.16 1.56.1c.48-.07 1.47-.6 1.67-1.18c.21-.58.21-1.07.14-1.18s-.22-.16-.47-.28" />
                         </svg>
+
                         <span>Konfirmasi via WA</span>
                     </button>
                 </div>

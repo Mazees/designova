@@ -1,6 +1,6 @@
 <?php
 
-class Assessment
+class Submissions
 {
     private Database $db;
 

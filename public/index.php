@@ -59,12 +59,11 @@ $router = new Router();
 $router->add('/', 'HomeController', 'index', ['GET']);
 $router->add('/login', 'AuthController', 'login', ['GET', 'POST']);
 $router->add('/register', 'AuthController', 'register', ['GET', 'POST']);
-// Logout
 $router->add('/logout', 'AuthController', 'logout', ['POST']);
 
 // 2. Halaman Peserta (Dashboard Tim)
 $router->add('/dashboard', 'DashboardController', 'index', ['GET']);
-$router->add('/payment', 'DashboardController', 'payment', ['GET', 'POST']);
+$router->add('/payment', 'PaymentController', 'index', ['GET', 'POST']);
 $router->add('/submission', 'DashboardController', 'submission', ['GET', 'POST']);
 
 // 3. Halaman Juri (Dashboard Penilaian)
