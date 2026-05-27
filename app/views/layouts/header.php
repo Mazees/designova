@@ -20,6 +20,11 @@ $is_dashboard = (
     <title><?= isset($title) ? htmlspecialchars($title) : 'Designova'; ?></title>
     <!-- Compiled Tailwind CSS v4 + DaisyUI -->
     <link href="<?= BASE_URL; ?>/src/output.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Righteous&display=swap"
+        rel="stylesheet">
     <!-- AOS (Animate on Scroll) -->
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <!-- Alpine.js for interactive UI state management -->
@@ -38,12 +43,12 @@ $is_dashboard = (
 <?php if ($is_auth || $is_payment): ?>
 
     <body
-        class="bg-base-200 min-h-screen font-sans flex items-center justify-center p-4 sm:p-8 <?php echo $is_payment ? 'overflow-hidden' : ''; ?>">
+        class="bg-base-200 min-h-screen  flex items-center justify-center p-4 sm:p-8 <?php echo $is_payment ? 'overflow-hidden' : ''; ?>">
         <main class="w-full">
 
         <?php elseif ($is_dashboard): ?>
 
-            <body class="bg-base-200 min-h-screen font-sans">
+            <body class="bg-base-200 min-h-screen ">
                 <!-- DaisyUI Drawer untuk responsive sidebar -->
                 <div class="drawer lg:drawer-open min-h-screen">
                     <input id="sidebar-drawer" type="checkbox" class="drawer-toggle" />
@@ -75,7 +80,7 @@ $is_dashboard = (
 
                         <?php else: ?>
 
-                            <body class="bg-base-100 min-h-screen flex flex-col font-sans">
+                            <body class="bg-base-100 min-h-screen flex flex-col ">
                                 <!-- Navbar Landing Page -->
                                 <div class="navbar bg-base-100 h-16 text-base-content sticky lg:px-10 top-0 z-50 border-b border-base-200 transition-all duration-300"
                                     id="main-navbar">

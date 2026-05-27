@@ -63,7 +63,31 @@ $navbar = [
 
 ?>
 
-<aside class="w-72 bg-base-100 min-h-screen border-r border-base-200 flex flex-col justify-between">
+<aside x-data="{
+confirmLogout() {
+        Swal.fire({
+            title: 'Eitsss',
+            text: 'Apakah anda yakin untuk keluar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, logout',
+            cancelButtonText: 'Batal',
+            buttonsStyling: false,
+            customClass: {
+                popup: '!rounded-[24px] !p-6 !bg-neutral',
+                title: '!text-2xl !font-bold !text-white',
+                htmlContainer: '!text-white',
+                actions: 'flex flex-col !w-full !mt-6 gap-3 !text-white',
+                confirmButton: 'btn btn-primary w-[90%] !text-white',
+                cancelButton: 'btn btn-outline w-[90%] !text-white',
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logoutForm').submit();
+            }
+        });
+    }
+}" class="w-72 bg-base-100 min-h-screen border-r border-base-200 flex flex-col justify-between">
     <!-- Top: Logo + User Profile -->
     <div>
         <!-- User Card -->
@@ -106,8 +130,8 @@ $navbar = [
 
     <!-- Bottom: Logout -->
     <div class="px-3 py-4 border-t border-base-200">
-        <form method="post" action="<?= BASE_URL; ?>/logout">
-            <button type="submit" name="logout"
+        <form id="logoutForm" method="post" action="<?= BASE_URL; ?>/logout">
+            <button type="button" @click="confirmLogout()" name="logout"
                 class="btn btn-ghost w-full justify-start text-sm font-semibold text-error hover:bg-error/10 rounded-xl">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
