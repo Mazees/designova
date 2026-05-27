@@ -35,11 +35,12 @@ $qrisQrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . 
             cancelButtonText: 'Batal',
             buttonsStyling: false,
             customClass: {
-                popup: '!rounded-[24px] !p-6',
-                title: '!text-2xl !font-bold',
-                actions: 'flex flex-col !w-full !mt-6 gap-3',
-                confirmButton: 'btn btn-primary w-[90%]',
-                cancelButton: 'btn btn-dash w-[90%]',
+                popup: '!rounded-[24px] !p-6 !bg-neutral',
+                title: '!text-2xl !font-bold !text-white',
+                htmlContainer: '!text-white',
+                actions: 'flex flex-col !w-full !mt-6 gap-3 !text-white',
+                confirmButton: 'btn btn-primary w-[90%] !text-white',
+                cancelButton: 'btn btn-outline w-[90%] !text-white',
             },
         }).then((result) => {
             if (result.isConfirmed) {
@@ -119,8 +120,7 @@ $qrisQrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . 
 
                 <!-- Actions -->
                 <div class="w-full pt-2 flex flex-col gap-5">
-                    <button type="button" @click="step = 2"
-                        class="btn btn-primary btn-blocktext-sm h-12">
+                    <button type="button" @click="step = 2" class="btn btn-primary btn-blocktext-sm h-12">
                         <span>Lanjut ke Konfirmasi</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"

@@ -34,6 +34,20 @@ class User
         }
         return null;
     }
+    public function findById(int $id): ?array
+    {
+        $connection = $this->db->getConnection();
+        if ($connection) {
+            $stmt = $connection->prepare("SELECT * FROM users WHERE id = ? LIMIT 1");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $user = $result ? $result->fetch_assoc() : null;
+            $stmt->close();
+            return $user ?: null;
+        }
+        return null;
+    }
 
     public function addUser($name, $email, $password)
     {

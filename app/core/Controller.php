@@ -37,6 +37,23 @@ class Controller
             exit;
         }
 
+        // Refresh data user & team dari database
+        if (isset($_SESSION['user']['id'])) {
+            $userId = $_SESSION['user']['id'];
+
+            $userModel = new User();
+            $latestUser = $userModel->findById($userId);
+            if ($latestUser) {
+                $_SESSION['user'] = $latestUser;
+            }
+
+            $teamModel = new Team();
+            $latestTeam = $teamModel->findByUserId($userId);
+            if ($latestTeam) {
+                $_SESSION['team'] = $latestTeam;
+            }
+        }
+
         $user = $_SESSION['user'];
         $role = strtolower($user['role'] ?? 'peserta');
 

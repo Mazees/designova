@@ -106,7 +106,7 @@
                         </svg>
                     </div>
                     <div class="space-y-2">
-                        <h3 class="card-title text-lg font-black text-base-content">Small Business &amp; Community UX
+                        <h3 class="card-title text-lg font-black text-base-content">Small Business UX
                         </h3>
                         <p class="text-xs text-base-content/60 leading-relaxed font-medium">
                             Mendesain solusi antarmuka untuk membantu pencatatan usaha kecil, pemberdayaan komunitas
