@@ -109,4 +109,26 @@ class PaymentController extends Controller
 
         return 'https://wa.me/' . $whatsappNumber . '?text=' . urlencode($message);
     }
+
+    public function approve($id)
+    {
+        $this->protectRoute(['admin']);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $paymentModel = new Payment();
+            $paymentModel->approvePayment($id);
+        }
+        header('Location: ' . BASE_URL . '/admin/payments');
+        exit;
+    }
+
+    public function reject($id)
+    {
+        $this->protectRoute(['admin']);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $paymentModel = new Payment();
+            $paymentModel->rejectPayment($id);
+        }
+        header('Location: ' . BASE_URL . '/admin/payments');
+        exit;
+    }
 }

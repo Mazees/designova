@@ -76,7 +76,47 @@ class Submissions
             $existing = $hasil ? $hasil->fetch_assoc():null;
             $query->close();
             return $existing;
+        }
+        return null;
     }
-    return null;
+
+    public function getDashboardCounts()
+    {
+        if ($this->conn) {
+            $total = 0;
+            $graded = 0;
+            
+            $res = $this->conn->query("SELECT COUNT(*) AS count FROM submissions");
+            if ($res) {
+                $row = $res->fetch_assoc();
+                $total = (int)$row['count'];
+            }
+            $res = $this->conn->query("SELECT COUNT(*) AS count FROM submissions WHERE score_ui > 0 OR score_ux > 0 OR score_figma > 0");
+            if ($res) {
+                $row = $res->fetch_assoc();
+                $graded = (int)$row['count'];
+            }
+            return ['total' => $total, 'graded' => $graded];
+        }
+        return ['total' => 0, 'graded' => 0];
+    }
+
+    public function getTopTeams(int $limit = 3)
+    {
+        if ($this->conn) {
+            $stmt = $this->conn->prepare("SELECT t.team_name, s.final_score 
+                                          FROM submissions s 
+                                          JOIN teams t ON s.team_id = t.id 
+                                          ORDER BY s.final_score DESC LIMIT ?");
+            if ($stmt) {
+                $stmt->bind_param("i", $limit);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $data = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+                $stmt->close();
+                return $data;
+            }
+        }
+        return [];
     }
 }
