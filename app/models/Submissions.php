@@ -50,7 +50,7 @@ class Submissions
         $gdocLink = trim((string)$gdocLink);
 
         if($this->conn){
-            $query = $this->conn->prepare("UPDATE sumbisssion
+            $query = $this->conn->prepare("UPDATE submission
             SET figma_link = ?, docs_link = ?
             WHERE id = ? ");
 
@@ -78,4 +78,6 @@ class Submissions
     }
     return null;
     }
+
+    
 }

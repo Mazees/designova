@@ -40,7 +40,7 @@
                     </div>
                 </div>
 
-                <form method="post" action="" class="space-y-5">
+                <form method="post" action="<?= BASE_URL; ?>/juri/review/<?= $team['id']; ?>" class="space-y-5">
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <!-- UI Score -->
                         <div class="form-control w-full gap-2">
@@ -86,9 +86,9 @@
                                 class="label-text font-black text-[10px] uppercase text-gray-500 tracking-wider">Ulasan
                                 &amp; Feedback Konstruktif</span>
                         </label>
-                        <textarea required minlength="50"
+                        <textarea required
                             class="textarea textarea-bordered w-full text-xs h-28 font-medium leading-relaxed bg-base-200/30 focus:outline-none focus:border-primary rounded-xl"
-                            placeholder="Berikan ulasan detail mengenai aspek desain yang sudah baik serta area yang perlu diperbaiki (minimal 50 karakter)..."></textarea>
+                            placeholder="Berikan ulasan detail mengenai aspek desain yang sudah baik serta area yang perlu diperbaiki"></textarea>
                     </div>
 
                     <!-- Submit Actions -->
@@ -160,7 +160,7 @@
                             Peninjauan</span>
                         <div class="flex flex-col gap-2">
                             <!-- Figma Button -->
-                            <a href="https://figma.com" target="_blank"
+                            <a href="<?= htmlspecialchars($team['figma_link'] ?? '#'); ?>" target="_blank"
                                 class="btn btn-outline btn-sm rounded-xl text-left justify-between items-center text-xs h-11 w-full border-base-300 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200 transition-colors">
                                 <span class="flex items-center space-x-2.5">
                                     <svg class="w-4.5 h-4.5 text-orange-500 shrink-0" fill="currentColor"
@@ -178,7 +178,7 @@
                             </a>
 
                             <!-- Drive Button -->
-                            <a href="https://drive.google.com" target="_blank"
+                           <a href="<?= htmlspecialchars($team['docs_link'] ?? '#'); ?>" target="_blank"
                                 class="btn btn-outline btn-sm rounded-xl text-left justify-between items-center text-xs h-11 w-full border-base-300 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-colors">
                                 <span class="flex items-center space-x-2.5">
                                     <svg class="w-4.5 h-4.5 text-blue-500 shrink-0" fill="currentColor"
@@ -212,9 +212,9 @@
                 </p>
             </div>
 
-            <div class="rounded-2xl border border-base-200 bg-base-200/20 overflow-hidden shadow-inner w-fit">
+            <div class="rounded-2xl border border-base-200 bg-base-200/20 overflow-hidden shadow-inner w-full">
                 <iframe
-                    src="https://docs.google.com/document/d/e/2PACX-1vSyQyd1wtWeCOj0HxphP90EWEF1nmhmnWTSqp3iEL4J_fZW6sCLEolux_rf-ao7pg/pub?embedded=true"
+                    src="<?= htmlspecialchars($team['docs_link'] ?? ''); ?>"
                     class="border-0" style="width: 100%; max-width: 100%; height: 80vh;" title="Dokumen Review"
                     loading="lazy"></iframe>
             </div>
