@@ -27,14 +27,17 @@ class Submissions
         $gdocLink = trim((string)$gdocLink);
 
         if($this->conn){
-            $query = $this->conn->prepare("INSERT INTO submission(figma_link, docs_link)
-            VALUES (?,?)");
+            $this->conn->query("SET @new_id = UUID();");
+            $query = $this->conn->prepare("INSERT INTO submission(id, figma_link, docs_link)
+            VALUES (@new_id,?,?)");
             $query->bind_param("ss",$figmaLink,$gdocLink);
             $execute = $query->execute();
             if($execute){
-                $insertId = $this->conn->insert_id;
+                $result = $this->conn->query("SELECT * FROM submission WHERE id = @new_id");
+                $row = $result->fetch_assoc();
+                $insertId = $row['id'];
                 $query->close();
-                return $insertId > 0 ? (int) $insertId : null;
+                return (string) $insertId;
             }
             $query->close();
         }

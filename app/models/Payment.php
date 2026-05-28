@@ -24,19 +24,20 @@ class Payment
     }
     public function addPaymentData($team_id, $amount)
     {
+        $this->conn->query("SET @new_id = UUID();");
         if ($this->conn) {
-            $stmt = $this->conn->prepare("INSERT INTO payments(team_id, amount)
-            VALUES (?, ?);");
-            if ($stmt) {
-                $stmt->bind_param("si", $team_id, $amount);
-                $execute = $stmt->execute();
-                if ($execute) {
-                    $insertId = $this->conn->insert_id;
-                    $stmt->close();
-                    return $insertId > 0 ? (int) $insertId : null;
-                }
+            $stmt = $this->conn->prepare("INSERT INTO payments(id, team_id, amount)
+            VALUES (@new_id, ?, ?);");
+            $stmt->bind_param("si", $team_id, $amount);
+            $execute = $stmt->execute();
+            if ($execute) {
+                $result = $this->conn->query("SELECT * FROM payments WHERE id = @new_id");
+                $row = $result->fetch_assoc();
+                $insertId = $row['id'];
                 $stmt->close();
+                return (string) $insertId;
             }
+            $stmt->close();
         }
         return null;
     }
