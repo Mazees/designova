@@ -41,8 +41,7 @@ class DashboardController extends Controller
         $this->protectRoute(['peserta'], true);
 
         $team = $_SESSION['team'] ?? null;
-        $db = new Database();
-        $conn = $db->getConnection();
+        $sub = new Submissions();
         $error = '';
         $success = '';
 
@@ -53,17 +52,10 @@ class DashboardController extends Controller
             if (empty($figma_link) || empty($docs_link)) {
                 $error = 'Semua field wajib diisi!';
             } else {
-                if ($conn) {
-                    // Cek apakah sudah ada submisi
-                    $stmt = $conn->prepare("SELECT id FROM submissions WHERE team_id = ? LIMIT 1");
-                    $stmt->bind_param("s", $team['id']);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    $existing = $result ? $result->fetch_assoc() : null;
-                    $stmt->close();
-
+              // Cek apakah sudah ada submisi
+              $existing = $sub->checkSubmission($team['id']);
                     if ($existing) {
-                        // Update
+                        // Updat
                         $stmt = $conn->prepare("UPDATE submissions SET figma_link = ?, docs_link = ? WHERE team_id = ?");
                         $stmt->bind_param("sss", $figma_link, $docs_link, $team['id']);
                         if ($stmt->execute()) {
@@ -83,7 +75,6 @@ class DashboardController extends Controller
                         }
                         $stmt->close();
                     }
-                }
             }
         }
 
@@ -96,12 +87,37 @@ class DashboardController extends Controller
             $submission = $result ? $result->fetch_assoc() : null;
             $stmt->close();
         }
+            // Ambil deadline dari database settings
+    $settingModel = new Setting();
+    $deadline = $settingModel->getSubmissionDeadline();
+    
+
+        // Hitung sisa waktu dinamis
+    $deadlineTime = strtotime($deadline);
+    $now = time();
+    $diff = $deadlineTime - $now;
+    if ($diff > 0) {
+        $daysRemaining = ceil($diff / (60 * 60 * 24));
+        $remainingText = $daysRemaining . " Hari Tersisa";
+        $remainingClass = "text-amber-500 bg-amber-500/10 border-amber-500/20";
+        if ($daysRemaining <= 2) {
+            $remainingClass = "text-error bg-error/10 border-error/20 animate-pulse";
+        }
+    } else {
+        $remainingText = "Tenggat Waktu Habis";
+        $remainingClass = "text-error bg-error/10 border-error/20 font-black";
+    }
+    $formattedDeadline = date('d M Y - H:i', $deadlineTime) . ' WIB';
+
 
         $this->view('participant/submission', [
             'title' => 'Pengumpulan Karya - Designova',
             'submission' => $submission,
             'error' => $error,
-            'success' => $success
+            'success' => $success,
+            'formattedDeadline' => $formattedDeadline,
+            'remainingText' => $remainingText,
+            'remainingClass' => $remainingClass, 
         ]);
     }
 }
