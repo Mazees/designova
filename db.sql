@@ -1,3 +1,11 @@
+SET FOREIGN_KEY_CHECKS=0;
+DROP TABLE IF EXISTS payments;
+DROP TABLE IF EXISTS submissions;
+DROP TABLE IF EXISTS teams;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS settings;
+SET FOREIGN_KEY_CHECKS=1;
+
 CREATE DATABASE IF NOT EXISTS designova;
 USE designova;
 CREATE TABLE IF NOT EXISTS users (
@@ -58,3 +66,19 @@ CREATE TABLE IF NOT EXISTS settings (
     PRIMARY KEY (id),
     CHECK (id = 1) 
 );
+
+-- Seed default settings
+INSERT INTO settings (id, is_registration_open, base_price, submission_deadline, is_winner_published)
+VALUES (1, TRUE, 50000, NULL, FALSE)
+ON DUPLICATE KEY UPDATE is_registration_open=VALUES(is_registration_open), base_price=VALUES(base_price), submission_deadline=VALUES(submission_deadline), is_winner_published=VALUES(is_winner_published);
+
+-- Seed admin user (password: admin123)
+INSERT INTO users (id, name, email, password, role)
+VALUES (
+    UUID(),
+    'Administrator',
+    'admin@designova.local',
+    '$2y$10$e0NR6Zr1Pp4K1xk4h1tXxO7KZb0Yf1j9uKq3hK8pQ9qZbFQ5Yt6y',
+    'admin'
+)
+ON DUPLICATE KEY UPDATE name=VALUES(name), email=VALUES(email), password=VALUES(password), role=VALUES(role);
