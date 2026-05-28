@@ -17,107 +17,38 @@
                 <thead>
                     <tr class="bg-base-200 border-b border-base-300 text-gray-500 text-[10px] font-black uppercase tracking-wider">
                         <th class="py-4 pl-8">Nama Tim</th>
-                        <th class="py-4">Kategori</th>
-                        <th class="py-4">Status Penilaian</th>
+                        <th class="py-4">Status Penilian</th>
                         <th class="py-4">Skor Akhir</th>
-                        <th class="py-4 pr-8 text-right">Aksi</th>
+                        <th class="py-4">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-base-200 text-xs font-semibold text-gray-700">
-                    <!-- Row 1 -->
-                    <tr class="hover:bg-base-200/40 transition-colors">
-                        <td class="py-5 pl-8">
-                            <div class="flex items-center space-x-3">
-                                <div class="avatar placeholder">
-                                    <div class="w-8 h-8 rounded-xl bg-primary/10 text-primary font-black text-xs flex items-center justify-center">
-                                        AC
-                                    </div>
-                                </div>
-                                <span class="font-extrabold text-neutral-content text-sm">Alpha Creatives</span>
-                            </div>
-                        </td>
-                        <td class="py-5">
-                            <span class="badge bg-base-200 text-base-content/75 border-none font-extrabold text-[9px] py-2 px-3 rounded-lg">
-                                UI/UX Design
-                            </span>
-                        </td>
-                        <td class="py-5">
-                            <span class="badge bg-warning/15 border border-warning/35 text-warning font-black text-[9px] uppercase tracking-wider py-2.5 px-3">
-                                Belum Dinilai
-                            </span>
-                        </td>
-                        <td class="py-5 text-gray-400 font-bold">-</td>
-                        <td class="py-5 pr-8 text-right">
-                            <a href="<?= BASE_URL; ?>/juri/review/1" 
-                               class="btn btn-primary btn-xs font-black text-primary-content px-4 py-1.5 h-auto rounded-lg shadow-sm shadow-primary/10">
-                               Nilai Sekarang
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <!-- Row 2 -->
-                    <tr class="hover:bg-base-200/40 transition-colors">
-                        <td class="py-5 pl-8">
-                            <div class="flex items-center space-x-3">
-                                <div class="avatar placeholder">
-                                    <div class="w-8 h-8 rounded-xl bg-primary/10 text-primary font-black text-xs flex items-center justify-center">
-                                        BI
-                                    </div>
-                                </div>
-                                <span class="font-extrabold text-neutral-content text-sm">Beta Innovators</span>
-                            </div>
-                        </td>
-                        <td class="py-5">
-                            <span class="badge bg-base-200 text-base-content/75 border-none font-extrabold text-[9px] py-2 px-3 rounded-lg">
-                                UI/UX Design
-                            </span>
-                        </td>
-                        <td class="py-5">
-                            <span class="badge bg-success/15 border border-success/35 text-success font-black text-[9px] uppercase tracking-wider py-2.5 px-3">
-                                Sudah Dinilai
-                            </span>
-                        </td>
-                        <td class="py-5 text-neutral-content font-black text-sm">
-                            92.40<span class="text-xs text-gray-400 font-bold">/100</span>
-                        </td>
-                        <td class="py-5 pr-8 text-right">
-                            <a href="<?= BASE_URL; ?>/juri/review/2" 
-                               class="btn btn-outline btn-xs font-bold px-4 py-1.5 h-auto rounded-lg">
-                               Edit Nilai
-                            </a>
-                        </td>
-                    </tr>
-
-                    <!-- Row 3 -->
-                    <tr class="hover:bg-base-200/40 transition-colors">
-                        <td class="py-5 pl-8">
-                            <div class="flex items-center space-x-3">
-                                <div class="avatar placeholder">
-                                    <div class="w-8 h-8 rounded-xl bg-primary/10 text-primary font-black text-xs flex items-center justify-center">
-                                        NS
-                                    </div>
-                                </div>
-                                <span class="font-extrabold text-neutral-content text-sm">Nova Studios</span>
-                            </div>
-                        </td>
-                        <td class="py-5">
-                            <span class="badge bg-base-200 text-base-content/75 border-none font-extrabold text-[9px] py-2 px-3 rounded-lg">
-                                UI/UX Design
-                            </span>
-                        </td>
-                        <td class="py-5">
-                            <span class="badge bg-warning/15 border border-warning/35 text-warning font-black text-[9px] uppercase tracking-wider py-2.5 px-3">
-                                Belum Dinilai
-                            </span>
-                        </td>
-                        <td class="py-5 text-gray-400 font-bold">-</td>
-                        <td class="py-5 pr-8 text-right">
-                            <a href="<?= BASE_URL; ?>/juri/review/3" 
-                               class="btn btn-primary btn-xs font-black text-primary-content px-4 py-1.5 h-auto rounded-lg shadow-sm shadow-primary/10">
-                               Nilai Sekarang
-                            </a>
-                        </td>
-                    </tr>
+                    <?php foreach($data['teams'] as $team): ?>
+                        <tr class="hover:bg-base-200/40 transition-colors">
+                            <!-- Menampilkan Nama Tim dari Database -->
+                            <td class="py-5 pl-8">
+                                <span class="font-extrabold text-neutral-content text-sm">
+                                    <?= htmlspecialchars($team['team_name'] ?? 'Tim Tidak Diketahui'); ?>
+                                </span>
+                            </td>
+                            
+                            <!-- Logika Status Penilaian (Sementara statis) -->
+                            <td class="py-5">
+                                <span class="badge bg-warning/15 text-warning">Belum Dinilai</span>
+                            </td>
+                            
+                           
+                            <td class="py-5 text-gray-400 font-bold">-</td>
+                            
+                            <!-- Tombol Aksi -->
+                            <td class="py-5 text-left">
+                                <a href="<?= BASE_URL; ?>/juri/review/<?= $team['id']; ?>" 
+                                   class="btn btn-primary btn-xs text-white">
+                                   Nilai Sekarang
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
