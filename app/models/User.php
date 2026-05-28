@@ -34,12 +34,12 @@ class User
         }
         return null;
     }
-    public function findById(int $id): ?array
+    public function findById(string $id): ?array
     {
         $connection = $this->db->getConnection();
         if ($connection) {
             $stmt = $connection->prepare("SELECT * FROM users WHERE id = ? LIMIT 1");
-            $stmt->bind_param("i", $id);
+            $stmt->bind_param("s", $id);
             $stmt->execute();
             $result = $stmt->get_result();
             $user = $result ? $result->fetch_assoc() : null;
@@ -62,9 +62,14 @@ class User
             $stmt->bind_param("sss", $name, $email, $pass);
             $execute = $stmt->execute();
             if ($execute) {
-                $insertId = $connection->insert_id;
+                $lookup = $connection->prepare("SELECT id FROM users WHERE email = ? LIMIT 1");
+                $lookup->bind_param("s", $email);
+                $lookup->execute();
+                $result = $lookup->get_result();
+                $row = $result ? $result->fetch_assoc() : null;
+                $lookup->close();
                 $stmt->close();
-                return $insertId > 0 ? (int) $insertId : null;
+                return $row['id'] ?? null;
             }
             $stmt->close();
         }
@@ -81,9 +86,14 @@ class User
             $stmt->bind_param("sss", $user_id, $team_name, $members);
             $execute = $stmt->execute();
             if ($execute) {
-                $insertId = $connection->insert_id;
+                $lookup = $connection->prepare("SELECT id FROM teams WHERE user_id = ? ORDER BY created_at DESC LIMIT 1");
+                $lookup->bind_param("s", $user_id);
+                $lookup->execute();
+                $result = $lookup->get_result();
+                $row = $result ? $result->fetch_assoc() : null;
+                $lookup->close();
                 $stmt->close();
-                return $insertId > 0 ? (int) $insertId : null;
+                return $row['id'] ?? null;
             }
             $stmt->close();
         }

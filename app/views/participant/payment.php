@@ -49,17 +49,10 @@ $qrisQrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . 
         });
     },
     confirmPayment() {
-        const nameVal = this.name.trim();
-        const bankVal = this.bank.trim();
-        if (!nameVal || !bankVal) {
-            alert('Harap isi nama pengirim dan bank pengirim terlebih dahulu!');
-            return;
+        const form = document.getElementById('paymentForm');
+        if (form) {
+            form.requestSubmit();
         }
-        const totalAmountStr = 'Rp ' + Number(this.totalAmount).toLocaleString('id-ID');
-        const message = `Halo Admin Designova, saya ingin mengonfirmasi pembayaran pendaftaran kompetisi.\n\n*Detail Tim:*\n- Nama Tim: ${this.teamName}\n\n*Detail Pembayaran:*\n- Nama Pengirim: ${nameVal}\n- Bank/E-Wallet: ${bankVal}\n- Nominal Tagihan: ${totalAmountStr} (termasuk kode unik)\n\nMohon bantuannya untuk melakukan verifikasi tim kami agar status kami menjadi Aktif. Terima kasih!`;
-        const encodedMessage = encodeURIComponent(message);
-        const whatsappUrl = `https://wa.me/${this.whatsappNumber}?text=${encodedMessage}`;
-        window.open(whatsappUrl, '_blank');
     }
 }">
     <!-- Clean Centered DaisyUI Card -->
@@ -131,7 +124,8 @@ $qrisQrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . 
             </div>
 
             <!-- Step 2 Content: Sender Form -->
-            <div x-show="step === 2" x-transition class="gap-5 flex flex-col w-full">
+            <form x-show="step === 2" x-transition class="gap-5 flex flex-col w-full" method="post"
+                action="<?= BASE_URL; ?>/payment" id="paymentForm">
 
                 <!-- Input Nama Pengirim -->
                 <div class="form-control w-full gap-1">
@@ -139,7 +133,7 @@ $qrisQrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . 
                         <span class="label-text font-bold text-[10px] uppercase text-muted tracking-wider">Nama Pengirim
                             / Pemilik Rekening</span>
                     </label>
-                    <input type="text" x-model="name" required
+                    <input type="text" name="sender_name" x-model="name" required
                         class="input input-bordered w-full text-xs h-10 font-medium" placeholder="Contoh: John Doe" />
                 </div>
 
@@ -149,10 +143,12 @@ $qrisQrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . 
                         <span class="label-text font-bold text-[10px] uppercase text-muted tracking-wider">Bank Pengirim
                             / Nama E-Wallet</span>
                     </label>
-                    <input type="text" x-model="bank" required
+                    <input type="text" name="sender_bank" x-model="bank" required
                         class="input input-bordered w-full text-xs h-10 font-medium"
                         placeholder="Contoh: Bank BCA / GoPay / OVO" />
                 </div>
+
+                <input type="hidden" name="amount" value="<?= (int) $totalAmount; ?>" />
 
                 <!-- Alert Notice -->
                 <div
@@ -171,8 +167,7 @@ $qrisQrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . 
                         class="btn bg-base-200 hover:bg-base-300 text-base-content border-none flex-1 font-bold text-xs h-10">
                         Kembali
                     </button>
-                    <button type="button" @click="confirmPayment()"
-                        class="btn btn-primary flex-2 text-xs h-10 gap-1.5 text-primary-content">
+                    <button type="submit" class="btn btn-primary flex-2 text-xs h-10 gap-1.5 text-primary-content">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
                             <path d="M0 0h24v24H0z" fill="none" />
                             <path fill="currentColor"
@@ -182,7 +177,26 @@ $qrisQrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . 
                         <span>Konfirmasi via WA</span>
                     </button>
                 </div>
-            </div>
+            </form>
+
+            <?php if (!empty($error)): ?>
+                <div class="alert alert-error text-xs rounded-xl border border-red-200 bg-red-50/70 text-red-800">
+                    <?= htmlspecialchars($error, ENT_QUOTES); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($success)): ?>
+                <div
+                    class="alert alert-success text-xs rounded-xl border border-green-200 bg-green-50/70 text-green-800 flex flex-col items-start gap-3">
+                    <span><?= htmlspecialchars($success, ENT_QUOTES); ?></span>
+                    <?php if (!empty($whatsappUrl)): ?>
+                        <a href="<?= htmlspecialchars($whatsappUrl, ENT_QUOTES); ?>" target="_blank"
+                            class="btn btn-success btn-sm text-white rounded-lg">
+                            Buka WhatsApp
+                        </a>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>

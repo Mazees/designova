@@ -36,6 +36,6 @@ class Payment
             }
             $stmt->close();
         }
-        return [];
+        return null;
     }
 }
