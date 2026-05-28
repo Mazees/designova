@@ -1,14 +1,4 @@
-<?php require_once '../app/views/layouts/header.php';
-
-// Dapatkan data user & tim
-$user = $_SESSION['user'] ?? null;
-$team = $_SESSION['team'] ?? null;
-$teamName = $team['team_name'] ?? 'Tim Anda';
-$teamCategory = 'UI/UX Design'; // Kategori
-$members = json_decode($team['members'] ?? '[]', true);
-$isActive = (isset($team['is_active']) && $team['is_active'] == 1);
-$hasSubmitted = !empty($submission);
-?>
+<?php require_once '../app/views/layouts/header.php'; ?>
 
 <div class="max-w-6xl mx-auto space-y-8 pb-12">
     <!-- Hero Welcome Banner -->
@@ -38,7 +28,7 @@ $hasSubmitted = !empty($submission);
                 <div class="space-y-1">
                     <span class="text-xs text-muted block font-medium">Nama Tim</span>
                     <h3 class="card-title text-2xl font-black text-neutral-content leading-tight">
-                        <?= htmlspecialchars($teamName); ?>
+                        <?= htmlspecialchars(isset($teamName) ? $teamName : ''); ?>
                     </h3>
                 </div>
             </div>
@@ -114,7 +104,9 @@ $hasSubmitted = !empty($submission);
                         <li class="step step-primary">
                             Registrasi Akun & Tim</li>
                         <li class="step step-primary">Pembayaran & Aktivasi Tim</li>
-                        <li class="step <?= $hasSubmitted ? 'step-primary' : '' ?>">Pengumpulan Karya</li>
+                        <li class="step <?= (isset($hasSubmitted) ? $hasSubmitted : '') ? 'step-primary' : '' ?>">
+                            Pengumpulan
+                            Karya</li>
                         <li class="step">Proses Penilaian Juri</li>
                         <li class="step">Pengumuman Pemenang</li>
                     </ul>

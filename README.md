@@ -8,14 +8,14 @@
 
 Aplikasi ini dikembangkan oleh Kelompok 5 dengan pembagian tugas sebagai berikut:
 
-*   **Mada Putra Adhadriyanto (24081010192)**
-    *   Halaman Publik (Landing Page)
-    *   Sistem Autentikasi & Pembayaran
-    *   Halaman Pengelola (Dashboard Admin - Settings)
-*   **Moch. Raihan Ardani (24081010174)**
-    *   Halaman Peserta (Dashboard Tim Overview, Pengumpulan Karya)
-*   **Muhammad Rizky Puspojati (24081010019)**
-    *   Halaman Juri (Dashboard Evaluasi & Form Penilaian Juri)
+- **Mada Putra Adhadriyanto (24081010192)**
+  - Halaman Publik (Landing Page)
+  - Sistem Autentikasi & Pembayaran
+  - Halaman Pengelola (Dashboard Admin - Settings)
+- **Moch. Raihan Ardani (24081010174)**
+  - Halaman Peserta (Dashboard Tim Overview, Pengumpulan Karya)
+- **Muhammad Rizky Puspojati (24081010019)**
+  - Halaman Juri (Dashboard Evaluasi & Form Penilaian Juri)
 
 ---
 
@@ -75,16 +75,16 @@ designova/
 Aplikasi menerapkan **Role-Based Access Control (RBAC)** yang ketat dan aman lewat middleware `Controller::protectRoute()` untuk memfilter hak akses setiap pengguna berdasarkan perannya:
 
 1.  **Guest (Belum Login)**
-    *   Hanya dapat melihat Landing Page (`/`), halaman Login (`/login`), dan Register (`/register`).
+    - Hanya dapat melihat Landing Page (`/`), halaman Login (`/login`), dan Register (`/register`).
 2.  **Peserta Non-Aktif (Sudah Login, Belum Membayar/Diverifikasi)**
-    *   Akses terkunci. Diarahkan paksa (*redirect*) ke Halaman Pembayaran (`/payment`). Tidak bisa mengakses Dashboard Tim (`/dashboard`) atau halaman Submisi (`/submission`).
+    - Akses terkunci. Diarahkan paksa (_redirect_) ke Halaman Pembayaran (`/payment`). Tidak bisa mengakses Dashboard Tim (`/dashboard`) atau halaman Submisi (`/submission`).
 3.  **Peserta Aktif (Sudah Login, Pembayaran Terverifikasi)**
-    *   Memiliki akses penuh ke Halaman Overview Tim (`/dashboard`) dan Pengumpulan Karya (`/submission`).
-    *   Tidak dapat mengakses kembali halaman pembayaran (`/payment`) atau halaman milik Juri/Admin.
+    - Memiliki akses penuh ke Halaman Overview Tim (`/dashboard`) dan Pengumpulan Karya (`/submission`).
+    - Tidak dapat mengakses kembali halaman pembayaran (`/payment`) atau halaman milik Juri/Admin.
 4.  **Juri (Sudah Login)**
-    *   Memiliki akses eksklusif ke Dashboard Evaluasi (`/juri/dashboard`) dan Form Penilaian (`/juri/assessment/{team_id}`).
+    - Memiliki akses eksklusif ke Dashboard Evaluasi (`/juri/dashboard`) dan Form Penilaian (`/juri/review/{team_id}`).
 5.  **Admin (Sudah Login - Super User)**
-    *   Memiliki akses penuh ke semua modul administrasi di bawah rute `/admin/*` (Dashboard statistik, verifikasi tim, papan leaderboard, dan pengaturan sistem).
+    - Memiliki akses penuh ke semua modul administrasi di bawah rute `/admin/*` (Dashboard statistik, verifikasi tim, papan leaderboard, dan pengaturan sistem).
 
 ---
 
@@ -93,33 +93,37 @@ Aplikasi menerapkan **Role-Based Access Control (RBAC)** yang ketat dan aman lew
 Peta rute aplikasi didaftarkan pada Front Controller [public/index.php](file:///D:/laragon/www/designova/public/index.php):
 
 ### 1. Halaman Publik (Akses Bebas)
-| URL / Route | HTTP Method | Controller & Method | Tampilan File View | Deskripsi |
-| :--- | :--- | :--- | :--- | :--- |
-| `/` | `GET` | `HomeController::index()` | `home/index.php` | Landing Page Utama (Timeline & Info Lomba) |
-| `/login` | `GET`, `POST` | `AuthController::login()` | `auth/login.php` | Form login satu pintu untuk semua role |
-| `/register` | `GET`, `POST` | `AuthController::register()` | `auth/register.php` | Form pendaftaran akun peserta & nama tim |
-| `/logout` | `POST` | `AuthController::logout()` | - | Mengakhiri sesi pengguna & mengarahkan ke login |
+
+| URL / Route | HTTP Method   | Controller & Method          | Tampilan File View  | Deskripsi                                       |
+| :---------- | :------------ | :--------------------------- | :------------------ | :---------------------------------------------- |
+| `/`         | `GET`         | `HomeController::index()`    | `home/index.php`    | Landing Page Utama (Timeline & Info Lomba)      |
+| `/login`    | `GET`, `POST` | `AuthController::login()`    | `auth/login.php`    | Form login satu pintu untuk semua role          |
+| `/register` | `GET`, `POST` | `AuthController::register()` | `auth/register.php` | Form pendaftaran akun peserta & nama tim        |
+| `/logout`   | `POST`        | `AuthController::logout()`   | -                   | Mengakhiri sesi pengguna & mengarahkan ke login |
 
 ### 2. Dashboard Peserta (Tim)
-| URL / Route | HTTP Method | Controller & Method | Tampilan File View | Deskripsi |
-| :--- | :--- | :--- | :--- | :--- |
-| `/payment` | `GET`, `POST` | `PaymentController::index()` | `participant/payment.php` | Instruksi pembayaran, QRIS Dinamis & link WA |
-| `/dashboard` | `GET` | `DashboardController::index()` | `participant/dashboard.php` | Overview tim, status akun & ringkasan submisi |
+
+| URL / Route   | HTTP Method   | Controller & Method                 | Tampilan File View           | Deskripsi                                                             |
+| :------------ | :------------ | :---------------------------------- | :--------------------------- | :-------------------------------------------------------------------- |
+| `/payment`    | `GET`, `POST` | `PaymentController::index()`        | `participant/payment.php`    | Instruksi pembayaran, QRIS Dinamis & link WA                          |
+| `/dashboard`  | `GET`         | `DashboardController::index()`      | `participant/dashboard.php`  | Overview tim, status akun & ringkasan submisi                         |
 | `/submission` | `GET`, `POST` | `DashboardController::submission()` | `participant/submission.php` | Form input link Figma & Drive (otomatis tertutup jika lewat deadline) |
 
 ### 3. Dashboard Juri
-| URL / Route | HTTP Method | Controller & Method | Tampilan File View | Deskripsi |
-| :--- | :--- | :--- | :--- | :--- |
-| `/juri/dashboard` | `GET` | `JuriController::index()` | `juri/dashboard.php` | Tabel ringkasan daftar karya peserta lomba |
-| `/juri/assessment/{team_id}` | `GET`, `POST` | `JuriController::assessment($team_id)` | `juri/assessment.php` | Form input nilai kriteria (UI, UX, Figma) & feedback |
+
+| URL / Route              | HTTP Method   | Controller & Method                    | Tampilan File View   | Deskripsi                                            |
+| :----------------------- | :------------ | :------------------------------------- | :------------------- | :--------------------------------------------------- |
+| `/juri/dashboard`        | `GET`         | `JuriController::index()`              | `juri/dashboard.php` | Tabel ringkasan daftar karya peserta lomba           |
+| `/juri/review/{team_id}` | `GET`, `POST` | `JuriController::assessment($team_id)` | `juri/review.php`    | Form input nilai kriteria (UI, UX, Figma) & feedback |
 
 ### 4. Dashboard Admin (Pengelola)
-| URL / Route | HTTP Method | Controller & Method | Tampilan File View | Deskripsi |
-| :--- | :--- | :--- | :--- | :--- |
-| `/admin/dashboard` | `GET` | `AdminController::index()` | `admin/dashboard.php` | Ringkasan statistik (total tim, submisi, penilaian) |
-| `/admin/teams` | `GET`, `POST` | `AdminController::teams()` | `admin/teams.php` | Tabel verifikasi status pembayaran peserta manual |
-| `/admin/leaderboard` | `GET` | `AdminController::leaderboard()` | `admin/leaderboard.php` | Peringkat tim berdasarkan kalkulasi nilai dari database |
-| `/admin/settings` | `GET`, `POST` | `AdminController::settings()` | `admin/settings.php` | Pengaturan base price, tanggal deadline & status registrasi |
+
+| URL / Route          | HTTP Method   | Controller & Method              | Tampilan File View      | Deskripsi                                                   |
+| :------------------- | :------------ | :------------------------------- | :---------------------- | :---------------------------------------------------------- |
+| `/admin/dashboard`   | `GET`         | `AdminController::index()`       | `admin/dashboard.php`   | Ringkasan statistik (total tim, submisi, penilaian)         |
+| `/admin/teams`       | `GET`, `POST` | `AdminController::teams()`       | `admin/teams.php`       | Tabel verifikasi status pembayaran peserta manual           |
+| `/admin/leaderboard` | `GET`         | `AdminController::leaderboard()` | `admin/leaderboard.php` | Peringkat tim berdasarkan kalkulasi nilai dari database     |
+| `/admin/settings`    | `GET`, `POST` | `AdminController::settings()`    | `admin/settings.php`    | Pengaturan base price, tanggal deadline & status registrasi |
 
 ---
 
@@ -128,25 +132,25 @@ Peta rute aplikasi didaftarkan pada Front Controller [public/index.php](file:///
 Struktur tabel di dalam berkas [db.sql](file:///D:/laragon/www/designova/db.sql) memiliki rincian sebagai berikut:
 
 1.  **`users`**: Menyimpan kredensial pengguna dan peran dalam sistem.
-    *   Kolom: `id`, `name`, `email`, `password` (hashed), `role` (`'admin'`, `'juri'`, `'peserta'`), `created_at`, `updated_at`.
+    - Kolom: `id`, `name`, `email`, `password` (hashed), `role` (`'admin'`, `'juri'`, `'peserta'`), `created_at`, `updated_at`.
 2.  **`teams`**: Representasi entitas tim peserta kompetisi yang berelasi dengan pengguna.
-    *   Kolom: `id`, `user_id` (FK `users.id`), `team_name`, `members` (JSON - list nama anggota), `is_active` (0 = nonaktif, 1 = aktif/terverifikasi), `created_at`, `updated_at`.
+    - Kolom: `id`, `user_id` (FK `users.id`), `team_name`, `members` (JSON - list nama anggota), `is_active` (0 = nonaktif, 1 = aktif/terverifikasi), `created_at`, `updated_at`.
 3.  **`submissions`**: Tempat menampung tautan pengumpulan karya peserta sekaligus nilai dari juri.
-    *   Kolom: `id`, `team_id` (FK `teams.id`), `figma_link`, `docs_link`, `score_ui`, `score_ux`, `score_figma`, `final_score` (kolom kalkulasi otomatis MySQL dengan bobot: `UI*0.5 + UX*0.4 + Figma*0.1`), `feedback`, `created_at`, `updated_at`.
+    - Kolom: `id`, `team_id` (FK `teams.id`), `figma_link`, `docs_link`, `score_ui`, `score_ux`, `score_figma`, `final_score` (kolom kalkulasi otomatis MySQL dengan bobot: `UI*0.5 + UX*0.4 + Figma*0.1`), `feedback`, `created_at`, `updated_at`.
 4.  **`payments`**: Pencatatan riwayat klaim pembayaran pendaftaran.
-    *   Kolom: `id`, `team_id` (FK `teams.id`), `amount`, `status` (`'pending'`, `'confirmed'`, `'rejected'`), `created_at`, `updated_at`.
+    - Kolom: `id`, `team_id` (FK `teams.id`), `amount`, `status` (`'pending'`, `'confirmed'`, `'rejected'`), `created_at`, `updated_at`.
 5.  **`settings`**: Pengaturan global aplikasi kompetisi.
-    *   Kolom: `id` (PK, dibatasi bernilai 1), `is_registration_open`, `base_price` (harga dasar lomba), `submission_deadline`, `is_winner_published`.
+    - Kolom: `id` (PK, dibatasi bernilai 1), `is_registration_open`, `base_price` (harga dasar lomba), `submission_deadline`, `is_winner_published`.
 
 ---
 
 ## ⚡ Fitur Utama & Logika Bisnis
 
-*   **Pendaftaran & Autentikasi**: Registrasi tim baru mendaftarkan entitas user baru dan data tim (nama tim beserta anggota dalam format JSON) dalam satu aksi transaksi. Kata sandi dienkripsi aman dengan `password_hash()`.
-*   **QRIS Dinamis**: Sistem menggunakan `QrisService` untuk memproses string QRIS statis bawaan dan menggabungkannya dengan nominal pendaftaran (`base_price` yang diset admin) serta kalkulasi bitwise CRC16. Hal ini menghasilkan kode QR dinamis yang dapat langsung discan oleh aplikasi pembayaran mobile.
-*   **Verifikasi Manual & Redirect WA**: Peserta mengirim data konfirmasi berupa nama dan bank pengirim, lalu sistem memformat pesan otomatis yang mengarah langsung ke Whatsapp Admin. Status verifikasi diubah oleh Admin di dashboard pengelola.
-*   **Perhitungan Nilai Otomatis**: Nilai akhir peserta dihitung di tingkat database menggunakan kolom *Generated Virtual Column* MySQL:
-    $$\text{Skor Akhir} = (\text{UI/Visual} \times 50\%) + (\text{UX/Flow} \times 40\%) + (\text{Kerapian Figma} \times 10\%)$$
+- **Pendaftaran & Autentikasi**: Registrasi tim baru mendaftarkan entitas user baru dan data tim (nama tim beserta anggota dalam format JSON) dalam satu aksi transaksi. Kata sandi dienkripsi aman dengan `password_hash()`.
+- **QRIS Dinamis**: Sistem menggunakan `QrisService` untuk memproses string QRIS statis bawaan dan menggabungkannya dengan nominal pendaftaran (`base_price` yang diset admin) serta kalkulasi bitwise CRC16. Hal ini menghasilkan kode QR dinamis yang dapat langsung discan oleh aplikasi pembayaran mobile.
+- **Verifikasi Manual & Redirect WA**: Peserta mengirim data konfirmasi berupa nama dan bank pengirim, lalu sistem memformat pesan otomatis yang mengarah langsung ke Whatsapp Admin. Status verifikasi diubah oleh Admin di dashboard pengelola.
+- **Perhitungan Nilai Otomatis**: Nilai akhir peserta dihitung di tingkat database menggunakan kolom _Generated Virtual Column_ MySQL:
+  $$\text{Skor Akhir} = (\text{UI/Visual} \times 50\%) + (\text{UX/Flow} \times 40\%) + (\text{Kerapian Figma} \times 10\%)$$
 
 ---
 
@@ -154,11 +158,11 @@ Struktur tabel di dalam berkas [db.sql](file:///D:/laragon/www/designova/db.sql)
 
 Berikut adalah status terkini pengembangan fitur di codebase:
 
-*   **[✓] Core Engine**: Router kustom, database helper MySQLi, base controller, autoloader, dan middleware RBAC (`protectRoute`) berfungsi secara penuh.
-*   **[✓] Alur Autentikasi**: Halaman register tim, login multi-role, dan logout terhubung penuh dengan tabel `users` dan `teams`.
-*   **[✓] Alur Pembayaran & QRIS**: Integrasi `QrisService` berjalan mulus untuk menghasilkan visualisasi QR code pendaftaran dinamis di halaman `/payment`.
-*   **[✓] Pengumpulan Karya (Submisi)**: Halaman `/submission` dapat memasukkan/mengupdate link Figma dan GDrive langsung ke tabel `submissions`.
-*   **[⚠️] Dashboard Admin & Juri (Mockup/UI-Only)**: Halaman juri (`/juri/*`) dan halaman admin (`/admin/*`) saat ini menggunakan visual mockup dengan data hardcoded. Integrasi penuh dengan query SQL dinamis direncanakan pada rilis berikutnya.
+- **[✓] Core Engine**: Router kustom, database helper MySQLi, base controller, autoloader, dan middleware RBAC (`protectRoute`) berfungsi secara penuh.
+- **[✓] Alur Autentikasi**: Halaman register tim, login multi-role, dan logout terhubung penuh dengan tabel `users` dan `teams`.
+- **[✓] Alur Pembayaran & QRIS**: Integrasi `QrisService` berjalan mulus untuk menghasilkan visualisasi QR code pendaftaran dinamis di halaman `/payment`.
+- **[✓] Pengumpulan Karya (Submisi)**: Halaman `/submission` dapat memasukkan/mengupdate link Figma dan GDrive langsung ke tabel `submissions`.
+- **[⚠️] Dashboard Admin & Juri (Mockup/UI-Only)**: Halaman juri (`/juri/*`) dan halaman admin (`/admin/*`) saat ini menggunakan visual mockup dengan data hardcoded. Integrasi penuh dengan query SQL dinamis direncanakan pada rilis berikutnya.
 
 ---
 
@@ -167,12 +171,14 @@ Berikut adalah status terkini pengembangan fitur di codebase:
 Ikuti langkah-langkah berikut untuk menjalankan proyek Designova di komputer lokal Anda:
 
 ### 1. Prasyarat Sistem
-*   **Web Server**: Laragon (sangat disarankan) atau XAMPP.
-*   **PHP**: Versi 8.0 atau lebih tinggi.
-*   **Database**: MySQL / MariaDB.
-*   **Modul Apache**: `mod_rewrite` harus dalam keadaan aktif.
+
+- **Web Server**: Laragon (sangat disarankan) atau XAMPP.
+- **PHP**: Versi 8.0 atau lebih tinggi.
+- **Database**: MySQL / MariaDB.
+- **Modul Apache**: `mod_rewrite` harus dalam keadaan aktif.
 
 ### 2. Impor Database
+
 1.  Buka phpMyAdmin atau client SQL pilihan Anda (HeidiSQL/DBeaver).
 2.  Buat database baru bernama `designova`.
 3.  Impor berkas [db.sql](file:///D:/laragon/www/designova/db.sql) ke dalam database tersebut.
@@ -181,10 +187,12 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek Designova di komputer lok
     INSERT INTO settings (id, is_registration_open, base_price, submission_deadline, is_winner_published)
     VALUES (1, TRUE, 50000, '2026-06-30 23:59:59', FALSE);
     ```
-5.  *(Opsional)* Daftarkan user admin awal secara langsung di tabel `users` untuk pengujian (gunakan password hash bcrypt jika manual, atau daftar biasa lalu ubah kolom `role` di database menjadi `'admin'` atau `'juri'`).
+5.  _(Opsional)_ Daftarkan user admin awal secara langsung di tabel `users` untuk pengujian (gunakan password hash bcrypt jika manual, atau daftar biasa lalu ubah kolom `role` di database menjadi `'admin'` atau `'juri'`).
 
 ### 3. Konfigurasi Aplikasi
+
 Sesuaikan berkas konfigurasi database dan URL aplikasi pada berkas [app/config/config.php](file:///D:/laragon/www/designova/app/config/config.php):
+
 ```php
 define('DB_HOST', '127.0.0.1');
 define('DB_USER', 'root');
@@ -196,9 +204,12 @@ define('BASE_URL', 'http://localhost/designova');
 ```
 
 ### 4. Build Aset CSS (Tailwind CSS)
+
 Jika Anda ingin mengubah tampilan/style dan memicu compiler Tailwind CSS v4, jalankan perintah berikut di direktori root:
+
 ```bash
 npm install
 npm run dev
 ```
+
 Perintah di atas akan memantau berkas `.php` dan berkas `.css` Anda untuk mengompilasi ulang berkas output di `public/src/output.css`.
