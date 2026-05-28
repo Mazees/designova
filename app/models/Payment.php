@@ -22,20 +22,52 @@ class Payment
         }
         return [];
     }
-    public function addPaymentData($team_id, $amount)
+
+    public function getPendingPaymentByTeamId($teamId)
+    {
+        if ($this->conn) {
+            $stmt = $this->conn->prepare("SELECT * FROM payments WHERE team_id = ? AND status = 'pending' ORDER BY created_at DESC LIMIT 1");
+            $stmt->bind_param("s", $teamId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result ? $result->fetch_assoc() : null;
+            $stmt->close();
+
+            return $row ?: null;
+        }
+
+        return null;
+    }
+
+    public function getLatestPaymentByTeamId($teamId)
+    {
+        if ($this->conn) {
+            $stmt = $this->conn->prepare("SELECT * FROM payments WHERE team_id = ? ORDER BY created_at DESC, updated_at DESC LIMIT 1");
+            $stmt->bind_param("s", $teamId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result ? $result->fetch_assoc() : null;
+            $stmt->close();
+
+            return $row ?: null;
+        }
+
+        return null;
+    }
+
+    public function addPaymentData($team_id, $amount, $sender_name, $sender_bank)
     {
         $this->conn->query("SET @new_id = UUID();");
         if ($this->conn) {
-            $stmt = $this->conn->prepare("INSERT INTO payments(id, team_id, amount)
-            VALUES (@new_id, ?, ?);");
-            $stmt->bind_param("si", $team_id, $amount);
+            $stmt = $this->conn->prepare("INSERT INTO payments(id, team_id, amount, sender_name, sender_bank)
+            VALUES (@new_id, ?, ?, ?, ?);");
+            $stmt->bind_param("siss", $team_id, $amount, $sender_name, $sender_bank);
             $execute = $stmt->execute();
             if ($execute) {
                 $result = $this->conn->query("SELECT * FROM payments WHERE id = @new_id");
                 $row = $result->fetch_assoc();
-                $insertId = $row['id'];
                 $stmt->close();
-                return (string) $insertId;
+                return (array) $row;
             }
             $stmt->close();
         }

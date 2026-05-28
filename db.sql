@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS designova;
+USE designova;
+
 SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS payments;
 DROP TABLE IF EXISTS submissions;
@@ -6,8 +9,6 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS settings;
 SET FOREIGN_KEY_CHECKS=1;
 
-CREATE DATABASE IF NOT EXISTS designova;
-USE designova;
 CREATE TABLE IF NOT EXISTS users (
     id VARCHAR(36) PRIMARY KEY DEFAULT (UUID()),
     name VARCHAR(255) NOT NULL,
@@ -46,14 +47,20 @@ CREATE TABLE IF NOT EXISTS submissions (
     FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE
 );
 
+SHOW ENGINE INNODB STATUS;
+
 CREATE TABLE IF NOT EXISTS payments (
     id VARCHAR(36) PRIMARY KEY DEFAULT (UUID()),
     team_id VARCHAR(36) NOT NULL,
     amount INT NOT NULL,
+    sender_name VARCHAR(255) NULL,
+    sender_bank VARCHAR(255) NULL,
     status ENUM('pending', 'confirmed', 'rejected') DEFAULT 'pending',
+    pending_team_id VARCHAR(36) GENERATED ALWAYS AS (CASE WHEN status = 'pending' THEN team_id ELSE NULL END) STORED,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE
+    UNIQUE KEY uniq_pending_team (pending_team_id),
+    FOREIGN KEY (team_id) REFERENCES teams(id)
 );
 
 CREATE TABLE IF NOT EXISTS settings (

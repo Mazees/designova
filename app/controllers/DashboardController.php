@@ -45,6 +45,9 @@ class DashboardController extends Controller
         $error = '';
         $success = '';
 
+        $db = new Database();
+        $conn = $db->getConnection();
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $team) {
             $figma_link = $_POST['figma_link'] ?? '';
             $docs_link = $_POST['docs_link'] ?? '';
