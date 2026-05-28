@@ -21,19 +21,20 @@ class Submissions
         }
         return [];
     }
-    public function addSubmission($teamId, $figmaLink, $gdocLink){
+    public function addSubmission($teamId, $figmaLink, $gdocLink)
+    {
 
-        $teamId = trim((string)$teamId);
-        $figmaLink = trim((string)$figmaLink);
-        $gdocLink = trim((string)$gdocLink);
+        $teamId = trim((string) $teamId);
+        $figmaLink = trim((string) $figmaLink);
+        $gdocLink = trim((string) $gdocLink);
 
-        if($this->conn){
+        if ($this->conn) {
             $this->conn->query("SET @new_id = UUID();");
             $query = $this->conn->prepare("INSERT INTO submissions(id, team_id, figma_link, docs_link)
             VALUES (@new_id,?,?,?)");
             $query->bind_param("sss", $teamId, $figmaLink, $gdocLink);
             $execute = $query->execute();
-            if($execute){
+            if ($execute) {
                 $result = $this->conn->query("SELECT * FROM submissions WHERE id = @new_id");
                 $row = $result->fetch_assoc();
                 $insertId = $row['id'];
@@ -44,13 +45,14 @@ class Submissions
         }
         return null;
     }
-    public function updateSubmission($id, $figmaLink, $gdocLink){
+    public function updateSubmission($id, $figmaLink, $gdocLink)
+    {
 
-        $id = trim((string)$id);
-        $figmaLink = trim((string)$figmaLink);
-        $gdocLink = trim((string)$gdocLink);
+        $id = trim((string) $id);
+        $figmaLink = trim((string) $figmaLink);
+        $gdocLink = trim((string) $gdocLink);
 
-        if($this->conn){
+        if ($this->conn) {
             $query = $this->conn->prepare("UPDATE submissions
             SET figma_link = ?, docs_link = ?
             WHERE id = ? ");
@@ -58,24 +60,39 @@ class Submissions
             $query->bind_param("sss", $figmaLink, $gdocLink, $id);
             $execute = $query->execute();
 
-            if($execute){
+            if ($execute) {
                 $query->close();
                 return true;
             }
         }
         return false;
     }
-    public function checkSubmission($teamId){
-        if($this->conn){
+    public function checkSubmission($teamId)
+    {
+        if ($this->conn) {
             $query = $this->conn->prepare("SELECT id FROM submissions WHERE team_id = ? LIMIT 1");
 
             $query->bind_param("s", $teamId);
             $query->execute();
 
             $hasil = $query->get_result();
-            $existing = $hasil ? $hasil->fetch_assoc():null;
+            $existing = $hasil ? $hasil->fetch_assoc() : null;
             $query->close();
             return $existing;
+        }
+        return null;
+    }
+
+    public function getSubmission($teamId)
+    {
+        if ($this->conn) {
+            $query = $this->conn->prepare("SELECT * FROM submissions WHERE team_id = ? LIMIT 1");
+            $query->bind_param("s", $teamId);
+            $query->execute();
+            $result = $query->get_result();
+            $row = $result ? $result->fetch_assoc() : null;
+            $query->close();
+            return $row;
         }
         return null;
     }
@@ -85,16 +102,16 @@ class Submissions
         if ($this->conn) {
             $total = 0;
             $graded = 0;
-            
+
             $res = $this->conn->query("SELECT COUNT(*) AS count FROM submissions");
             if ($res) {
                 $row = $res->fetch_assoc();
-                $total = (int)$row['count'];
+                $total = (int) $row['count'];
             }
             $res = $this->conn->query("SELECT COUNT(*) AS count FROM submissions WHERE score_ui > 0 OR score_ux > 0 OR score_figma > 0");
             if ($res) {
                 $row = $res->fetch_assoc();
-                $graded = (int)$row['count'];
+                $graded = (int) $row['count'];
             }
             return ['total' => $total, 'graded' => $graded];
         }

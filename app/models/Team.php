@@ -46,6 +46,15 @@ class Team
                                           WHERE t.id = ? LIMIT 1");
             if ($stmt) {
                 $stmt->bind_param("s", $id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $team = $result ? $result->fetch_assoc() : null;
+                $stmt->close();
+                return $team ?: null;
+            }
+        }
+        return null;
+    }
     public function getById(string $id): ?array
     {
         if ($this->conn) {
@@ -174,6 +183,7 @@ class Team
             }
         }
         return [];
+    }
     /**
      * Memperbarui nilai dan ulasan pada tabel submissions berdasarkan team_id
      */
