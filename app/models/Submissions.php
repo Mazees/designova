@@ -16,24 +16,25 @@ class Submissions
     {
         $connection = $this->db->getConnection();
         if ($this->conn) {
-            $stmt = $connection->query("SELECT * FROM assessments");
+            $stmt = $connection->query("SELECT * FROM submissions");
             return $stmt->fetch_all(MYSQLI_ASSOC);
         }
         return [];
     }
-    public function addSumbission($figmaLink,$gdocLink){
+    public function addSubmission($teamId, $figmaLink, $gdocLink){
 
+        $teamId = trim((string)$teamId);
         $figmaLink = trim((string)$figmaLink);
         $gdocLink = trim((string)$gdocLink);
 
         if($this->conn){
             $this->conn->query("SET @new_id = UUID();");
-            $query = $this->conn->prepare("INSERT INTO submission(id, figma_link, docs_link)
-            VALUES (@new_id,?,?)");
-            $query->bind_param("ss",$figmaLink,$gdocLink);
+            $query = $this->conn->prepare("INSERT INTO submissions(id, team_id, figma_link, docs_link)
+            VALUES (@new_id,?,?,?)");
+            $query->bind_param("sss", $teamId, $figmaLink, $gdocLink);
             $execute = $query->execute();
             if($execute){
-                $result = $this->conn->query("SELECT * FROM submission WHERE id = @new_id");
+                $result = $this->conn->query("SELECT * FROM submissions WHERE id = @new_id");
                 $row = $result->fetch_assoc();
                 $insertId = $row['id'];
                 $query->close();
@@ -43,18 +44,18 @@ class Submissions
         }
         return null;
     }
-    public function updateSubmission($id,$figmaLink,$gdocLink){
+    public function updateSubmission($id, $figmaLink, $gdocLink){
 
         $id = trim((string)$id);
         $figmaLink = trim((string)$figmaLink);
         $gdocLink = trim((string)$gdocLink);
 
         if($this->conn){
-            $query = $this->conn->prepare("UPDATE sumbisssion
+            $query = $this->conn->prepare("UPDATE submissions
             SET figma_link = ?, docs_link = ?
             WHERE id = ? ");
 
-            $query->bind_param("sss",$figmaLink,$gdocLink,$id);
+            $query->bind_param("sss", $figmaLink, $gdocLink, $id);
             $execute = $query->execute();
 
             if($execute){
