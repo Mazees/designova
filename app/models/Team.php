@@ -3,18 +3,19 @@
 class Team
 {
     private Database $db;
+    private $conn = null;
 
     public function __construct()
     {
         $this->db = new Database();
+        $this->conn = $this->db->getConnection();
     }
 
     // Stub method untuk mendapatkan data tim peserta
     public function getAll()
     {
-        $connection = $this->db->getConnection();
-        if ($connection) {
-            $stmt = $connection->query("SELECT * FROM teams");
+        if ($this->conn) {
+            $stmt = $this->conn->query("SELECT * FROM teams");
             return $stmt->fetch_all(MYSQLI_ASSOC);
         }
         return [];
@@ -22,15 +23,16 @@ class Team
 
     public function findByUserId(string $userId): ?array
     {
-        $connection = $this->db->getConnection();
-        if ($connection) {
-            $stmt = $connection->prepare("SELECT * FROM teams WHERE user_id = ? LIMIT 1");
-            $stmt->bind_param("s", $userId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $team = $result ? $result->fetch_assoc() : null;
-            $stmt->close();
-            return $team ?: null;
+        if ($this->conn) {
+            $stmt = $this->conn->prepare("SELECT * FROM teams WHERE user_id = ? LIMIT 1");
+            if ($stmt) {
+                $stmt->bind_param("s", $userId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $team = $result ? $result->fetch_assoc() : null;
+                $stmt->close();
+                return $team ?: null;
+            }
         }
         return null;
     }

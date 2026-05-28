@@ -3,18 +3,19 @@
 class Payment
 {
     private Database $db;
+    private $conn = null;
 
     public function __construct()
     {
         $this->db = new Database();
+        $this->conn = $this->db->getConnection();
     }
 
     // Stub method untuk mendapatkan data konfigurasi sistem global
     public function getPaymentData()
     {
-        $connection = $this->db->getConnection();
-        if ($connection) {
-            $result = $connection->query("SELECT * FROM payments");
+        if ($this->conn) {
+            $result = $this->conn->query("SELECT * FROM payments");
             if ($result) {
                 return $result->fetch_all(MYSQLI_ASSOC);
             }
@@ -23,18 +24,19 @@ class Payment
     }
     public function addPaymentData($team_id, $amount)
     {
-        $connection = $this->db->getConnection();
-        if ($connection) {
-            $stmt = $connection->prepare("INSERT INTO payments(team_id, amount)
+        if ($this->conn) {
+            $stmt = $this->conn->prepare("INSERT INTO payments(team_id, amount)
             VALUES (?, ?);");
-            $stmt->bind_param("si", $team_id, $amount);
-            $execute = $stmt->execute();
-            if ($execute) {
-                $insertId = $connection->insert_id;
+            if ($stmt) {
+                $stmt->bind_param("si", $team_id, $amount);
+                $execute = $stmt->execute();
+                if ($execute) {
+                    $insertId = $this->conn->insert_id;
+                    $stmt->close();
+                    return $insertId > 0 ? (int) $insertId : null;
+                }
                 $stmt->close();
-                return $insertId > 0 ? (int) $insertId : null;
             }
-            $stmt->close();
         }
         return null;
     }

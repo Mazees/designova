@@ -41,8 +41,7 @@ class DashboardController extends Controller
         $this->protectRoute(['peserta'], true);
 
         $team = $_SESSION['team'] ?? null;
-        $db = new Database();
-        $conn = $db->getConnection();
+        $sub = new Submissions();
         $error = '';
         $success = '';
 
@@ -53,17 +52,10 @@ class DashboardController extends Controller
             if (empty($figma_link) || empty($docs_link)) {
                 $error = 'Semua field wajib diisi!';
             } else {
-                if ($conn) {
-                    // Cek apakah sudah ada submisi
-                    $stmt = $conn->prepare("SELECT id FROM submissions WHERE team_id = ? LIMIT 1");
-                    $stmt->bind_param("s", $team['id']);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    $existing = $result ? $result->fetch_assoc() : null;
-                    $stmt->close();
-
+              // Cek apakah sudah ada submisi
+              $existing = $sub->checkSubmission($team['id']);
                     if ($existing) {
-                        // Update
+                        // Updat
                         $stmt = $conn->prepare("UPDATE submissions SET figma_link = ?, docs_link = ? WHERE team_id = ?");
                         $stmt->bind_param("sss", $figma_link, $docs_link, $team['id']);
                         if ($stmt->execute()) {
@@ -83,7 +75,6 @@ class DashboardController extends Controller
                         }
                         $stmt->close();
                     }
-                }
             }
         }
 
