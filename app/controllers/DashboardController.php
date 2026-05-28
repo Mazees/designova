@@ -1,9 +1,11 @@
 <?php
 
-class DashboardController extends Controller {
-    public function index() {
+class DashboardController extends Controller
+{
+    public function index()
+    {
         $this->protectRoute(['peserta'], true);
-        
+
         $team = $_SESSION['team'] ?? null;
         $submission = null;
         if ($team) {
@@ -18,16 +20,26 @@ class DashboardController extends Controller {
                 $stmt->close();
             }
         }
+        $user = $_SESSION['user'] ?? null;
+        $teamName = $team['team_name'] ?? 'Tim Anda';
+        $members = json_decode($team['members'] ?? '[]', true);
+        $isActive = (isset($team['is_active']) && $team['is_active'] == 1);
+        $hasSubmitted = !empty($submission);
 
         $this->view('participant/dashboard', [
             'title' => 'Overview Tim - Designova',
-            'submission' => $submission
+            'user' => $user,
+            'hasSubmitted' => $hasSubmitted,
+            'members' => $members,
+            'teamName' => $teamName,
+            'team' => $teamName 
         ]);
     }
 
-    public function submission() {
+    public function submission()
+    {
         $this->protectRoute(['peserta'], true);
-        
+
         $team = $_SESSION['team'] ?? null;
         $db = new Database();
         $conn = $db->getConnection();

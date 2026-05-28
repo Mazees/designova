@@ -48,7 +48,7 @@
                         </td>
                         <td class="py-5 text-gray-400 font-bold">-</td>
                         <td class="py-5 pr-8 text-right">
-                            <a href="<?= BASE_URL; ?>/juri/assessment/1" 
+                            <a href="<?= BASE_URL; ?>/juri/review/1" 
                                class="btn btn-primary btn-xs font-black text-primary-content px-4 py-1.5 h-auto rounded-lg shadow-sm shadow-primary/10">
                                Nilai Sekarang
                             </a>
@@ -81,7 +81,7 @@
                             92.40<span class="text-xs text-gray-400 font-bold">/100</span>
                         </td>
                         <td class="py-5 pr-8 text-right">
-                            <a href="<?= BASE_URL; ?>/juri/assessment/2" 
+                            <a href="<?= BASE_URL; ?>/juri/review/2" 
                                class="btn btn-outline btn-xs font-bold px-4 py-1.5 h-auto rounded-lg">
                                Edit Nilai
                             </a>
@@ -112,7 +112,7 @@
                         </td>
                         <td class="py-5 text-gray-400 font-bold">-</td>
                         <td class="py-5 pr-8 text-right">
-                            <a href="<?= BASE_URL; ?>/juri/assessment/3" 
+                            <a href="<?= BASE_URL; ?>/juri/review/3" 
                                class="btn btn-primary btn-xs font-black text-primary-content px-4 py-1.5 h-auto rounded-lg shadow-sm shadow-primary/10">
                                Nilai Sekarang
                             </a>
