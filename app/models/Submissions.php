@@ -21,25 +21,28 @@ class Submissions
         }
         return [];
     }
-    public function addSumbission($figmaLink,$gdocLink){
+    public function addSubmission($teamId, $figmaLink, $gdocLink){
 
+        $teamId = trim((string)$teamId);
         $figmaLink = trim((string)$figmaLink);
         $gdocLink = trim((string)$gdocLink);
 
         if($this->conn){
             $this->conn->query("SET @new_id = UUID();");
-            $query = $this->conn->prepare("INSERT INTO submission(id, figma_link, docs_link)
-            VALUES (@new_id,?,?)");
-            $query->bind_param("ss",$figmaLink,$gdocLink);
-            $execute = $query->execute();
-            if($execute){
-                $result = $this->conn->query("SELECT * FROM submission WHERE id = @new_id");
-                $row = $result->fetch_assoc();
-                $insertId = $row['id'];
+            $query = $this->conn->prepare("INSERT INTO submissions(id, team_id, figma_link, docs_link)
+            VALUES (@new_id, ?, ?, ?)");
+            if ($query) {
+                $query->bind_param("sss", $teamId, $figmaLink, $gdocLink);
+                $execute = $query->execute();
+                if($execute){
+                    $result = $this->conn->query("SELECT * FROM submissions WHERE id = @new_id");
+                    $row = $result ? $result->fetch_assoc() : null;
+                    $insertId = $row ? $row['id'] : null;
+                    $query->close();
+                    return $insertId ? (string) $insertId : null;
+                }
                 $query->close();
-                return (string) $insertId;
             }
-            $query->close();
         }
         return null;
     }
@@ -50,7 +53,7 @@ class Submissions
         $gdocLink = trim((string)$gdocLink);
 
         if($this->conn){
-            $query = $this->conn->prepare("UPDATE sumbisssion
+            $query = $this->conn->prepare("UPDATE submissions
             SET figma_link = ?, docs_link = ?
             WHERE id = ? ");
 
@@ -61,10 +64,11 @@ class Submissions
                 $query->close();
                 return true;
             }
+            $query->close();
         }
         return false;
     }
-    public function checkSubmission($teamId){
+    public function getSubmission($teamId){
         if($this->conn){
             $query = $this->conn->prepare("SELECT id FROM submissions WHERE team_id = ? LIMIT 1");
 
@@ -78,4 +82,5 @@ class Submissions
     }
     return null;
     }
+
 }

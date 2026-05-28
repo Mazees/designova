@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS settings (
 
 -- Seed default settings
 INSERT INTO settings (id, is_registration_open, base_price, submission_deadline, is_winner_published)
-VALUES (1, TRUE, 50000, NULL, FALSE)
+VALUES (1, TRUE, 50000, '2026-06-5 10:00:00', FALSE)
 ON DUPLICATE KEY UPDATE is_registration_open=VALUES(is_registration_open), base_price=VALUES(base_price), submission_deadline=VALUES(submission_deadline), is_winner_published=VALUES(is_winner_published);
 
 -- Seed admin user (password: admin123)
@@ -82,3 +82,42 @@ VALUES (
     'admin'
 )
 ON DUPLICATE KEY UPDATE name=VALUES(name), email=VALUES(email), password=VALUES(password), role=VALUES(role);
+
+-- Seed 1 Peserta User (password: admin123)
+SET @peserta_id = 'e0f47e24-3c81-11eb-adc1-0242ac120002';
+INSERT INTO users (id, name, email, password, role)
+VALUES (
+    @peserta_id,
+    'Budi Pratama',
+    'peserta@designova.local',
+    '$2y$10$e0NR6Zr1Pp4K1xk4h1tXxO7KZb0Yf1j9uKq3hK8pQ9qZbFQ5Yt6y',
+    'peserta'
+)
+ON DUPLICATE KEY UPDATE name=VALUES(name), email=VALUES(email), password=VALUES(password), role=VALUES(role);
+
+-- Seed 1 Team for the Peserta User
+SET @team_id = 'e1075676-3c81-11eb-adc1-0242ac120002';
+INSERT INTO teams (id, user_id, team_name, members, is_active)
+VALUES (
+    @team_id,
+    @peserta_id,
+    'Tim AeroDesign',
+    '["Budi Pratama", "Siti Aminah", "Joko Susilo"]',
+    1
+)
+ON DUPLICATE KEY UPDATE user_id=VALUES(user_id), team_name=VALUES(team_name), members=VALUES(members), is_active=VALUES(is_active);
+
+-- Seed 1 Submission for the Team
+SET @submission_id = 'e11d67bc-3c81-11eb-adc1-0242ac120002';
+INSERT INTO submissions (id, team_id, figma_link, docs_link, score_ui, score_ux, score_figma, feedback)
+VALUES (
+    @submission_id,
+    @team_id,
+    'https://www.figma.com/proto/mockup-aerodesign',
+    'https://docs.google.com/document/d/report-aerodesign',
+    85.00,
+    90.00,
+    88.00,
+    'Desain visual sangat rapi dan riset UX sangat komprehensif.'
+)
+ON DUPLICATE KEY UPDATE team_id=VALUES(team_id), figma_link=VALUES(figma_link), docs_link=VALUES(docs_link), score_ui=VALUES(score_ui), score_ux=VALUES(score_ux), score_figma=VALUES(score_figma), feedback=VALUES(feedback);
