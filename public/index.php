@@ -68,7 +68,8 @@ $router->add('/submission', 'DashboardController', 'submission', ['GET', 'POST']
 
 // 3. Halaman Juri (Dashboard Penilaian)
 $router->add('/juri/dashboard', 'JuriController', 'index', ['GET']);
-$router->add('/juri/assessment/{team_id}', 'JuriController', 'assessment', ['GET', 'POST']);
+$router->add('/juri/leaderboard', 'AdminController', 'leaderboard', ['GET']);
+$router->add('/juri/review/{team_id}', 'JuriController', 'review', ['GET', 'POST']);
 
 // 4. Halaman Pengelola (Dashboard Admin)
 $router->add('/admin/dashboard', 'AdminController', 'index', ['GET']);

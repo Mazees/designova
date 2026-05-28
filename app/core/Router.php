@@ -27,7 +27,7 @@ class Router
         $method = strtoupper($method);
 
         // Pecah URL yang diakses menjadi array/segmen
-        // Contoh: "/juri/assessment/24" -> ["juri", "assessment", "24"]
+        // Contoh: "/juri/review/24" -> ["juri", "assessment", "24"]
         $urlSegments = explode('/', trim($url, '/'));
 
         foreach ($this->routes as $route) {
@@ -37,7 +37,7 @@ class Router
             }
 
             // Pecah Pola Rute menjadi array/segmen
-            // Contoh: "/juri/assessment/{team_id}" -> ["juri", "assessment", "{team_id}"]
+            // Contoh: "/juri/review/{team_id}" -> ["juri", "assessment", "{team_id}"]
             $routeSegments = explode('/', trim($route['route'], '/'));
 
             // 2. Cek apakah jumlah segmen sama. Jika beda, pasti tidak cocok.

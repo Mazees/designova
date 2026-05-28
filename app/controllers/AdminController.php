@@ -16,7 +16,7 @@ class AdminController extends Controller {
     }
 
     public function leaderboard() {
-        $this->protectRoute(['admin']);
+        $this->protectRoute(['admin', 'juri']);
         $this->view('admin/leaderboard', [
             'title' => 'Papan Peringkat - Admin Designova'
         ]);

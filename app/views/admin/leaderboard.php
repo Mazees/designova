@@ -9,18 +9,6 @@
         </p>
     </div>
 
-    <!-- Navigation Tabs -->
-    <div class="tabs tabs-bordered w-full border-b border-base-300">
-        <a href="<?= BASE_URL; ?>/admin/dashboard" 
-           class="tab text-sm text-muted hover:text-base-content pb-3">Statistik Global</a>
-        <a href="<?= BASE_URL; ?>/admin/teams" 
-           class="tab text-sm text-muted hover:text-base-content pb-3">Manajemen Peserta</a>
-        <a href="<?= BASE_URL; ?>/admin/leaderboard" 
-           class="tab tab-active font-extrabold text-sm border-primary text-primary-content pb-3">Papan Peringkat</a>
-        <a href="<?= BASE_URL; ?>/admin/settings" 
-           class="tab text-sm text-muted hover:text-base-content pb-3">Konfigurasi Sistem</a>
-    </div>
-
     <!-- Leaderboard Table Card -->
     <div class="card bg-base-100 border border-base-200 shadow-sm overflow-hidden rounded-2xl">
         <!-- Card Header with Actions -->
