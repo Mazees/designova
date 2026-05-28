@@ -38,7 +38,6 @@ class DashboardController extends Controller
         $success = '';
         $submission = $team ? $sub->getSubmission($team['id']) : null;
 
-        
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $team) {
             $figma_link = $_POST['figma_link'] ?? '';
             $docs_link = $_POST['docs_link'] ?? '';

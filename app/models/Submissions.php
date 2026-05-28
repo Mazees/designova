@@ -15,57 +15,49 @@ class Submissions
     public function getAll(): array
     {
         if ($this->conn) {
-            $stmt = $this->conn->query("SELECT * FROM assessments");
-            return $stmt ? $stmt->fetch_all(MYSQLI_ASSOC) : [];
+            $stmt = $connection->query("SELECT * FROM submissions");
+            return $stmt->fetch_all(MYSQLI_ASSOC);
         }
         return [];
     }
+    public function addSubmission($teamId, $figmaLink, $gdocLink){
 
-    public function addSubmission(string $teamId, string $figmaLink, string $gdocLink): ?string
-    {
-        $teamId = trim($teamId);
-        $figmaLink = trim($figmaLink);
-        $gdocLink = trim($gdocLink);
+        $teamId = trim((string)$teamId);
+        $figmaLink = trim((string)$figmaLink);
+        $gdocLink = trim((string)$gdocLink);
 
         if ($this->conn) {
             $this->conn->query("SET @new_id = UUID();");
             $query = $this->conn->prepare("INSERT INTO submissions(id, team_id, figma_link, docs_link)
-            VALUES (@new_id, ?, ?, ?)");
-            if ($query) {
-                $query->bind_param("sss", $teamId, $figmaLink, $gdocLink);
-                $execute = $query->execute();
-                if ($execute) {
-                    $result = $this->conn->query("SELECT * FROM submissions WHERE id = @new_id");
-                    $row = $result ? $result->fetch_assoc() : null;
-                    $insertId = $row ? $row['id'] : null;
-                    $query->close();
-                    return $insertId ? (string) $insertId : null;
-                }
+            VALUES (@new_id,?,?,?)");
+            $query->bind_param("sss", $teamId, $figmaLink, $gdocLink);
+            $execute = $query->execute();
+            if($execute){
+                $result = $this->conn->query("SELECT * FROM submissions WHERE id = @new_id");
+                $row = $result->fetch_assoc();
+                $insertId = $row['id'];
                 $query->close();
             }
         }
         return null;
     }
+    public function updateSubmission(string $id, string $figmaLink, string $gdocLink){
 
-    public function updateSubmission(string $id, string $figmaLink, string $gdocLink): bool
-    {
-        $id = trim($id);
-        $figmaLink = trim($figmaLink);
-        $gdocLink = trim($gdocLink);
+        $id = trim((string)$id);
+        $figmaLink = trim((string)$figmaLink);
+        $gdocLink = trim((string)$gdocLink);
 
-        if ($this->conn) {
+        if($this->conn){
             $query = $this->conn->prepare("UPDATE submissions
             SET figma_link = ?, docs_link = ?
             WHERE id = ? ");
 
-            if ($query) {
-                $query->bind_param("sss", $figmaLink, $gdocLink, $id);
-                $execute = $query->execute();
-                if ($execute) {
-                    $query->close();
-                    return true;
-                }
+            $query->bind_param("sss", $figmaLink, $gdocLink, $id);
+            $execute = $query->execute();
+
+            if($execute){
                 $query->close();
+                return true;
             }
         }
         return false;
