@@ -9,16 +9,8 @@ class DashboardController extends Controller
         $team = $_SESSION['team'] ?? null;
         $submission = null;
         if ($team) {
-            $db = new Database();
-            $conn = $db->getConnection();
-            if ($conn) {
-                $stmt = $conn->prepare("SELECT * FROM submissions WHERE team_id = ? LIMIT 1");
-                $stmt->bind_param("s", $team['id']);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                $submission = $result ? $result->fetch_assoc() : null;
-                $stmt->close();
-            }
+            $sub = new Submissions();
+            $submission = $sub->getSubmission($team['id']);
         }
         $user = $_SESSION['user'] ?? null;
         $teamName = $team['team_name'] ?? 'Tim Anda';
@@ -44,9 +36,7 @@ class DashboardController extends Controller
         $sub = new Submissions();
         $error = '';
         $success = '';
-
-        $db = new Database();
-        $conn = $db->getConnection();
+        $submission = $team ? $sub->getSubmission($team['id']) : null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $team) {
             $figma_link = $_POST['figma_link'] ?? '';
@@ -56,61 +46,56 @@ class DashboardController extends Controller
                 $error = 'Semua field wajib diisi!';
             } else {
               // Cek apakah sudah ada submisi
-              $existing = $sub->checkSubmission($team['id']);
-                    if ($existing) {
-                        // Updat
-                        $stmt = $conn->prepare("UPDATE submissions SET figma_link = ?, docs_link = ? WHERE team_id = ?");
-                        $stmt->bind_param("sss", $figma_link, $docs_link, $team['id']);
-                        if ($stmt->execute()) {
+                    if ($submission) {
+                        // Update
+                        $update = $sub->updateSubmission($submission['id'], $figma_link, $docs_link);
+                        if ($update) {
                             $success = 'Karya Anda berhasil diperbarui!';
                         } else {
                             $error = 'Gagal menyimpan karya. Silakan coba lagi.';
                         }
-                        $stmt->close();
                     } else {
                         // Insert
-                        $stmt = $conn->prepare("INSERT INTO submissions (team_id, figma_link, docs_link) VALUES (?, ?, ?)");
-                        $stmt->bind_param("sss", $team['id'], $figma_link, $docs_link);
-                        if ($stmt->execute()) {
+                        $add = $sub->addSubmission($team['id'], $figma_link, $docs_link);
+                        if ($add) {
                             $success = 'Karya Anda berhasil dikirim!';
                         } else {
                             $error = 'Gagal mengirim karya. Silakan coba lagi.';
                         }
-                        $stmt->close();
                     }
             }
         }
-
-        $submission = null;
-        if ($team && $conn) {
-            $stmt = $conn->prepare("SELECT * FROM submissions WHERE team_id = ? LIMIT 1");
-            $stmt->bind_param("s", $team['id']);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $submission = $result ? $result->fetch_assoc() : null;
-            $stmt->close();
-        }
-            // Ambil deadline dari database settings
+           
+    // Deadline Calculation
     $settingModel = new Setting();
     $deadline = $settingModel->getSubmissionDeadline();
-    
-
-        // Hitung sisa waktu dinamis
-    $deadlineTime = strtotime($deadline);
-    $now = time();
-    $diff = $deadlineTime - $now;
-    if ($diff > 0) {
-        $daysRemaining = ceil($diff / (60 * 60 * 24));
-        $remainingText = $daysRemaining . " Hari Tersisa";
-        $remainingClass = "text-amber-500 bg-amber-500/10 border-amber-500/20";
-        if ($daysRemaining <= 2) {
-            $remainingClass = "text-error bg-error/10 border-error/20 animate-pulse";
+        if (empty($deadline)) {
+            $formattedDeadline = 'Tidak Ada Batas Waktu';
+            $remainingText     = 'Tanpa Tenggat Waktu';
+            $remainingClass    = 'text-success bg-success/10 border-success/20';
+        } else {
+            $deadlineTime = strtotime($deadline);
+            if ($deadlineTime === false) {
+                $formattedDeadline = 'Format Tidak Valid';
+                $remainingText     = 'Format Tidak Valid';
+                $remainingClass    = 'text-error bg-error/10 border-error/20';
+            } else {
+                $now  = time();
+                $diff = $deadlineTime - $now;
+                if ($diff > 0) {
+                    $daysRemaining  = ceil($diff / (60 * 60 * 24));
+                    $remainingText  = $daysRemaining . " Hari Tersisa";
+                    $remainingClass = "text-amber-500 bg-amber-500/10 border-amber-500/20";
+                    if ($daysRemaining <= 2) {
+                        $remainingClass = "text-error bg-error/10 border-error/20 animate-pulse";
+                    }
+                } else {
+                    $remainingText  = "Tenggat Waktu Habis";
+                    $remainingClass = "text-error bg-error/10 border-error/20 font-black";
+                }
+                $formattedDeadline = date('d M Y - H:i', $deadlineTime) . ' WIB';
+            }
         }
-    } else {
-        $remainingText = "Tenggat Waktu Habis";
-        $remainingClass = "text-error bg-error/10 border-error/20 font-black";
-    }
-    $formattedDeadline = date('d M Y - H:i', $deadlineTime) . ' WIB';
 
 
         $this->view('participant/submission', [
