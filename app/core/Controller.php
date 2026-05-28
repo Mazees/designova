@@ -81,11 +81,11 @@ class Controller
             $isActive = (isset($_SESSION['team']['is_active']) && $_SESSION['team']['is_active'] == 1);
 
             if ($requireActiveTeam && !$isActive) {
-                // Butuh aktif tapi tim tidak aktif -> lempar ke payment
+                // Peserta tapi tim tidak aktif -> lempar ke payment
                 header('Location: ' . BASE_URL . '/payment');
                 exit;
             } elseif (!$requireActiveTeam && $isActive) {
-                // Butuh tidak aktif (halaman payment) tapi tim sudah aktif -> lempar ke dashboard
+                // Peserta tapi tim sudah aktif -> lempar ke dashboard
                 header('Location: ' . BASE_URL . '/dashboard');
                 exit;
             }
