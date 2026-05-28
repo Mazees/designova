@@ -5,27 +5,6 @@ $teamName = $team['team_name'] ?? 'Tim Anda';
 $isActive = (isset($team['is_active']) && $team['is_active'] == 1);
 $hasSubmitted = (isset($submission) && $submission !== null);
 
-// Ambil deadline dari database settings
-$settingModel = new Setting();
-$settings = $settingModel->getSystemSettings();
-$deadline = $settings['submission_deadline'] ?? '2023-11-24 23:59:59';
-
-// Hitung sisa waktu dinamis
-$deadlineTime = strtotime($deadline);
-$now = time();
-$diff = $deadlineTime - $now;
-if ($diff > 0) {
-    $daysRemaining = ceil($diff / (60 * 60 * 24));
-    $remainingText = $daysRemaining . " Hari Tersisa";
-    $remainingClass = "text-amber-500 bg-amber-500/10 border-amber-500/20";
-    if ($daysRemaining <= 2) {
-        $remainingClass = "text-error bg-error/10 border-error/20 animate-pulse";
-    }
-} else {
-    $remainingText = "Tenggat Waktu Habis";
-    $remainingClass = "text-error bg-error/10 border-error/20 font-black";
-}
-$formattedDeadline = date('d M Y - H:i', $deadlineTime) . ' WIB';
 ?>
 
 <div class="max-w-6xl mx-auto space-y-8 pb-12">
@@ -259,11 +238,11 @@ $formattedDeadline = date('d M Y - H:i', $deadlineTime) . ' WIB';
                         <span class="text-[9px] text-gray-400 font-black block uppercase tracking-wider">Batas Waktu
                             Pengumpulan</span>
                         <span
-                            class="text-xs font-black text-neutral-content block leading-tight mt-0.5"><?= $formattedDeadline; ?></span>
+                            class="text-xs font-black text-neutral-content block leading-tight mt-0.5"><?= !empty($formattedDeadline) ? $formattedDeadline : 'Tidak ada deadline'; ?></span>
                         <div
-                            class="inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 rounded border text-[9px] font-bold <?= $remainingClass; ?>">
+                            class="inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 rounded border text-[9px] font-bold <?= !empty($remainingClass) ? $remainingClass : ''; ?>">
                             <span class="w-1 h-1 rounded-full bg-current"></span>
-                            <?= $remainingText; ?>
+                            <?= !empty($remainingText) ? $remainingText : ''; ?>
                         </div>
                     </div>
                 </div>

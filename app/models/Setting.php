@@ -33,4 +33,16 @@ class Setting
         }
         return [];
     }
+    public function getSubmissionDeadline()
+    {
+        $connection = $this->db->getConnection();
+        if ($connection) {
+            $result = $connection->query("SELECT submission_deadline FROM settings WHERE id = 1 LIMIT 1");
+            if ($result) {
+                $result = $result->fetch_assoc();
+                return $result['submission_deadline'];
+            }
+        }
+        return [];
+    }
 }

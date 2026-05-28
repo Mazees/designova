@@ -84,12 +84,37 @@ class DashboardController extends Controller {
             $submission = $result ? $result->fetch_assoc() : null;
             $stmt->close();
         }
+            // Ambil deadline dari database settings
+    $settingModel = new Setting();
+    $deadline = $settingModel->getSubmissionDeadline();
+    
+
+        // Hitung sisa waktu dinamis
+    $deadlineTime = strtotime($deadline);
+    $now = time();
+    $diff = $deadlineTime - $now;
+    if ($diff > 0) {
+        $daysRemaining = ceil($diff / (60 * 60 * 24));
+        $remainingText = $daysRemaining . " Hari Tersisa";
+        $remainingClass = "text-amber-500 bg-amber-500/10 border-amber-500/20";
+        if ($daysRemaining <= 2) {
+            $remainingClass = "text-error bg-error/10 border-error/20 animate-pulse";
+        }
+    } else {
+        $remainingText = "Tenggat Waktu Habis";
+        $remainingClass = "text-error bg-error/10 border-error/20 font-black";
+    }
+    $formattedDeadline = date('d M Y - H:i', $deadlineTime) . ' WIB';
+
 
         $this->view('participant/submission', [
             'title' => 'Pengumpulan Karya - Designova',
             'submission' => $submission,
             'error' => $error,
-            'success' => $success
+            'success' => $success,
+            'formattedDeadline' => $formattedDeadline,
+            'remainingText' => $remainingText,
+            'remainingClass' => $remainingClass, 
         ]);
     }
 }
