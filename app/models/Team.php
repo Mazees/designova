@@ -37,6 +37,15 @@ class Team
         return null;
     }
 
+    public function findById(string $id): ?array
+    {
+        if ($this->conn) {
+            $stmt = $this->conn->prepare("SELECT t.*, u.name AS leader_name, u.email AS leader_email 
+                                          FROM teams t
+                                          LEFT JOIN users u ON t.user_id = u.id 
+                                          WHERE t.id = ? LIMIT 1");
+            if ($stmt) {
+                $stmt->bind_param("s", $id);
     public function getById(string $id): ?array
     {
         if ($this->conn) {
@@ -58,6 +67,113 @@ class Team
         return null;
     }
 
+    public function updateActiveStatus(string $id, int $isActive): bool
+    {
+        if ($this->conn) {
+            $stmt = $this->conn->prepare("UPDATE teams SET is_active = ? WHERE id = ?");
+            if ($stmt) {
+                $stmt->bind_param("is", $isActive, $id);
+                $result = $stmt->execute();
+                $stmt->close();
+                return $result;
+            }
+        }
+        return false;
+    }
+
+    public function getTeamsWithFilter($search = '', $statusFilter = '')
+    {
+        if ($this->conn) {
+            $query = "SELECT t.*, u.name AS leader_name, u.email AS leader_email 
+                      FROM teams t
+                      LEFT JOIN users u ON t.user_id = u.id";
+            
+            $whereClauses = [];
+            $params = [];
+            $types = "";
+            
+            $search = trim((string)$search);
+            if ($search !== '') {
+                $whereClauses[] = "(t.team_name LIKE ? OR u.name LIKE ? OR u.email LIKE ?)";
+                $like = "%" . $search . "%";
+                $params[] = $like;
+                $params[] = $like;
+                $params[] = $like;
+                $types .= "sss";
+            }
+            
+            $statusFilter = trim((string)$statusFilter);
+            if ($statusFilter === '1' || $statusFilter === 'active') {
+                $whereClauses[] = "t.is_active = 1";
+            } elseif ($statusFilter === '0' || $statusFilter === 'pending') {
+                $whereClauses[] = "t.is_active = 0";
+            }
+            
+            if (!empty($whereClauses)) {
+                $query .= " WHERE " . implode(" AND ", $whereClauses);
+            }
+            
+            $query .= " ORDER BY t.created_at DESC";
+            
+            $stmt = $this->conn->prepare($query);
+            if ($stmt) {
+                if (!empty($params)) {
+                    $stmt->bind_param($types, ...$params);
+                }
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $data = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+                $stmt->close();
+                return $data;
+            }
+        }
+        return [];
+    }
+
+    public function getDashboardCounts()
+    {
+        if ($this->conn) {
+            $total = 0;
+            $active = 0;
+            $pending = 0;
+            
+            $res = $this->conn->query("SELECT COUNT(*) AS count FROM teams");
+            if ($res) {
+                $row = $res->fetch_assoc();
+                $total = (int)$row['count'];
+            }
+            $res = $this->conn->query("SELECT COUNT(*) AS count FROM teams WHERE is_active = 1");
+            if ($res) {
+                $row = $res->fetch_assoc();
+                $active = (int)$row['count'];
+            }
+            $res = $this->conn->query("SELECT COUNT(*) AS count FROM teams WHERE is_active = 0");
+            if ($res) {
+                $row = $res->fetch_assoc();
+                $pending = (int)$row['count'];
+            }
+            return ['total' => $total, 'active' => $active, 'pending' => $pending];
+        }
+        return ['total' => 0, 'active' => 0, 'pending' => 0];
+    }
+
+    public function getRecentTeams(int $limit = 5)
+    {
+        if ($this->conn) {
+            $stmt = $this->conn->prepare("SELECT t.*, u.name AS leader_name, u.email AS leader_email 
+                                          FROM teams t 
+                                          LEFT JOIN users u ON t.user_id = u.id 
+                                          ORDER BY t.created_at DESC LIMIT ?");
+            if ($stmt) {
+                $stmt->bind_param("i", $limit);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $data = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+                $stmt->close();
+                return $data;
+            }
+        }
+        return [];
     /**
      * Memperbarui nilai dan ulasan pada tabel submissions berdasarkan team_id
      */

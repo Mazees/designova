@@ -3,7 +3,7 @@
 class Submissions
 {
     private Database $db;
-    private ?mysqli $conn = null;
+    private $conn = null;
 
     public function __construct()
     {
@@ -12,8 +12,9 @@ class Submissions
     }
 
     // Stub method untuk mendapatkan data penilaian karya oleh juri
-    public function getAll(): array
+    public function getAll()
     {
+        $connection = $this->db->getConnection();
         if ($this->conn) {
             $stmt = $connection->query("SELECT * FROM submissions");
             return $stmt->fetch_all(MYSQLI_ASSOC);
@@ -26,7 +27,7 @@ class Submissions
         $figmaLink = trim((string)$figmaLink);
         $gdocLink = trim((string)$gdocLink);
 
-        if ($this->conn) {
+        if($this->conn){
             $this->conn->query("SET @new_id = UUID();");
             $query = $this->conn->prepare("INSERT INTO submissions(id, team_id, figma_link, docs_link)
             VALUES (@new_id,?,?,?)");
@@ -37,11 +38,13 @@ class Submissions
                 $row = $result->fetch_assoc();
                 $insertId = $row['id'];
                 $query->close();
+                return (string) $insertId;
             }
+            $query->close();
         }
         return null;
     }
-    public function updateSubmission(string $id, string $figmaLink, string $gdocLink){
+    public function updateSubmission($id, $figmaLink, $gdocLink){
 
         $id = trim((string)$id);
         $figmaLink = trim((string)$figmaLink);
@@ -62,20 +65,58 @@ class Submissions
         }
         return false;
     }
-
-    public function getSubmission(string $teamId): ?array
-    {
-        if ($this->conn) {
+    public function checkSubmission($teamId){
+        if($this->conn){
             $query = $this->conn->prepare("SELECT id FROM submissions WHERE team_id = ? LIMIT 1");
-            if ($query) {
-                $query->bind_param("s", $teamId);
-                $query->execute();
-                $hasil = $query->get_result();
-                $existing = $hasil ? $hasil->fetch_assoc() : null;
-                $query->close();
-                return $existing;
-            }
+
+            $query->bind_param("s", $teamId);
+            $query->execute();
+
+            $hasil = $query->get_result();
+            $existing = $hasil ? $hasil->fetch_assoc():null;
+            $query->close();
+            return $existing;
         }
         return null;
+    }
+
+    public function getDashboardCounts()
+    {
+        if ($this->conn) {
+            $total = 0;
+            $graded = 0;
+            
+            $res = $this->conn->query("SELECT COUNT(*) AS count FROM submissions");
+            if ($res) {
+                $row = $res->fetch_assoc();
+                $total = (int)$row['count'];
+            }
+            $res = $this->conn->query("SELECT COUNT(*) AS count FROM submissions WHERE score_ui > 0 OR score_ux > 0 OR score_figma > 0");
+            if ($res) {
+                $row = $res->fetch_assoc();
+                $graded = (int)$row['count'];
+            }
+            return ['total' => $total, 'graded' => $graded];
+        }
+        return ['total' => 0, 'graded' => 0];
+    }
+
+    public function getTopTeams(int $limit = 3)
+    {
+        if ($this->conn) {
+            $stmt = $this->conn->prepare("SELECT t.team_name, s.final_score 
+                                          FROM submissions s 
+                                          JOIN teams t ON s.team_id = t.id 
+                                          ORDER BY s.final_score DESC LIMIT ?");
+            if ($stmt) {
+                $stmt->bind_param("i", $limit);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $data = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+                $stmt->close();
+                return $data;
+            }
+        }
+        return [];
     }
 }

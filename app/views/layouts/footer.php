@@ -1,12 +1,12 @@
 <?php
 $request_uri = $_SERVER['REQUEST_URI'];
-$is_auth      = (strpos($request_uri, '/login') !== false || strpos($request_uri, '/register') !== false);
-$is_payment   = (strpos($request_uri, '/payment') !== false);
+$is_auth      = (stripos($request_uri, '/login') !== false || stripos($request_uri, '/register') !== false);
+$is_payment   = (stripos($request_uri, '/payment') !== false && stripos($request_uri, '/admin') === false);
 $is_dashboard = (
-    strpos($request_uri, '/dashboard') !== false ||
-    strpos($request_uri, '/submission') !== false ||
-    strpos($request_uri, '/juri/')      !== false ||
-    strpos($request_uri, '/admin/')     !== false
+    stripos($request_uri, '/dashboard') !== false ||
+    stripos($request_uri, '/submission') !== false ||
+    stripos($request_uri, '/juri')      !== false ||
+    stripos($request_uri, '/admin')     !== false
 );
 ?>
 

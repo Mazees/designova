@@ -74,6 +74,10 @@ $router->add('/juri/review/{team_id}', 'JuriController', 'review', ['GET', 'POST
 // 4. Halaman Pengelola (Dashboard Admin)
 $router->add('/admin/dashboard', 'AdminController', 'index', ['GET']);
 $router->add('/admin/teams', 'AdminController', 'teams', ['GET', 'POST']);
+$router->add('/admin/teams/{id}', 'AdminController', 'teamDetail', ['GET', 'POST']);
+$router->add('/admin/payments', 'AdminController', 'payments', ['GET', 'POST']);
+$router->add('/admin/payments/approve/{id}', 'PaymentController', 'approve', ['POST']);
+$router->add('/admin/payments/reject/{id}', 'PaymentController', 'reject', ['POST']);
 $router->add('/admin/leaderboard', 'AdminController', 'leaderboard', ['GET']);
 $router->add('/admin/settings', 'AdminController', 'settings', ['GET', 'POST']);
 
