@@ -43,7 +43,7 @@ $is_dashboard = (
 <?php if ($is_auth || $is_payment): ?>
 
     <body
-        class="bg-base-200 min-h-screen  flex items-center justify-center p-4 sm:p-8 <?php echo $is_payment ? 'overflow-hidden' : ''; ?>">
+        class="bg-base-200 min-h-screen flex items-center justify-center p-4 sm:p-8 <?php echo $is_payment ? 'overflow-y-auto' : ''; ?>">
         <main class="w-full">
 
         <?php elseif ($is_dashboard): ?>
@@ -95,7 +95,7 @@ $is_dashboard = (
                                                 </svg>
                                             </div>
                                             <ul tabindex="0"
-                                                class="menu menu-sm dropdown-content bg-base-100 text-base-content rounded-box z-[1] mt-3 w-52 p-3 shadow-xl border border-base-200 gap-1">
+                                                class="menu menu-sm dropdown-content bg-base-100 text-base-content rounded-box z-1 mt-3 w-52 p-3 shadow-xl border border-base-200 gap-1">
                                                 <li><a href="<?= BASE_URL; ?>/"
                                                         class="font-semibold hover:text-primary py-2 rounded-lg">Beranda</a>
                                                 </li>
@@ -148,6 +148,6 @@ $is_dashboard = (
                                     </div>
                                 </div>
 
-                                <main class="flex-grow">
+                                <main class="grow">
 
                                 <?php endif; ?>

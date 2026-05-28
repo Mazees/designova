@@ -65,6 +65,7 @@ designova/
 ├── workflow/                   # Catatan rancangan, skema sistem & referensi alur kerja
 ├── .htaccess                   # Rewrite root untuk redirect transparan ke public/
 ├── db.sql                      # Skema DDL Database MySQL
+├── create_admin.php            # Script CLI untuk membuat / memperbarui user admin
 └── README.md                   # Dokumentasi utama proyek
 ```
 
@@ -111,10 +112,11 @@ Peta rute aplikasi didaftarkan pada Front Controller [public/index.php](file:///
 
 ### 3. Dashboard Juri
 
-| URL / Route              | HTTP Method   | Controller & Method                    | Tampilan File View   | Deskripsi                                            |
-| :----------------------- | :------------ | :------------------------------------- | :------------------- | :--------------------------------------------------- |
-| `/juri/dashboard`        | `GET`         | `JuriController::index()`              | `juri/dashboard.php` | Tabel ringkasan daftar karya peserta lomba           |
-| `/juri/review/{team_id}` | `GET`, `POST` | `JuriController::assessment($team_id)` | `juri/review.php`    | Form input nilai kriteria (UI, UX, Figma) & feedback |
+| URL / Route              | HTTP Method   | Controller & Method                 | Tampilan File View   | Deskripsi                                            |
+| :----------------------- | :------------ | :---------------------------------- | :------------------- | :--------------------------------------------------- |
+| `/juri/dashboard`        | `GET`         | `JuriController::index()`           | `juri/dashboard.php` | Tabel ringkasan daftar karya peserta lomba           |
+| `/juri/leaderboard`      | `GET`         | `AdminController::leaderboard()`    | `admin/leaderboard.php` | Papan peringkat tim kompetisi                      |
+| `/juri/review/{team_id}` | `GET`, `POST` | `JuriController::review($team_id)`  | `juri/review.php`    | Form input nilai kriteria (UI, UX, Figma) & feedback |
 
 ### 4. Dashboard Admin (Pengelola)
 
@@ -138,7 +140,7 @@ Struktur tabel di dalam berkas [db.sql](file:///D:/laragon/www/designova/db.sql)
 3.  **`submissions`**: Tempat menampung tautan pengumpulan karya peserta sekaligus nilai dari juri.
     - Kolom: `id`, `team_id` (FK `teams.id`), `figma_link`, `docs_link`, `score_ui`, `score_ux`, `score_figma`, `final_score` (kolom kalkulasi otomatis MySQL dengan bobot: `UI*0.5 + UX*0.4 + Figma*0.1`), `feedback`, `created_at`, `updated_at`.
 4.  **`payments`**: Pencatatan riwayat klaim pembayaran pendaftaran.
-    - Kolom: `id`, `team_id` (FK `teams.id`), `amount`, `status` (`'pending'`, `'confirmed'`, `'rejected'`), `created_at`, `updated_at`.
+    - Kolom: `id`, `team_id` (FK `teams.id`), `amount`, `sender_name`, `sender_bank`, `status` (`'pending'`, `'confirmed'`, `'rejected'`), `pending_team_id` (generated column untuk membatasi 1 payment pending per tim), `created_at`, `updated_at`.
 5.  **`settings`**: Pengaturan global aplikasi kompetisi.
     - Kolom: `id` (PK, dibatasi bernilai 1), `is_registration_open`, `base_price` (harga dasar lomba), `submission_deadline`, `is_winner_published`.
 
@@ -148,7 +150,7 @@ Struktur tabel di dalam berkas [db.sql](file:///D:/laragon/www/designova/db.sql)
 
 - **Pendaftaran & Autentikasi**: Registrasi tim baru mendaftarkan entitas user baru dan data tim (nama tim beserta anggota dalam format JSON) dalam satu aksi transaksi. Kata sandi dienkripsi aman dengan `password_hash()`.
 - **QRIS Dinamis**: Sistem menggunakan `QrisService` untuk memproses string QRIS statis bawaan dan menggabungkannya dengan nominal pendaftaran (`base_price` yang diset admin) serta kalkulasi bitwise CRC16. Hal ini menghasilkan kode QR dinamis yang dapat langsung discan oleh aplikasi pembayaran mobile.
-- **Verifikasi Manual & Redirect WA**: Peserta mengirim data konfirmasi berupa nama dan bank pengirim, lalu sistem memformat pesan otomatis yang mengarah langsung ke Whatsapp Admin. Status verifikasi diubah oleh Admin di dashboard pengelola.
+- **Verifikasi Manual & Redirect WA**: Peserta mengirim data konfirmasi berupa nama dan bank pengirim, lalu sistem menyimpan data payment ke database, mengunci 1 payment pending per tim, dan memformat pesan otomatis yang mengarah langsung ke Whatsapp Admin. Saat tim sudah punya payment pending, halaman `/payment` langsung masuk ke step status pembayaran supaya tidak ada duplikasi pembayaran pending dari tim yang sama.
 - **Perhitungan Nilai Otomatis**: Nilai akhir peserta dihitung di tingkat database menggunakan kolom _Generated Virtual Column_ MySQL:
   $$\text{Skor Akhir} = (\text{UI/Visual} \times 50\%) + (\text{UX/Flow} \times 40\%) + (\text{Kerapian Figma} \times 10\%)$$
 
@@ -161,6 +163,7 @@ Berikut adalah status terkini pengembangan fitur di codebase:
 - **[✓] Core Engine**: Router kustom, database helper MySQLi, base controller, autoloader, dan middleware RBAC (`protectRoute`) berfungsi secara penuh.
 - **[✓] Alur Autentikasi**: Halaman register tim, login multi-role, dan logout terhubung penuh dengan tabel `users` dan `teams`.
 - **[✓] Alur Pembayaran & QRIS**: Integrasi `QrisService` berjalan mulus untuk menghasilkan visualisasi QR code pendaftaran dinamis di halaman `/payment`.
+- **[✓] Alur Status Pembayaran**: Halaman `/payment` memiliki step status pembayaran yang persisten, menampilkan ID pembayaran, status, nama pengirim, bank pengirim, dan tombol konfirmasi via WhatsApp.
 - **[✓] Pengumpulan Karya (Submisi)**: Halaman `/submission` dapat memasukkan/mengupdate link Figma dan GDrive langsung ke tabel `submissions`.
 - **[⚠️] Dashboard Admin & Juri (Mockup/UI-Only)**: Halaman juri (`/juri/*`) dan halaman admin (`/admin/*`) saat ini menggunakan visual mockup dengan data hardcoded. Integrasi penuh dengan query SQL dinamis direncanakan pada rilis berikutnya.
 
@@ -187,9 +190,30 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek Designova di komputer lok
     INSERT INTO settings (id, is_registration_open, base_price, submission_deadline, is_winner_published)
     VALUES (1, TRUE, 50000, '2026-06-30 23:59:59', FALSE);
     ```
-5.  _(Opsional)_ Daftarkan user admin awal secara langsung di tabel `users` untuk pengujian (gunakan password hash bcrypt jika manual, atau daftar biasa lalu ubah kolom `role` di database menjadi `'admin'` atau `'juri'`).
+5.  _(Opsional)_ Buat admin awal lewat script CLI [create_admin.php](file:///D:/laragon/www/designova/create_admin.php) atau daftarkan user manual lalu ubah kolom `role` di database menjadi `'admin'` atau `'juri'`.
 
-### 3. Konfigurasi Aplikasi
+### 3. Buat Admin Awal dengan Script CLI
+
+Jika ingin membuat atau memperbarui akun admin tanpa membuka phpMyAdmin, Anda dapat menjalankan script CLI berikut dari direktori root proyek.
+
+Jalankan perintah default (menggunakan data admin default):
+```bash
+php create_admin.php
+```
+*Data default: Nama = "Administrator", Email = "admin@designova.local", Password = "admin123"*
+
+Atau, Anda dapat menentukan parameter/argumen kustom secara berurutan `"[Nama Admin]" "[Email Admin]" "[Password Admin]"` seperti berikut:
+```bash
+php create_admin.php "Nama Admin" "admin@domain.com" "password_baru"
+```
+
+Script ini akan otomatis melakukan hal berikut:
+1. Memeriksa ketersediaan koneksi database.
+2. Melakukan registrasi admin baru jika email belum terdaftar di tabel `users`.
+3. Memperbarui nama, password, dan mengubah role menjadi `admin` jika email sudah terdaftar.
+4. Menampilkan detail akun admin yang berhasil dibuat/diperbarui.
+
+### 4. Konfigurasi Aplikasi
 
 Sesuaikan berkas konfigurasi database dan URL aplikasi pada berkas [app/config/config.php](file:///D:/laragon/www/designova/app/config/config.php):
 
@@ -203,7 +227,7 @@ define('DB_NAME', 'designova');
 define('BASE_URL', 'http://localhost/designova');
 ```
 
-### 4. Build Aset CSS (Tailwind CSS)
+### 5. Build Aset CSS (Tailwind CSS)
 
 Jika Anda ingin mengubah tampilan/style dan memicu compiler Tailwind CSS v4, jalankan perintah berikut di direktori root:
 
