@@ -142,8 +142,34 @@ class AdminController extends Controller {
 
     public function settings() {
         $this->protectRoute(['admin']);
+        
+        $settingModel = new Setting();
+        $success = null;
+        $error = null;
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $isRegOpen = isset($_POST['is_registration_open']) ? true : false;
+            $isWinnerPub = isset($_POST['is_winner_published']) ? true : false;
+            $basePrice = isset($_POST['base_price']) ? (int)$_POST['base_price'] : 50000;
+            $submissionDeadline = isset($_POST['submission_deadline']) ? trim((string)$_POST['submission_deadline']) : '';
+            
+            if (!empty($submissionDeadline)) {
+                $submissionDeadline = date('Y-m-d H:i:s', strtotime($submissionDeadline));
+            }
+            
+            $update = $settingModel->updateSettings($isRegOpen, $isWinnerPub, $basePrice, $submissionDeadline);
+            
+            if ($update) {
+                $success = 'Konfigurasi sistem berhasil diperbarui!';
+            } else {
+                $error = 'Gagal memperbarui konfigurasi sistem.';
+            }
+        }
+        
         $this->view('admin/settings', [
-            'title' => 'Konfigurasi Sistem - Admin Designova'
+            'title' => 'Konfigurasi Sistem - Admin Designova',
+            'success' => $success,
+            'error' => $error
         ]);
     }
 

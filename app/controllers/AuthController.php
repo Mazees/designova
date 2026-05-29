@@ -74,23 +74,32 @@ class AuthController extends Controller
 
     public function register()
     {
+        $settingModel = new Setting();
+        $settings = $settingModel->getSystemSettings();
+        $isRegOpen = (!isset($settings['is_registration_open']) || $settings['is_registration_open'] == 1);
+        
         $error = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $authService = new AuthService(new User());
-            $result = $authService->register($_POST);
+            if (!$isRegOpen) {
+                $error = 'Pendaftaran saat ini ditutup.';
+            } else {
+                $authService = new AuthService(new User());
+                $result = $authService->register($_POST);
 
-            $error = $result['error'] ?? '';
+                $error = $result['error'] ?? '';
 
-            if (!empty($result['success'])) {
-                header('Location: ' . BASE_URL . '/login');
-                exit;
+                if (!empty($result['success'])) {
+                    header('Location: ' . BASE_URL . '/login');
+                    exit;
+                }
             }
         }
 
         $this->view('auth/register', [
             'title' => 'Register - Designova',
             'error' => $error,
+            'isRegOpen' => $isRegOpen
         ]);
     }
 

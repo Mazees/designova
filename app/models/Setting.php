@@ -46,4 +46,22 @@ class Setting
         }
         return [];
     }
+
+    public function updateSettings(bool $isRegOpen, bool $isWinnerPub, int $basePrice, string $submissionDeadline): bool
+    {
+        if ($this->conn) {
+            $stmt = $this->conn->prepare("UPDATE settings 
+                                          SET is_registration_open = ?, is_winner_published = ?, base_price = ?, submission_deadline = ? 
+                                          WHERE id = 1");
+            if ($stmt) {
+                $reg = $isRegOpen ? 1 : 0;
+                $win = $isWinnerPub ? 1 : 0;
+                $stmt->bind_param("iiis", $reg, $win, $basePrice, $submissionDeadline);
+                $execute = $stmt->execute();
+                $stmt->close();
+                return $execute;
+            }
+        }
+        return false;
+    }
 }

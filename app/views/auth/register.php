@@ -59,103 +59,123 @@
             </div>
         <?php endif; ?>
 
-        <!-- Visual Steps -->
-        <ul class="steps steps-horizontal w-full mb-6 text-xs">
-            <li class="step step-primary font-semibold">Informasi Akun</li>
-            <li class="step step-primary font-semibold">Detail Tim</li>
-        </ul>
-
-        <!-- Form -->
-        <form method="POST" action="<?= BASE_URL; ?>/register" class="space-y-5">
-
-            <!-- Section 1: Akun Ketua -->
-            <div class="space-y-3">
-                <h3 class="text-sm font-extrabold text-base-content flex items-center gap-2 border-b border-base-200 pb-2.5">
-                    <span class="badge badge-primary font-bold text-xs w-5 h-5 p-0 shrink-0">1</span>
-                    Informasi Akun Ketua
-                </h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="form-control gap-1">
-                        <label class="label py-0">
-                            <span class="label-text font-bold text-[10px] uppercase text-base-content/50 tracking-wider">Nama Lengkap Ketua</span>
-                        </label>
-                        <input type="text" name="name" x-model="name" required
-                            class="input input-bordered w-full text-sm h-10 font-medium focus:border-primary focus:outline-none"
-                            placeholder="Nama lengkap ketua" />
-                    </div>
-
-                    <div class="form-control gap-1">
-                        <label class="label py-0">
-                            <span class="label-text font-bold text-[10px] uppercase text-base-content/50 tracking-wider">Email (Untuk Login)</span>
-                        </label>
-                        <input type="email" name="email" x-model="email" required
-                            class="input input-bordered w-full text-sm h-10 font-medium focus:border-primary focus:outline-none"
-                            placeholder="nama@email.com" />
-                    </div>
-
-                    <div class="form-control gap-1">
-                        <label class="label py-0">
-                            <span class="label-text font-bold text-[10px] uppercase text-base-content/50 tracking-wider">Kata Sandi</span>
-                        </label>
-                        <input type="password" name="password" x-model="password" required
-                            class="input input-bordered w-full text-sm h-10 font-medium focus:border-primary focus:outline-none"
-                            placeholder="Minimal 6 karakter" />
-                    </div>
-
-                    <div class="form-control gap-1">
-                        <label class="label py-0">
-                            <span class="label-text font-bold text-[10px] uppercase text-base-content/50 tracking-wider">Konfirmasi Sandi</span>
-                        </label>
-                        <input type="password" x-model="confirmPassword" required
-                            class="input input-bordered w-full text-sm h-10 font-medium focus:border-primary focus:outline-none"
-                            placeholder="Ketik ulang sandi" />
-                    </div>
+        <?php if (!$isRegOpen): ?>
+            <!-- Registration Closed Card -->
+            <div class="flex flex-col items-center justify-center p-8 bg-error/10 border border-error/20 rounded-2xl text-center space-y-4 my-6" data-aos="zoom-in">
+                <div class="w-16 h-16 bg-error/15 text-error rounded-full flex items-center justify-center shadow-inner">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
                 </div>
+                <div class="space-y-2">
+                    <h3 class="text-lg font-black text-neutral-content">Pendaftaran Ditutup</h3>
+                    <p class="text-xs text-gray-450 max-w-sm leading-relaxed mx-auto">
+                        Mohon maaf, pendaftaran tim baru untuk kompetisi UI/UX Designova saat ini telah ditutup oleh panitia.
+                    </p>
+                </div>
+                <a href="<?= BASE_URL; ?>/" class="btn btn-outline btn-sm font-bold px-6 rounded-xl mt-2">
+                    Kembali ke Beranda
+                </a>
             </div>
+        <?php else: ?>
+            <!-- Visual Steps -->
+            <ul class="steps steps-horizontal w-full mb-6 text-xs">
+                <li class="step step-primary font-semibold">Informasi Akun</li>
+                <li class="step step-primary font-semibold">Detail Tim</li>
+            </ul>
 
-            <!-- Section 2: Detail Tim -->
-            <div class="space-y-3 pt-1">
-                <h3 class="text-sm font-extrabold text-base-content flex items-center gap-2 border-b border-base-200 pb-2.5">
-                    <span class="badge badge-primary font-bold text-xs w-5 h-5 p-0 shrink-0">2</span>
-                    Detail Tim &amp; Anggota
-                </h3>
-                <div class="form-control gap-1">
-                    <label class="label py-0">
-                        <span class="label-text font-bold text-[10px] uppercase text-base-content/50 tracking-wider">Nama Tim Kompetisi</span>
-                    </label>
-                    <input type="text" name="team_name" x-model="teamName" required
-                        class="input input-bordered w-full text-sm h-10 font-medium focus:border-primary focus:outline-none"
-                        placeholder="Masukkan nama tim kreatif Anda" />
+            <!-- Form -->
+            <form method="POST" action="<?= BASE_URL; ?>/register" class="space-y-5">
+
+                <!-- Section 1: Akun Ketua -->
+                <div class="space-y-3">
+                    <h3 class="text-sm font-extrabold text-base-content flex items-center gap-2 border-b border-base-200 pb-2.5">
+                        <span class="badge badge-primary font-bold text-xs w-5 h-5 p-0 shrink-0">1</span>
+                        Informasi Akun Ketua
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="form-control gap-1">
+                            <label class="label py-0">
+                                <span class="label-text font-bold text-[10px] uppercase text-base-content/50 tracking-wider">Nama Lengkap Ketua</span>
+                            </label>
+                            <input type="text" name="name" x-model="name" required
+                                class="input input-bordered w-full text-sm h-10 font-medium focus:border-primary focus:outline-none"
+                                placeholder="Nama lengkap ketua" />
+                        </div>
+
+                        <div class="form-control gap-1">
+                            <label class="label py-0">
+                                <span class="label-text font-bold text-[10px] uppercase text-base-content/50 tracking-wider">Email (Untuk Login)</span>
+                            </label>
+                            <input type="email" name="email" x-model="email" required
+                                class="input input-bordered w-full text-sm h-10 font-medium focus:border-primary focus:outline-none"
+                                placeholder="nama@email.com" />
+                        </div>
+
+                        <div class="form-control gap-1">
+                            <label class="label py-0">
+                                <span class="label-text font-bold text-[10px] uppercase text-base-content/50 tracking-wider">Kata Sandi</span>
+                            </label>
+                            <input type="password" name="password" x-model="password" required
+                                class="input input-bordered w-full text-sm h-10 font-medium focus:border-primary focus:outline-none"
+                                placeholder="Minimal 6 karakter" />
+                        </div>
+
+                        <div class="form-control gap-1">
+                            <label class="label py-0">
+                                <span class="label-text font-bold text-[10px] uppercase text-base-content/50 tracking-wider">Konfirmasi Sandi</span>
+                            </label>
+                            <input type="password" x-model="confirmPassword" required
+                                class="input input-bordered w-full text-sm h-10 font-medium focus:border-primary focus:outline-none"
+                                placeholder="Ketik ulang sandi" />
+                        </div>
+                    </div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                <!-- Section 2: Detail Tim -->
+                <div class="space-y-3 pt-1">
+                    <h3 class="text-sm font-extrabold text-base-content flex items-center gap-2 border-b border-base-200 pb-2.5">
+                        <span class="badge badge-primary font-bold text-xs w-5 h-5 p-0 shrink-0">2</span>
+                        Detail Tim &amp; Anggota
+                    </h3>
                     <div class="form-control gap-1">
                         <label class="label py-0">
-                            <span class="label-text font-bold text-[10px] uppercase text-base-content/50 tracking-wider">Anggota Tim 1 (Opsional)</span>
+                            <span class="label-text font-bold text-[10px] uppercase text-base-content/50 tracking-wider">Nama Tim Kompetisi</span>
                         </label>
-                        <input type="text" name="member_1"
+                        <input type="text" name="team_name" x-model="teamName" required
                             class="input input-bordered w-full text-sm h-10 font-medium focus:border-primary focus:outline-none"
-                            placeholder="Nama anggota kedua" />
+                            placeholder="Masukkan nama tim kreatif Anda" />
                     </div>
-                    <div class="form-control gap-1">
-                        <label class="label py-0">
-                            <span class="label-text font-bold text-[10px] uppercase text-base-content/50 tracking-wider">Anggota Tim 2 (Opsional)</span>
-                        </label>
-                        <input type="text" name="member_2"
-                            class="input input-bordered w-full text-sm h-10 font-medium focus:border-primary focus:outline-none"
-                            placeholder="Nama anggota ketiga" />
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="form-control gap-1">
+                            <label class="label py-0">
+                                <span class="label-text font-bold text-[10px] uppercase text-base-content/50 tracking-wider">Anggota Tim 1 (Opsional)</span>
+                            </label>
+                            <input type="text" name="member_1"
+                                class="input input-bordered w-full text-sm h-10 font-medium focus:border-primary focus:outline-none"
+                                placeholder="Nama anggota kedua" />
+                        </div>
+                        <div class="form-control gap-1">
+                            <label class="label py-0">
+                                <span class="label-text font-bold text-[10px] uppercase text-base-content/50 tracking-wider">Anggota Tim 2 (Opsional)</span>
+                            </label>
+                            <input type="text" name="member_2"
+                                class="input input-bordered w-full text-sm h-10 font-medium focus:border-primary focus:outline-none"
+                                placeholder="Nama anggota ketiga" />
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Submit -->
-            <button type="submit" id="btn-register"
-                class="btn btn-primary btn-block h-12 font-extrabold text-sm shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-shadow mt-2">
-                Daftarkan Tim Kami
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                </svg>
-            </button>
-        </form>
+                <!-- Submit -->
+                <button type="submit" id="btn-register"
+                    class="btn btn-primary btn-block h-12 font-extrabold text-sm shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-shadow mt-2">
+                    Daftarkan Tim Kami
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                </button>
+            </form>
+        <?php endif; ?>
 
         <div class="divider text-xs text-base-content/30 my-4">atau</div>
         <p class="text-center text-sm text-base-content/50">
