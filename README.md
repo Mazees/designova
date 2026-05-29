@@ -165,7 +165,7 @@ Berikut adalah status terkini pengembangan fitur di codebase:
 - **[✓] Alur Pembayaran & QRIS**: Integrasi `QrisService` berjalan mulus untuk menghasilkan visualisasi QR code pendaftaran dinamis di halaman `/payment`.
 - **[✓] Alur Status Pembayaran**: Halaman `/payment` memiliki step status pembayaran yang persisten, menampilkan ID pembayaran, status, nama pengirim, bank pengirim, dan tombol konfirmasi via WhatsApp.
 - **[✓] Pengumpulan Karya (Submisi)**: Halaman `/submission` dapat memasukkan/mengupdate link Figma dan GDrive langsung ke tabel `submissions`.
-- **[⚠️] Dashboard Admin & Juri (Mockup/UI-Only)**: Halaman juri (`/juri/*`) dan halaman admin (`/admin/*`) saat ini menggunakan visual mockup dengan data hardcoded. Integrasi penuh dengan query SQL dinamis direncanakan pada rilis berikutnya.
+- **[✓] Dashboard Admin & Juri**: Halaman juri (`/juri/*`) dan halaman admin (`/admin/*`) kini telah terintegrasi secara dinamis dengan query SQL nyata (seperti manajemen peserta, verifikasi pembayaran manual, formulir penilaian juri, leaderboard dengan ekspor CSV, dan pengaturan sistem).
 
 ---
 
@@ -213,7 +213,30 @@ Script ini akan otomatis melakukan hal berikut:
 3. Memperbarui nama, password, dan mengubah role menjadi `admin` jika email sudah terdaftar.
 4. Menampilkan detail akun admin yang berhasil dibuat/diperbarui.
 
-### 4. Konfigurasi Aplikasi
+### 4. Buat Akun Peserta Massal (Bulk 10 Akun) untuk Testing
+
+Untuk mempermudah pengujian alur verifikasi pembayaran admin, penilaian juri, leaderboard, dan pengunggahan submisi peserta, Anda dapat membuat 10 akun peserta beserta data timnya secara otomatis dengan menjalankan perintah berikut di direktori root:
+
+```bash
+php create_bulk_participants.php
+```
+
+Script ini akan otomatis melakukan registrasi 10 ketua tim baru dan data timnya dengan rincian berikut (semua akun menggunakan password default **`password123`**):
+
+| No | Nama Ketua | Email Login | Password | Nama Tim | Status Awal (is_active) | Deskripsi Status |
+|---|---|---|---|---|---|---|
+| 1 | Ahmad Fauzi | `peserta1@designova.local` | `password123` | Tim Falcon | **1 (Aktif)** | Sudah terverifikasi, langsung bisa upload karya |
+| 2 | Dewi Lestari | `peserta2@designova.local` | `password123` | Tim Aurora | **1 (Aktif)** | Sudah terverifikasi, langsung bisa upload karya |
+| 3 | Giri Wijaya | `peserta3@designova.local` | `password123` | Tim Galaxy | **1 (Aktif)** | Sudah terverifikasi, langsung bisa upload karya |
+| 4 | Joko Widodo | `peserta4@designova.local` | `password123` | Tim JavaCoder | **1 (Aktif)** | Sudah terverifikasi, langsung bisa upload karya |
+| 5 | Mada Putra | `peserta5@designova.local` | `password123` | Tim AeroUX | **1 (Aktif)** | Sudah terverifikasi, langsung bisa upload karya |
+| 6 | Putri Ayu | `peserta6@designova.local` | `password123` | Tim Phoenix | **0 (Non-Aktif)** | Menunggu verifikasi pembayaran admin |
+| 7 | Siti Aminah | `peserta7@designova.local` | `password123` | Tim Skyline | **0 (Non-Aktif)** | Menunggu verifikasi pembayaran admin |
+| 8 | Vina Panduwinata | `peserta8@designova.local` | `password123` | Tim Zenith | **0 (Non-Aktif)** | Menunggu verifikasi pembayaran admin |
+| 9 | Zulham Efendi | `peserta9@designova.local` | `password123` | Tim Alpha | **0 (Non-Aktif)** | Menunggu verifikasi pembayaran admin |
+| 10 | Chandra Kirana | `peserta10@designova.local` | `password123` | Tim Nebula | **0 (Non-Aktif)** | Menunggu verifikasi pembayaran admin |
+
+### 5. Konfigurasi Aplikasi
 
 Sesuaikan berkas konfigurasi database dan URL aplikasi pada berkas [app/config/config.php](file:///D:/laragon/www/designova/app/config/config.php):
 
