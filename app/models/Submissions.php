@@ -136,4 +136,17 @@ class Submissions
         }
         return [];
     }
+
+    public function getLeaderboard()
+    {
+        if ($this->conn) {
+            $sql = "SELECT t.team_name, s.score_ui, s.score_ux, s.score_figma, s.final_score 
+                    FROM submissions s 
+                    JOIN teams t ON s.team_id = t.id 
+                    ORDER BY s.final_score DESC";
+            $result = $this->conn->query($sql);
+            return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+        }
+        return [];
+    }
 }

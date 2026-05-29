@@ -130,8 +130,13 @@ class AdminController extends Controller {
 
     public function leaderboard() {
         $this->protectRoute(['admin', 'juri']);
+        
+        $submissionModel = new Submissions();
+        $leaderboard = $submissionModel->getLeaderboard();
+        
         $this->view('admin/leaderboard', [
-            'title' => 'Papan Peringkat - Admin Designova'
+            'title' => 'Papan Peringkat - Admin Designova',
+            'leaderboard' => $leaderboard
         ]);
     }
 
