@@ -104,17 +104,64 @@
                         <li class="step step-primary">
                             Registrasi Akun & Tim</li>
                         <li class="step step-primary">Pembayaran & Aktivasi Tim</li>
-                        <li class="step <?= (isset($hasSubmitted) ? $hasSubmitted : '') ? 'step-primary' : '' ?>">
+                        <li class="step step-primary">
                             Pengumpulan
                             Karya</li>
-                        <li class="step">Proses Penilaian Juri</li>
+                        <li class="step <?= (isset($hasSubmitted) ? $hasSubmitted : '') ? 'step-primary' : '' ?>">Proses Penilaian Juri</li>
                         <li class="step">Pengumuman Pemenang</li>
                     </ul>
                 </div>
             </div>
-        </div>
+            <!-- Status Penilaian & Submisi -->
+            <?php if (!empty($hasSubmitted)): ?>
+            <div class="card bg-base-100 border border-base-200/60 shadow-sm mt-6">
+                <div class="card-body p-6 gap-5">
+                    <span class="text-xl font-extrabold text-neutral-content uppercase">Status Penilaian</span>
+                    
+                    <div class="space-y-4 text-sm mt-1">
+                        <!-- Status Badge -->
+                        <div>
+                            <div class="flex w-full items-center gap-2.5 px-4 py-2.5 rounded-lg border text-xs font-bold <?= !empty($classEvaluasi) ? $classEvaluasi : '' ?>">
+                                <span class="w-2 h-2 rounded-full bg-current"></span>
+                                <?= !empty($statusEvaluasi) ? $statusEvaluasi : '' ?>
+                            </div>
+                        </div>
 
+                        <!-- Feedback -->
+                        <div>
+                            <div class="flex items-center gap-1.5 mb-1.5">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                                </svg>
+                                <span class="block text-[11px] text-gray-400 font-bold uppercase tracking-wider">Feedback Juri</span>
+                            </div>
+                            <div class="bg-base-200/30 p-3 rounded-lg border border-base-200/60">
+                                <p class="text-xs text-gray-500 leading-relaxed italic">
+                                    "<?= !empty($feedbackText) ? htmlspecialchars($feedbackText) : '' ?>"
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Last Updated -->
+                        <div>
+                            <div class="flex items-center gap-1.5 mb-1">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="block text-[11px] text-gray-400 font-bold uppercase tracking-wider">Terakhir Diperbarui</span>
+                            </div>
+                            <span class="text-xs font-semibold text-neutral-content block pl-5.5">
+                                <?= !empty($submissionUpdatedAt) ? $submissionUpdatedAt : '' ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
     </div>
+
+
 </div>
 
 <?php require_once '../app/views/layouts/header.php'; // Wait, layout uses footer.php at the end, but the original code had: require_once '../app/views/layouts/footer.php'; ?>

@@ -18,13 +18,41 @@ class DashboardController extends Controller
         $isActive = (isset($team['is_active']) && $team['is_active'] == 1);
         $hasSubmitted = !empty($submission);
 
+        $statusEvaluasi = 'Belum Dinilai';
+        $classEvaluasi = 'text-info bg-info/10 border-info/20';
+        $feedbackText = 'Belum Ada';
+        $submissionUpdatedAt = '-';
+
+        if ($submission) {
+            $scoreUi  = (float)($submission['score_ui']);
+            $scoreUx = (float)($submission['score_ux']);
+            $scoreFigma = (float)($submission['score_figma']);
+
+            if($scoreUi > 0 || $scoreUx > 0 || $scoreFigma > 0){
+                $statusEvaluasi = 'Sudah Dinilai';
+                $classEvaluasi = 'text-success bg-success/10 border-success/20';
+            }
+            
+            if(!empty($submission['feedback'])){
+                $feedbackText = $submission['feedback'];
+            }
+            
+            if(!empty($submission['updated_at'])){
+                $submissionUpdatedAt = date('d M Y - H:i', strtotime($submission['updated_at'])) . ' WIB';
+            }
+        }
+
         $this->view('participant/dashboard', [
             'title' => 'Overview Tim - Designova',
             'user' => $user,
             'hasSubmitted' => $hasSubmitted,
             'members' => $members,
             'teamName' => $teamName,
-            'team' => $teamName
+            'team' => $teamName,
+            'statusEvaluasi' => $statusEvaluasi,
+            'classEvaluasi' => $classEvaluasi,
+            'feedbackText' => $feedbackText,
+            'submissionUpdatedAt' => $submissionUpdatedAt
         ]);
     }
 
@@ -36,17 +64,40 @@ class DashboardController extends Controller
         $sub = new Submissions();
         $error = '';
         $success = '';
+
+        $figmaInvalid = false;
+        $figmalinkPattern = '/^(https?:\/\/)?(www\.)?figma\.com\/(file|design|proto)\/.+$/';
+        $docsInvalid = false;
+        $docslinkPattern = '/^(https?:\/\/)?(docs\.google\.com\/document\/d\/)[a-zA-Z0-9_-]{10,}\/?.*$/';
+
+        
         $submission = $team ? $sub->getSubmission($team['id']) : null;
+
+        $statusEvaluasi = 'Belum Dinilai';
+        $classEvaluasi = 'text-info bg-info/10 border-info/20';
+        $feedbackText = 'Belum Ada';
+        $submissionUpdatedAt = '-';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $team) {
             $figma_link = $_POST['figma_link'] ?? '';
             $docs_link = $_POST['docs_link'] ?? '';
 
+            // Validasi Link figma dan docs
             if (empty($figma_link) || empty($docs_link)) {
                 $error = 'Semua field wajib diisi!';
+            // Validasi pattern link figma dan docs
+            } elseif (!preg_match($figmalinkPattern, $figma_link)) {
+                $error = 'Bukan URL Figma yang valid!';
+                $figmaInvalid = true;
+                $docsInvalid = false;
+            } elseif(!preg_match($docslinkPattern,$docs_link)){
+                $error = 'Bukan URL Google Docs yang valid!';
+                $docsInvalid = true;
+                $figmaInvalid = false;
             } else {
               // Cek apakah sudah ada submisi
                     if ($submission) {
+
                         // Update
                         $update = $sub->updateSubmission($submission['id'], $figma_link, $docs_link);
                         if ($update) {
@@ -67,8 +118,8 @@ class DashboardController extends Controller
         }
            
     // Deadline Calculation
-    $settingModel = new Setting();
-    $deadline = $settingModel->getSubmissionDeadline();
+    $submissionModel = new Submissions();
+    $deadline = $submissionModel->getSubmissionDeadline();
         if (empty($deadline)) {
             $formattedDeadline = 'Tidak Ada Batas Waktu';
             $remainingText     = 'Tanpa Tenggat Waktu';
@@ -97,16 +148,40 @@ class DashboardController extends Controller
             }
         }
 
+        // Submission Status And Feedback
+        if($submission){
+            $scoreUi  = (float)($submission['score_ui']);
+            $scoreUx = (float)($submission['score_ux']);
+            $scoreFigma = (float)($submission['score_figma']);
+
+            if($scoreUi > 0 || $scoreUx > 0 || $scoreFigma > 0){
+                $statusEvaluasi = 'Sudah Dinilai';
+                $classEvaluasi = 'text-success bg-success/10 border-success/20';
+            }
+            
+            if(!empty($submission['feedback'])){
+                $feedbackText = $submission['feedback'];
+            }
+            
+            if(!empty($submission['updated_at'])){
+                $submissionUpdatedAt = date('d M Y - H:i', strtotime($submission['updated_at'])) . ' WIB';
+            }
+        }
 
         $this->view('participant/submission', [
             'title' => 'Pengumpulan Karya - Designova',
             'submission' => $submission,
             'error' => $error,
             'success' => $success,
+            'figmaInvalid' => $figmaInvalid,
+            'docsInvalid' => $docsInvalid,
             'formattedDeadline' => $formattedDeadline,
             'remainingText' => $remainingText,
-            'remainingClass' => $remainingClass, 
+            'remainingClass' => $remainingClass,
+            'statusEvaluasi' => $statusEvaluasi,
+            'classEvaluasi' => $classEvaluasi,
+            'feedbackText' => $feedbackText,
+            'submissionUpdatedAt' => $submissionUpdatedAt
         ]);
     }
 }
-
