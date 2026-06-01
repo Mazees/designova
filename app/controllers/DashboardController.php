@@ -36,14 +36,30 @@ class DashboardController extends Controller
         $sub = new Submissions();
         $error = '';
         $success = '';
+
+        $figmaInvalid = false;
+        $figmalinkPattern = '/^(https?:\/\/)?(www\.)?figma\.com\/(file|design|proto)\/.+$/';
+        $docsInvalid = false;
+        $docslinkPattern = '/^(https?:\/\/)?(docs\.google\.com\/document\/d\/)[a-zA-Z0-9_-]{10,}\/?.*$/';
+
         $submission = $team ? $sub->getSubmission($team['id']) : null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $team) {
             $figma_link = $_POST['figma_link'] ?? '';
             $docs_link = $_POST['docs_link'] ?? '';
 
+            // Validasi Link figma dan docs
             if (empty($figma_link) || empty($docs_link)) {
                 $error = 'Semua field wajib diisi!';
+            // Validasi pattern link figma dan docs
+            } elseif (!preg_match($figmalinkPattern, $figma_link)) {
+                $error = 'Bukan URL Figma yang valid!';
+                $figmaInvalid = true;
+                $docsInvalid = false;
+            } elseif(!preg_match($docslinkPattern,$docs_link)){
+                $error = 'Bukan URL Google Docs yang valid!';
+                $docsInvalid = true;
+                $figmaInvalid = false;
             } else {
               // Cek apakah sudah ada submisi
                     if ($submission) {
@@ -103,10 +119,11 @@ class DashboardController extends Controller
             'submission' => $submission,
             'error' => $error,
             'success' => $success,
+            'figmaInvalid' => $figmaInvalid,
+            'docsInvalid' => $docsInvalid,
             'formattedDeadline' => $formattedDeadline,
             'remainingText' => $remainingText,
             'remainingClass' => $remainingClass, 
         ]);
     }
 }
-

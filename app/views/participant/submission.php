@@ -99,9 +99,13 @@ $hasSubmitted = (isset($submission) && $submission !== null);
                             </span>
                             <input type="url" required name="figma_link"
                                 value="<?= htmlspecialchars($submission['figma_link'] ?? ''); ?>"
-                                class="input input-bordered w-full pl-11 text-xs h-12 font-medium bg-base-200/40 border-base-300 focus:border-primary/80 focus:ring-1 focus:ring-primary/40 rounded-xl"
+                                class="input validator input-bordered w-full pl-11 text-xs h-12 font-medium bg-base-200/40 border-base-300 focus:border-primary/80 focus:ring-1 focus:ring-primary/40 rounded-xl"
+                                pattern="^(https?:\/\/)?(www\.)?figma\.com\/(file|design|proto)\/.+$"
                                 placeholder="https://www.figma.com/proto/..." />
                         </div>
+                        <?php if ($figmaInvalid): ?>    
+                            <p class="text-xs font-black text-error block mt-2">Bukan URL Figma yang valid!</p>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Google Docs Link -->
@@ -127,9 +131,13 @@ $hasSubmitted = (isset($submission) && $submission !== null);
                             </span>
                             <input type="url" required name="docs_link"
                                 value="<?= htmlspecialchars($submission['docs_link'] ?? ''); ?>"
-                                class="input input-bordered w-full pl-11 text-xs h-12 font-medium bg-base-200/40 border-base-300 focus:border-primary/80 focus:ring-1 focus:ring-primary/40 rounded-xl"
-                                placeholder="https://drive.google.com/drive/folders/..." />
+                                class="input validator input-bordered w-full pl-11 text-xs h-12 font-medium bg-base-200/40 border-base-300 focus:border-primary/80 focus:ring-1 focus:ring-primary/40 rounded-xl"
+                                pattern="^(https?:\/\/)?(docs\.google\.com\/document\/d\/)[a-zA-Z0-9_-]{10,}\/?.*$"
+                                placeholder="https://docs.google.com/document/d/..." />
                         </div>
+                        <?php if ($docsInvalid): ?>
+                            <p class="text-xs font-black text-error block mt-2">Bukan URL Google Docs yang valid!</p>
+                        <?php endif; ?>
                     </div>
 
                     <div
