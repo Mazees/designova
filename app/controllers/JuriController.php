@@ -23,6 +23,7 @@ class JuriController extends Controller
         
         // 1. Inisialisasi Model yang dibutuhkan
         $teamModel = new Team();
+        $userModel = new User();
         // Anda mungkin butuh ReviewModel jika menggunakan class model terpisah untuk penilaian
         // $reviewModel = new Review(); 
 
@@ -67,10 +68,15 @@ class JuriController extends Controller
             header('Location: ' . BASE_URL . '/juri/dashboard');
             exit;
         }
+        
+        $userData = $userModel->findById($teamData['user_id']);
+        $leaderName = $userData['name'];
+        // Mengubah string json '["Lola", "Lala"]' dari DB menjadi Array PHP asli
 
         $this->view('juri/review', [
             'title' => 'Form Penilaian Karya Tim #' . htmlspecialchars($team_id),
-            'team'  => $teamData // Mengirim array/object detail tim ke view
+            'team'  => $teamData, // Mengirim array/object detail tim ke view
+            'leaderName' => $leaderName,
         ]);
     }
 }
