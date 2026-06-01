@@ -276,7 +276,7 @@ $hasSubmitted = (isset($submission) && $submission !== null);
                         <!-- Status Badge -->
                         <div>
                             <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-[10px] font-bold <?= !empty($classEvaluasi) ? $classEvaluasi : '' ?>">
-                                <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+                                <span class="w-4.5 h-4.5 rounded-full bg-current"></span>
                                 <?= !empty($statusEvaluasi) ? $statusEvaluasi : '' ?>
                             </div>
                         </div>
