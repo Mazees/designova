@@ -164,8 +164,9 @@ Berikut adalah status terkini pengembangan fitur di codebase:
 - **[✓] Alur Autentikasi**: Halaman register tim, login multi-role, dan logout terhubung penuh dengan tabel `users` dan `teams`.
 - **[✓] Alur Pembayaran & QRIS**: Integrasi `QrisService` berjalan mulus untuk menghasilkan visualisasi QR code pendaftaran dinamis di halaman `/payment`.
 - **[✓] Alur Status Pembayaran**: Halaman `/payment` memiliki step status pembayaran yang persisten, menampilkan ID pembayaran, status, nama pengirim, bank pengirim, dan tombol konfirmasi via WhatsApp.
-- **[✓] Pengumpulan Karya (Submisi)**: Halaman `/submission` dapat memasukkan/mengupdate link Figma dan GDrive langsung ke tabel `submissions`.
+- **[✓] Pengumpulan Karya (Submisi)**: Halaman `/submission` melayani pengunggahan link Figma dan GDrive dengan **validasi Regex ganda** (HTML5 `pattern` & PHP `preg_match`). Dilengkapi fitur perhitungan mundur deadline otomatis, serta menampilkan kartu **Status Penilaian** yang responsif (menampilkan apakah karya sudah dinilai, _feedback_ dari dewan juri, beserta SVG icons dan timestamp pembaruan).
 - **[✓] Dashboard Admin & Juri**: Halaman juri (`/juri/*`) dan halaman admin (`/admin/*`) kini telah terintegrasi secara dinamis dengan query SQL nyata (seperti manajemen peserta, verifikasi pembayaran manual, formulir penilaian juri, leaderboard dengan ekspor CSV, dan pengaturan sistem).
+- **[✓] Standar Kode & MVC Bersih**: Seluruh logika kalkulasi kompleks (seperti sisa hari deadline, penentuan CSS classes dinamis, atau status penilaian) diisolasi dengan rapi di dalam _Controller_. _View_ hanya bertugas merender data yang divalidasi dengan operator _null-coalescing_ atau pengecekan `!empty()` guna menghindari _undefined variables warning_.
 
 ---
 
@@ -180,17 +181,25 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek Designova di komputer lok
 - **Database**: MySQL / MariaDB.
 - **Modul Apache**: `mod_rewrite` harus dalam keadaan aktif.
 
-### 2. Impor Database
+### 2. Migrasi & Impor Database Otomatis
 
-1.  Buka phpMyAdmin atau client SQL pilihan Anda (HeidiSQL/DBeaver).
-2.  Buat database baru bernama `designova`.
-3.  Impor berkas [db.sql](file:///D:/laragon/www/designova/db.sql) ke dalam database tersebut.
-4.  Masukkan data konfigurasi awal (default) untuk pengaturan lomba ke tabel `settings`:
-    ```sql
-    INSERT INTO settings (id, is_registration_open, base_price, submission_deadline, is_winner_published)
-    VALUES (1, TRUE, 50000, '2026-06-30 23:59:59', FALSE);
-    ```
-5.  _(Opsional)_ Buat admin awal lewat script CLI [create_admin.php](file:///D:/laragon/www/designova/create_admin.php) atau daftarkan user manual lalu ubah kolom `role` di database menjadi `'admin'` atau `'juri'`.
+Proyek ini dilengkapi dengan skrip **`migrate.php`** yang berfungsi mengeksekusi file `db.sql` secara otomatis. Skrip ini akan membuat database `designova` (jika belum ada), membuat seluruh tabel relasional, serta melakukan _seeding_ data awal (seperti pengaturan lomba, akun admin, akun peserta dummy, dan tim beserta karyanya).
+
+Anda memiliki dua opsi mudah untuk menjalankan migrasi ini:
+
+**Opsi A: Melalui CLI (Command Line)**
+Buka terminal di direktori root proyek dan jalankan:
+```bash
+php migrate.php
+```
+
+**Opsi B: Melalui Web Browser**
+Buka URL berikut di browser Anda:
+```text
+http://localhost/designova/migrate.php
+```
+
+Skrip akan memberikan laporan visual/teks mengenai jumlah _statement_ SQL yang berhasil dieksekusi atau error yang terjadi. Setelah migrasi sukses, database siap digunakan sepenuhnya!
 
 ### 3. Buat Admin Awal dengan Script CLI
 
