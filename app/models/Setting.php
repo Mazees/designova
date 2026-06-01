@@ -35,18 +35,6 @@ class Setting
         return [];
     }
 
-    public function getSubmissionDeadline()
-    {
-        if ($this->conn) {
-            $result = $this->conn->query("SELECT submission_deadline FROM settings WHERE id = 1 LIMIT 1");
-            if ($result) {
-                $result = $result->fetch_assoc();
-                return $result['submission_deadline'];
-            }
-        }
-        return [];
-    }
-
     public function updateSettings(bool $isRegOpen, bool $isWinnerPub, int $basePrice, string $submissionDeadline): bool
     {
         if ($this->conn) {

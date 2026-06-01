@@ -104,10 +104,10 @@
                         <li class="step step-primary">
                             Registrasi Akun & Tim</li>
                         <li class="step step-primary">Pembayaran & Aktivasi Tim</li>
-                        <li class="step <?= (isset($hasSubmitted) ? $hasSubmitted : '') ? 'step-primary' : '' ?>">
+                        <li class="step step-primary">
                             Pengumpulan
                             Karya</li>
-                        <li class="step">Proses Penilaian Juri</li>
+                        <li class="step <?= (isset($hasSubmitted) ? $hasSubmitted : '') ? 'step-primary' : '' ?>">Proses Penilaian Juri</li>
                         <li class="step">Pengumuman Pemenang</li>
                     </ul>
                 </div>
