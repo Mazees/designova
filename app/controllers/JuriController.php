@@ -28,9 +28,7 @@ class JuriController extends Controller
         // $reviewModel = new Review(); 
 
         // 2. JIKA ADA KIRIMAN FORM (METHOD POST)
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            header('Content-Type: application/json');
-
+        if (isset($_POST['submit-review'])) {
             // Ambil dan sanitasi data input
             $ui_score    = filter_input(INPUT_POST, 'ui_score', FILTER_VALIDATE_INT);
             $ux_score    = filter_input(INPUT_POST, 'ux_score', FILTER_VALIDATE_INT);
@@ -43,20 +41,22 @@ class JuriController extends Controller
                 $figma_score === false || $figma_score < 0 || $figma_score > 100 || 
                 empty($feedback)) {
                     
-                echo json_encode(['status' => 'error', 'message' => 'Semua kolom nilai dan ulasan wajib diisi dengan benar!']);
+                $_SESSION['flash'] = 'Semua kolom nilai dan ulasan wajib diisi dengan benar!';
+                header('Location: ' . BASE_URL . '/juri/review/' . $team_id);
                 exit;
             }
 
-            // Simpan ke database (Asumsi Anda punya method saveReview di Team model atau Review model)
-            // Sesuaikan baris ini dengan arsitektur model internal Anda
-            $saveStatus = $teamModel->reviewSubmission($team_id, $ui_score, $ux_score, $figma_score, $feedback);
+            $submissionModel = new Submissions();
+            $saveStatus = $submissionModel->reviewSubmission($team_id, $ui_score, $ux_score, $figma_score, $feedback);
 
             if ($saveStatus) {
-                echo json_encode(['status' => 'success', 'message' => 'Penilaian berhasil disimpan!']);
+                $_SESSION['flash'] = 'Penilaian berhasil disimpan!';
+                header('Location: ' . BASE_URL . '/juri/dashboard');
             } else {
-                echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan data ke database.']);
+                $_SESSION['flash'] = 'Gagal menyimpan data ke database.';
+                header('Location: ' . BASE_URL . '/juri/review/' . $team_id);
             }
-            exit; // Hentikan script agar tidak me-render view saat request berupa AJAX POST
+            exit;
         }
 
         // 3. JIKA HANYA MEMBUKA HALAMAN (METHOD GET)

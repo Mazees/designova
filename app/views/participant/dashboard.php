@@ -16,6 +16,62 @@
         </div>
     </div>
 
+    <?php if (isset($isWinnerPub) && $isWinnerPub): ?>
+    <!-- Top 5 Winners Section -->
+    <div class="card bg-base-100 border border-primary/20 shadow-sm shadow-primary/5 rounded-3xl" data-aos="fade-up">
+        <div class="card-body p-8">
+            <div class="text-center mb-6">
+                <span class="badge badge-primary badge-sm font-black tracking-widest uppercase mb-2">Pengumuman Pemenang</span>
+                <h3 class="text-3xl font-black text-neutral-content tracking-tight">Leaderboard Top 5</h3>
+                <p class="text-xs text-gray-400 font-medium mt-2">Selamat kepada tim-tim terbaik! Terima kasih atas partisipasi Anda.</p>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="table w-full">
+                    <thead>
+                        <tr class="bg-base-200 border-b border-base-300 text-gray-500 text-[10px] font-black uppercase tracking-wider">
+                            <th class="py-4 pl-8 text-center w-16">Peringkat</th>
+                            <th class="py-4">Nama Tim</th>
+                            <th class="py-4 text-right pr-8">Skor Akhir</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-base-200 text-xs font-semibold text-gray-700">
+                        <?php if (!empty($topTeams)): ?>
+                            <?php $rank = 1; foreach ($topTeams as $teamTop): ?>
+                            <?php 
+                                $badgeClass = match ($rank) {
+                                    1 => 'badge-primary text-primary-content shadow-sm',
+                                    2 => 'badge-secondary text-secondary-content shadow-sm',
+                                    3 => 'badge-accent text-accent-content shadow-sm',
+                                    default => 'bg-base-300 text-base-content/75 border-none'
+                                };
+                            ?>
+                            <tr class="hover:bg-base-200/40 transition-colors">
+                                <td class="py-4 pl-8 text-center">
+                                    <div class="badge <?= $badgeClass; ?> font-black text-xs w-6 h-6 p-0 rounded-lg flex items-center justify-center">
+                                        <?= $rank++; ?>
+                                    </div>
+                                </td>
+                                <td class="py-4 font-extrabold text-neutral-content text-sm">
+                                    <?= htmlspecialchars($teamTop['team_name'] ?? '-'); ?>
+                                </td>
+                                <td class="py-4 pr-8 text-right font-black text-primary">
+                                    <?= number_format((float) ($teamTop['final_score'] ?? 0), 2); ?>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="3" class="py-8 text-center text-gray-400">Belum ada data pemenang.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+
     <!-- Main Grid Layout -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
@@ -108,7 +164,7 @@
                             Pengumpulan
                             Karya</li>
                         <li class="step <?= (isset($hasSubmitted) ? $hasSubmitted : '') ? 'step-primary' : '' ?>">Proses Penilaian Juri</li>
-                        <li class="step">Pengumuman Pemenang</li>
+                        <li class="step <?= (isset($isWinnerPub) && $isWinnerPub) ? 'step-primary' : '' ?>">Pengumuman Pemenang</li>
                     </ul>
                 </div>
             </div>

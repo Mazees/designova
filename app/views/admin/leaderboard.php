@@ -16,9 +16,54 @@
             class="card-body p-6 border-b border-base-200 flex flex-col sm:flex-row sm:justify-between sm:items-center bg-base-50/10 gap-4">
             <h3 class="card-title text-sm font-black text-neutral-content uppercase tracking-wider">Klasemen Nilai
                 Teratas</h3>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2" x-data="{
+                exportCSV() {
+                    const rows = [];
+                    const headers = ['Peringkat', 'Nama Tim', 'UI / Visual (50%)', 'UX / Flow (40%)', 'Figma (10%)', 'Skor Akhir'];
+                    rows.push(headers.join(','));
+
+                    const tableRows = document.querySelectorAll('tbody tr');
+                    if (tableRows.length === 0 || tableRows[0].querySelector('td').colSpan > 1) {
+                        Swal.fire({
+                            title: 'Ekspor Gagal',
+                            text: 'Tidak ada data klasemen untuk diekspor.',
+                            icon: 'info',
+                            confirmButtonText: 'OK',
+                            buttonsStyling: false,
+                            customClass: {
+                                popup: '!rounded-[24px] !p-6 !bg-neutral',
+                                title: '!text-2xl !font-bold !text-white',
+                                htmlContainer: '!text-white',
+                                confirmButton: 'btn btn-primary px-6 !text-white'
+                            }
+                        });
+                        return;
+                    }
+
+                    tableRows.forEach(row => {
+                        const cols = row.querySelectorAll('td');
+                        const rank = cols[0].innerText.trim();
+                        const teamName = cols[1].innerText.trim();
+                        const ui = cols[2].innerText.trim();
+                        const ux = cols[3].innerText.trim();
+                        const figma = cols[4].innerText.trim();
+                        const finalScore = cols[5].innerText.trim();
+
+                        rows.push([rank, `\x22${teamName}\x22`, ui, ux, figma, finalScore].join(','));
+                    });
+
+                    const csvContent = 'data:text/csv;charset=utf-8,' + rows.join('\n');
+                    const encodedUri = encodeURI(csvContent);
+                    const link = document.createElement('a');
+                    link.setAttribute('href', encodedUri);
+                    link.setAttribute('download', 'Leaderboard_Designova.csv');
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            }">
                 <!-- Refresh Button -->
-                <button onclick="window.location.reload()"
+                <button @click="window.location.reload()"
                     class="btn btn-outline border-base-300 hover:border-primary btn-sm font-bold px-4 h-9 min-h-0 rounded-xl flex items-center gap-2 transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
                         <path d="M0 0h24v24H0z" fill="none" />
@@ -29,7 +74,7 @@
                     Refresh
                 </button>
                 <!-- Export CSV Button -->
-                <button onclick="exportCSV()"
+                <button @click="exportCSV()"
                     class="btn btn-primary btn-sm text-primary-content font-bold px-5 h-9 min-h-0 rounded-xl flex items-center gap-2">
                     Ekspor CSV
                 </button>
@@ -104,52 +149,5 @@
         </div>
     </div>
 </div>
-
-<script>
-    function exportCSV() {
-        const rows = [];
-        const headers = ["Peringkat", "Nama Tim", "UI / Visual (50%)", "UX / Flow (40%)", "Figma (10%)", "Skor Akhir"];
-        rows.push(headers.join(","));
-
-        const tableRows = document.querySelectorAll("tbody tr");
-        if (tableRows.length === 0 || tableRows[0].querySelector("td").colSpan > 1) {
-            Swal.fire({
-                title: 'Ekspor Gagal',
-                text: 'Tidak ada data klasemen untuk diekspor.',
-                icon: 'info',
-                confirmButtonText: 'OK',
-                buttonsStyling: false,
-                customClass: {
-                    popup: '!rounded-[24px] !p-6 !bg-neutral',
-                    title: '!text-2xl !font-bold !text-white',
-                    htmlContainer: '!text-white',
-                    confirmButton: 'btn btn-primary px-6 !text-white'
-                }
-            });
-            return;
-        }
-
-        tableRows.forEach(row => {
-            const cols = row.querySelectorAll("td");
-            const rank = cols[0].innerText.trim();
-            const teamName = cols[1].innerText.trim();
-            const ui = cols[2].innerText.trim();
-            const ux = cols[3].innerText.trim();
-            const figma = cols[4].innerText.trim();
-            const finalScore = cols[5].innerText.trim();
-
-            rows.push([rank, `"${teamName}"`, ui, ux, figma, finalScore].join(","));
-        });
-
-        const csvContent = "data:text/csv;charset=utf-8," + rows.join("\n");
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "Leaderboard_Designova.csv");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-</script>
 
 <?php require_once '../app/views/layouts/footer.php'; ?>
