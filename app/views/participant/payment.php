@@ -202,7 +202,7 @@ $senderBankValue = $senderBankValue ?? '-';
                                 sedang menunggu verifikasi
                                 admin:</span>
                         </div>
-                        <div class="badge badge-xs <?= $statusBadgeClass; ?> border-none font-bold text-white">
+                        <div class="badge badge-xs <?= $statusBadgeClass; ?> whitespace-nowrap border-none font-bold text-white">
                             <?= htmlspecialchars($statusLabel, ENT_QUOTES); ?>
                         </div>
                     </div>

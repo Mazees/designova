@@ -67,6 +67,32 @@ class Submissions
         }
         return false;
     }
+
+    public function reviewSubmission($teamId, $uiScore, $uxScore, $figmaScore, $feedback)
+    {
+        $teamId = trim((string) $teamId);
+        $uiScore = (float) $uiScore;
+        $uxScore = (float) $uxScore;
+        $figmaScore = (float) $figmaScore;
+        $feedback = trim((string) $feedback);
+
+        $finalScore = ($uiScore * 0.5) + ($uxScore * 0.4) + ($figmaScore * 0.1);
+
+        if ($this->conn) {
+            $query = $this->conn->prepare("UPDATE submissions
+            SET score_ui = ?, score_ux = ?, score_figma = ?, final_score = ?, feedback = ?
+            WHERE team_id = ?");
+
+            $query->bind_param("ddddss", $uiScore, $uxScore, $figmaScore, $finalScore, $feedback, $teamId);
+            $execute = $query->execute();
+
+            if ($execute) {
+                $query->close();
+                return true;
+            }
+        }
+        return false;
+    }
     public function checkSubmission($teamId)
     {
         if ($this->conn) {

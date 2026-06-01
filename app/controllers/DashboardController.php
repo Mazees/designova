@@ -23,6 +23,16 @@ class DashboardController extends Controller
         $feedbackText = 'Belum Ada';
         $submissionUpdatedAt = '-';
 
+        $settingModel = new Setting();
+        $settings = $settingModel->getSystemSettings();
+        $isWinnerPub = (isset($settings['is_winner_published']) && $settings['is_winner_published'] == 1);
+
+        $topTeams = [];
+        if ($isWinnerPub) {
+            $subModel = new Submissions();
+            $topTeams = $subModel->getTopTeams(5);
+        }
+
         if ($submission) {
             $scoreUi  = (float)($submission['score_ui']);
             $scoreUx = (float)($submission['score_ux']);
@@ -52,7 +62,9 @@ class DashboardController extends Controller
             'statusEvaluasi' => $statusEvaluasi,
             'classEvaluasi' => $classEvaluasi,
             'feedbackText' => $feedbackText,
-            'submissionUpdatedAt' => $submissionUpdatedAt
+            'submissionUpdatedAt' => $submissionUpdatedAt,
+            'isWinnerPub' => $isWinnerPub,
+            'topTeams' => $topTeams
         ]);
     }
 
@@ -66,9 +78,7 @@ class DashboardController extends Controller
         $success = '';
 
         $figmaInvalid = false;
-        $figmalinkPattern = '/^(https?:\/\/)?(www\.)?figma\.com\/(file|design|proto)\/.+$/';
         $docsInvalid = false;
-        $docslinkPattern = '/^(https?:\/\/)?(docs\.google\.com\/document\/d\/)[a-zA-Z0-9_-]{10,}\/?.*$/';
 
         
         $submission = $team ? $sub->getSubmission($team['id']) : null;
@@ -85,15 +95,6 @@ class DashboardController extends Controller
             // Validasi Link figma dan docs
             if (empty($figma_link) || empty($docs_link)) {
                 $error = 'Semua field wajib diisi!';
-            // Validasi pattern link figma dan docs
-            } elseif (!preg_match($figmalinkPattern, $figma_link)) {
-                $error = 'Bukan URL Figma yang valid!';
-                $figmaInvalid = true;
-                $docsInvalid = false;
-            } elseif(!preg_match($docslinkPattern,$docs_link)){
-                $error = 'Bukan URL Google Docs yang valid!';
-                $docsInvalid = true;
-                $figmaInvalid = false;
             } else {
               // Cek apakah sudah ada submisi
                     if ($submission) {
