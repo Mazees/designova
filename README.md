@@ -222,7 +222,22 @@ Script ini akan otomatis melakukan hal berikut:
 3. Memperbarui nama, password, dan mengubah role menjadi `admin` jika email sudah terdaftar.
 4. Menampilkan detail akun admin yang berhasil dibuat/diperbarui.
 
-### 4. Buat Akun Peserta Massal (Bulk 10 Akun) untuk Testing
+### 4. Buat Akun Juri Awal dengan Script CLI
+
+Sama halnya dengan pembuatan admin, Anda dapat membuat atau memperbarui akun Dewan Juri via CLI secara mudah:
+
+Jalankan perintah default (menggunakan data juri default):
+```bash
+php create_juri.php
+```
+*Data default: Nama = "Dewan Juri", Email = "juri@designova.local", Password = "password123"*
+
+Atau gunakan argumen kustom:
+```bash
+php create_juri.php "Nama Juri" "juri@domain.com" "password_baru"
+```
+
+### 5. Buat Akun Peserta Massal (Bulk 10 Akun) untuk Testing
 
 Untuk mempermudah pengujian alur verifikasi pembayaran admin, penilaian juri, leaderboard, dan pengunggahan submisi peserta, Anda dapat membuat 10 akun peserta beserta data timnya secara otomatis dengan menjalankan perintah berikut di direktori root:
 
