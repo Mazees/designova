@@ -185,21 +185,13 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek Designova di komputer lok
 
 Proyek ini dilengkapi dengan skrip **`migrate.php`** yang berfungsi mengeksekusi file `db.sql` secara otomatis. Skrip ini akan membuat database `designova` (jika belum ada), membuat seluruh tabel relasional, serta melakukan _seeding_ data awal (seperti pengaturan lomba, akun admin, akun peserta dummy, dan tim beserta karyanya).
 
-Anda memiliki dua opsi mudah untuk menjalankan migrasi ini:
+Untuk menjalankan migrasi ini, buka terminal (Command Prompt/PowerShell) di direktori root proyek dan jalankan perintah berikut:
 
-**Opsi A: Melalui CLI (Command Line)**
-Buka terminal di direktori root proyek dan jalankan:
 ```bash
 php migrate.php
 ```
 
-**Opsi B: Melalui Web Browser**
-Buka URL berikut di browser Anda:
-```text
-http://localhost/designova/migrate.php
-```
-
-Skrip akan memberikan laporan visual/teks mengenai jumlah _statement_ SQL yang berhasil dieksekusi atau error yang terjadi. Setelah migrasi sukses, database siap digunakan sepenuhnya!
+Skrip akan memberikan laporan teks di terminal mengenai jumlah _statement_ SQL yang berhasil dieksekusi atau error yang terjadi. Setelah migrasi sukses, database siap digunakan sepenuhnya!
 
 ### 3. Buat Admin Awal dengan Script CLI
 
