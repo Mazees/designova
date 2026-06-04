@@ -50,7 +50,8 @@
                                     class="label-text font-black text-[10px] uppercase text-gray-500 tracking-wider">UI
                                     / Visual (50%)</span>
                             </label>
-                            <input type="number" name="ui_score" min="0" max="100" required
+                            <input type="number" name="ui_score" min="0" max="100" step="any" required
+                                value="<?= isset($team['score_ui']) ? htmlspecialchars($team['score_ui']) : '' ?>"
                                 class="input input-bordered w-full text-xs h-11 font-medium bg-base-200/30 focus:outline-none focus:border-primary rounded-xl"
                                 placeholder="Skor 1-100" />
                         </div>
@@ -62,7 +63,8 @@
                                     class="label-text font-black text-[10px] uppercase text-gray-500 tracking-wider">UX
                                     / Flow (40%)</span>
                             </label>
-                            <input type="number" name="ux_score" min="0" max="100" required
+                            <input type="number" name="ux_score" min="0" max="100" step="any" required
+                                value="<?= isset($team['score_ux']) ? htmlspecialchars($team['score_ux']) : '' ?>"
                                 class="input input-bordered w-full text-xs h-11 font-medium bg-base-200/30 focus:outline-none focus:border-primary rounded-xl"
                                 placeholder="Skor 1-100" />
                         </div>
@@ -74,7 +76,8 @@
                                     class="label-text font-black text-[10px] uppercase text-gray-500 tracking-wider">Kerapian
                                     Figma (10%)</span>
                             </label>
-                            <input type="number" name="figma_score" min="0" max="100" required
+                            <input type="number" name="figma_score" min="0" max="100" step="any" required
+                                value="<?= isset($team['score_figma']) ? htmlspecialchars($team['score_figma']) : '' ?>"
                                 class="input input-bordered w-full text-xs h-11 font-medium bg-base-200/30 focus:outline-none focus:border-primary rounded-xl"
                                 placeholder="Skor 1-100" />
                         </div>
@@ -89,7 +92,7 @@
                         </label>
                         <textarea name="feedback" required
                             class="textarea textarea-bordered w-full text-xs h-28 font-medium leading-relaxed bg-base-200/30 focus:outline-none focus:border-primary rounded-xl"
-                            placeholder="Berikan ulasan detail mengenai aspek desain yang sudah baik serta area yang perlu diperbaiki"></textarea>
+                            placeholder="Berikan ulasan detail mengenai aspek desain yang sudah baik serta area yang perlu diperbaiki"><?= isset($team['feedback']) ? htmlspecialchars($team['feedback']) : '' ?></textarea>
                     </div>
 
                     <!-- SubmBukan URL Google Docs yang valid!it Actions -->

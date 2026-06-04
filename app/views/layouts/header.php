@@ -18,6 +18,7 @@ $is_dashboard = (
     <meta name="description"
         content="Designova — Platform kompetisi UI/UX nasional paling prestisius. Tunjukkan skill desainmu dan raih kesempatan karir di industri teknologi.">
     <title><?= isset($title) ? htmlspecialchars($title) : 'Designova'; ?></title>
+    <link rel="icon" type="image/svg+xml" href="<?= BASE_URL; ?>/assets/icon.svg">
     <!-- Compiled Tailwind CSS v4 + DaisyUI -->
     <link href="<?= BASE_URL; ?>/src/output.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -63,7 +64,8 @@ $is_dashboard = (
                                     </svg>
                                 </label>
                             </div>
-                            <div class="flex-1 ml-2">
+                            <div class="flex-1 ml-2 flex items-center gap-2">
+                                <img src="<?= BASE_URL; ?>/assets/icon.svg" alt="Designova Icon" class="w-6 h-6">
                                 <span class="text-lg font-black text-accent">DESIGNOVA</span>
                             </div>
                             <div class="flex-none">
@@ -121,7 +123,10 @@ $is_dashboard = (
                                         </div>
                                         <!-- Logo -->
                                         <a href="<?= BASE_URL; ?>/"
-                                            class="text-2xl font-black tracking-wider text-primary">DESIGNOVA</a>
+                                            class="text-2xl font-black tracking-wider text-primary flex items-center gap-2">
+                                            <img src="<?= BASE_URL; ?>/assets/icon.svg" alt="Designova Icon" class="w-8 h-8">
+                                            DESIGNOVA
+                                        </a>
                                     </div>
                                     <div class="navbar-center hidden lg:flex">
                                         <ul class="menu menu-horizontal px-1 gap-1">
