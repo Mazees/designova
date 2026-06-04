@@ -95,6 +95,12 @@ confirmLogout() {
 }" class="w-72 bg-base-100 min-h-screen border-r border-base-200 flex flex-col justify-between">
     <!-- Top: Logo + User Profile -->
     <div>
+        <!-- Brand Logo -->
+        <div class="px-7 pt-7 pb-1 flex items-center gap-3">
+            <img src="<?= BASE_URL; ?>/assets/icon.svg" alt="Designova Icon" class="w-8 h-8">
+            <span class="text-2xl font-black tracking-wider text-primary">DESIGNOVA</span>
+        </div>
+
         <!-- User Card -->
         <div class="px-4 py-4 mx-3 mt-4 mb-2 bg-base-200 border border-base-200 rounded-2xl">
             <div class="flex items-center gap-3">

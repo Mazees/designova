@@ -8,7 +8,7 @@ class JuriController extends Controller
         
         // Memanggil model dan mengambil data (Gunakan 'new Team()')
         $teamModel = new Team();
-        $teams = $teamModel->getAll();
+        $teams = $teamModel->getAllWithSubmissions();
         
         // Memanggil View dan mengirimkan data '$teams' ke tampilan dashboard
         $this->view('juri/dashboard', [
@@ -30,9 +30,9 @@ class JuriController extends Controller
         // 2. JIKA ADA KIRIMAN FORM (METHOD POST)
         if (isset($_POST['submit-review'])) {
             // Ambil dan sanitasi data input
-            $ui_score    = filter_input(INPUT_POST, 'ui_score', FILTER_VALIDATE_INT);
-            $ux_score    = filter_input(INPUT_POST, 'ux_score', FILTER_VALIDATE_INT);
-            $figma_score = filter_input(INPUT_POST, 'figma_score', FILTER_VALIDATE_INT);
+            $ui_score    = filter_input(INPUT_POST, 'ui_score', FILTER_VALIDATE_FLOAT);
+            $ux_score    = filter_input(INPUT_POST, 'ux_score', FILTER_VALIDATE_FLOAT);
+            $figma_score = filter_input(INPUT_POST, 'figma_score', FILTER_VALIDATE_FLOAT);
             $feedback    = filter_input(INPUT_POST, 'feedback', FILTER_SANITIZE_SPECIAL_CHARS);
 
             // Validasi range nilai 0 - 100

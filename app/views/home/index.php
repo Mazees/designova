@@ -1,7 +1,7 @@
 <?php require_once '../app/views/layouts/header.php'; ?>
 
 <!-- Hero Section -->
-<section class="relative h-[calc(100vh-64px)] bg-base-100 py-20 lg:py-32 overflow-hidden border-b border-base-200">
+<section class="relative flex items-center justify-center flex-col h-[calc(100vh-64px)] bg-base-100 py-20 lg:py-32 overflow-hidden border-b border-base-200">
 
     <div class="container mx-auto px-6 max-w-5xl relative z-10 text-center space-y-3" data-aos="fade-up">
         <!-- Event Badge -->

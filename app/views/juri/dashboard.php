@@ -32,19 +32,25 @@
                                 </span>
                             </td>
                             
-                            <!-- Logika Status Penilaian (Sementara statis) -->
+                            <!-- Logika Status Penilaian -->
                             <td class="py-5">
-                                <span class="badge bg-warning/15 text-warning">Belum Dinilai</span>
+                                <?php if (isset($team['final_score']) && $team['final_score'] != 0): ?>
+                                    <span class="badge bg-success/15 text-success font-bold px-3 py-1 rounded-full text-[10px]">Sudah Dinilai</span>
+                                <?php else: ?>
+                                    <span class="badge bg-warning/15 text-warning font-bold px-3 py-1 rounded-full text-[10px]">Belum Dinilai</span>
+                                <?php endif; ?>
                             </td>
                             
                            
-                            <td class="py-5 text-gray-400 font-bold">-</td>
+                            <td class="py-5 font-bold <?= (isset($team['final_score']) && $team['final_score'] != 0) ? 'text-primary' : 'text-gray-400' ?>">
+                                <?= (isset($team['final_score']) && $team['final_score'] != 0) ? htmlspecialchars($team['final_score']) : '-' ?>
+                            </td>
                             
                             <!-- Tombol Aksi -->
                             <td class="py-5 text-left">
                                 <a href="<?= BASE_URL; ?>/juri/review/<?= $team['id']; ?>" 
-                                   class="btn btn-primary btn-xs text-white">
-                                   Nilai Sekarang
+                                   class="btn w-[200px] py-4 <?= (isset($team['final_score']) && $team['final_score'] != 0) ? 'btn-primary btn' : 'btn-primary text-white' ?> btn-xs px-4 rounded-lg">
+                                   <?= (isset($team['final_score']) && $team['final_score'] != 0) ? 'Edit Nilai' : 'Nilai Sekarang' ?>
                                 </a>
                             </td>
                         </tr>

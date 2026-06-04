@@ -76,14 +76,12 @@ class Submissions
         $figmaScore = (float) $figmaScore;
         $feedback = trim((string) $feedback);
 
-        $finalScore = ($uiScore * 0.5) + ($uxScore * 0.4) + ($figmaScore * 0.1);
-
         if ($this->conn) {
             $query = $this->conn->prepare("UPDATE submissions
-            SET score_ui = ?, score_ux = ?, score_figma = ?, final_score = ?, feedback = ?
+            SET score_ui = ?, score_ux = ?, score_figma = ?, feedback = ?
             WHERE team_id = ?");
 
-            $query->bind_param("ddddss", $uiScore, $uxScore, $figmaScore, $finalScore, $feedback, $teamId);
+            $query->bind_param("dddss", $uiScore, $uxScore, $figmaScore, $feedback, $teamId);
             $execute = $query->execute();
 
             if ($execute) {
@@ -123,7 +121,7 @@ class Submissions
         return null;
     }
 
-        public function getSubmissionDeadline()
+    public function getSubmissionDeadline()
     {
         if ($this->conn) {
             $result = $this->conn->query("SELECT submission_deadline FROM settings WHERE id = 1 LIMIT 1");
