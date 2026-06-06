@@ -14,7 +14,7 @@ class AuthController extends Controller
             if ($role === 'admin') {
                 header('Location: ' . BASE_URL . '/admin/dashboard');
             } elseif ($role === 'juri') {
-                header('Location: ' . BASE_URL . '/juri/dashboard');
+                header('Location: ' . BASE_URL . '/juri/review');
             } else {
                 $team = $_SESSION['team'] ?? null;
 
@@ -48,7 +48,7 @@ class AuthController extends Controller
                 if ($role === 'admin') {
                     header('Location: ' . BASE_URL . '/admin/dashboard');
                 } elseif ($role === 'juri') {
-                    header('Location: ' . BASE_URL . '/juri/dashboard');
+                    header('Location: ' . BASE_URL . '/juri/review');
                 } else {
                     // Peserta: Ambil data tim untuk cek status
                     $teamModel = new Team();
@@ -77,7 +77,7 @@ class AuthController extends Controller
         $settingModel = new Setting();
         $settings = $settingModel->getSystemSettings();
         $isRegOpen = (!isset($settings['is_registration_open']) || $settings['is_registration_open'] == 1);
-        
+
         $error = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

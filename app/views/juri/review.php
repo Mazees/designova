@@ -5,7 +5,7 @@
     <!-- Breadcrumbs -->
     <div class="text-xs breadcrumbs text-gray-400">
         <ul>
-            <li><a href="<?= BASE_URL; ?>/juri/dashboard" class="hover:text-gray-650 transition-colors">Dashboard
+            <li><a href="<?= BASE_URL; ?>/juri/review" class=" hover:text-gray-650 transition-colors">Dashboard
                     Juri</a></li>
             <li class="text-gray-700 font-semibold">Form Penilaian</li>
         </ul>
@@ -97,8 +97,8 @@
 
                     <!-- SubmBukan URL Google Docs yang valid!it Actions -->
                     <div class="flex items-center justify-end gap-3 pt-4 border-t border-base-200">
-                        <a href="<?= BASE_URL; ?>/juri/dashboard"
-                            class="btn btn-ghost font-bold text-xs h-10 px-5 rounded-xl">
+                        <a href="<?= BASE_URL; ?>/juri/review"
+                            class=" btn btn-ghost font-bold text-xs h-10 px-5 rounded-xl">
                             Kembali
                         </a>
                         <button type="submit" name="submit-review"
@@ -205,7 +205,7 @@
                 </div>
             </div>
         </div>
-    </div>  
+    </div>
 
     <div class="card bg-base-100 border border-base-200 shadow-sm rounded-2xl overflow-hidden">
         <div class="card-body p-6 sm:p-8 gap-5">
