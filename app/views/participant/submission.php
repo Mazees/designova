@@ -101,9 +101,10 @@ $hasSubmitted = (isset($submission) && $submission !== null);
                                 value="<?= htmlspecialchars($submission['figma_link'] ?? ''); ?>"
                                 class="input validator input-bordered w-full pl-11 text-xs h-12 font-medium bg-base-200/40 border-base-300 focus:border-primary/80 focus:ring-1 focus:ring-primary/40 rounded-xl"
                                 pattern="^(https?:\/\/)?(www\.)?figma\.com\/(file|design|proto)\/.+$"
-                                placeholder="https://www.figma.com/proto/..." />
+                                placeholder="https://www.figma.com/proto/..." 
+                                <?= (isset($isDeadlinePassed) && $isDeadlinePassed) ? 'disabled' : '' ?> />
                         </div>
-                        <?php if (!empty($figmaInvalid)): ?>    
+                        <?php if (!empty($figmaInvalid)): ?>
                             <p class="text-xs font-black text-error block mt-2">Bukan URL Figma yang valid!</p>
                         <?php endif; ?>
                     </div>
@@ -120,7 +121,7 @@ $hasSubmitted = (isset($submission) && $submission !== null);
                             </svg>
 
                             <span class="label-text font-black text-sm uppercase text-gray-500 tracking-wider">
-                                Link Publikasi Laporan Google Docs</span>
+                                Link Publikasi Laporan GDocs</span>
                         </label>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
@@ -133,7 +134,8 @@ $hasSubmitted = (isset($submission) && $submission !== null);
                                 value="<?= htmlspecialchars($submission['docs_link'] ?? ''); ?>"
                                 class="input validator input-bordered w-full pl-11 text-xs h-12 font-medium bg-base-200/40 border-base-300 focus:border-primary/80 focus:ring-1 focus:ring-primary/40 rounded-xl"
                                 pattern="^(https?:\/\/)?(docs\.google\.com\/document\/d\/)[a-zA-Z0-9_-]{10,}\/?.*$"
-                                placeholder="https://docs.google.com/document/d/..." />
+                                placeholder="https://docs.google.com/document/d/..." 
+                                <?= (isset($isDeadlinePassed) && $isDeadlinePassed) ? 'disabled' : '' ?> />
                         </div>
                         <?php if (!empty($docsInvalid)): ?>
                             <p class="text-xs font-black text-error block mt-2">Bukan URL Google Docs yang valid!</p>
@@ -141,27 +143,28 @@ $hasSubmitted = (isset($submission) && $submission !== null);
                     </div>
 
                     <div
-                        class="alert bg-warning/5 border border-warning/15 text-warning text-xs p-4 gap-3.5 rounded-2xl leading-relaxed flex items-start">
-                        <div class="p-1.5 rounded-lg bg-warning/10 shrink-0 mt-0.5">
-                            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"
-                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="mt-1 text-gray-500 font-medium">
-                                <span class="font-semibold block text-base-content mb-1 text-lg uppercase">Cara Dapatkan
-                                    Link
-                                    Publikasi
-                                    Google Docs</span>
-                                <ul class="list-disc pl-5 space-y-1">
-                                    <li>Buka dokumen Anda di browser, lalu klik menu File di kiri atas.</li>
-                                    <li>Pilih Bagikan &gt; Publikasikan ke web (Publish to the web).</li>
-                                    <li>Klik tombol Publikasikan (Publish).</li>
-                                    <li>Akan muncul jendela pop-up, pilih OK untuk mengonfirmasi.</li>
-                                    <li>Salin tautan (URL) yang muncul untuk dibagikan ke publik.</li>
-                                </ul>
+                        class="alert bg-warning/5 border border-warning/15 text-warning text-xs p-4 gap-3.5 rounded-2xl leading-relaxed flex flex-col items-start">
+                        <div class="flex items-center gap-2">
+                            <div class="!h-fit w-fit p-1.5 rounded-lg bg-warning/10">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"
+                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
                             </div>
+                            <span class="font-semibold lg:text-lg text-sm block text-base-content mb-1 uppercase">Cara
+                                Mendapatkan
+                                Link
+                                Publikasi
+                                Google Docs</span>
+                        </div>
+                        <div class="mt-1 text-gray-500 font-medium">
+                            <ul class="list-disc pl-5 space-y-1 text-xs">
+                                <li>Buka dokumen Anda di browser, lalu klik menu File di kiri atas.</li>
+                                <li>Pilih Bagikan &gt; Publikasikan ke web (Publish to the web).</li>
+                                <li>Klik tombol Publikasikan (Publish).</li>
+                                <li>Akan muncul jendela pop-up, pilih OK untuk mengonfirmasi.</li>
+                                <li>Salin tautan (URL) yang muncul untuk dibagikan ke publik.</li>
+                            </ul>
                         </div>
                     </div>
 
@@ -172,7 +175,8 @@ $hasSubmitted = (isset($submission) && $submission !== null);
                             Kembali
                         </a>
                         <button type="submit"
-                            class="btn btn-primary font-black text-xs text-primary-content gap-2 px-6 rounded-xl h-10 hover:scale-[1.02] transition-transform duration-200 shadow-sm shadow-primary/20">
+                            class="btn btn-primary font-black text-xs text-primary-content gap-2 px-6 rounded-xl h-10 hover:scale-[1.02] transition-transform duration-200 shadow-sm shadow-primary/20"
+                            <?= (isset($isDeadlinePassed) && $isDeadlinePassed) ? 'disabled' : '' ?>>
                             <span><?= $hasSubmitted ? 'Perbarui Karya' : 'Kirim Karya'; ?></span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
@@ -259,58 +263,68 @@ $hasSubmitted = (isset($submission) && $submission !== null);
             <!-- Submission Status And Feedback Card -->
 
             <?php if ($hasSubmitted): ?>
-            <!-- Status Card -->
-            <div class="card bg-base-100 border border-base-200/60 shadow-sm overflow-hidden">
-                <div class="card-body p-6 gap-5">
-                    
-                    <div class="flex items-center gap-2 border-b border-base-200 pb-2.5">
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                        </svg>
-                        <span class="text-lg font-black text-gray-400 uppercase tracking-widest block">
-                            Status Penilaian
-                        </span>
-                    </div>
-                    
-                    <div class="space-y-4 text-sm mt-1">
-                        <!-- Status Badge -->
-                        <div>
-                            <div class="flex w-full items-center gap-2.5 px-4 py-2.5 rounded-lg border text-xs font-bold <?= !empty($classEvaluasi) ? $classEvaluasi : '' ?>">
-                                <span class="w-2 h-2 rounded-full bg-current"></span>
-                                <?= !empty($statusEvaluasi) ? $statusEvaluasi : '' ?>
-                            </div>
-                        </div>
+                <!-- Status Card -->
+                <div class="card bg-base-100 border border-base-200/60 shadow-sm overflow-hidden">
+                    <div class="card-body p-6 gap-5">
 
-                        <!-- Feedback -->
-                        <div>
-                            <div class="flex items-center gap-1.5 mb-1.5">
-                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                                </svg>
-                                <span class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">Feedback Juri</span>
-                            </div>
-                            <div class="bg-base-200/30 p-3 rounded-lg border border-base-200/60">
-                                <p class="text-xs text-gray-500 leading-relaxed italic">
-                                    "<?= !empty($feedbackText) ? htmlspecialchars($feedbackText) : '' ?>"
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Last Updated -->
-                        <div>
-                            <div class="flex items-center gap-1.5 mb-1">
-                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <span class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">Terakhir Diperbarui</span>
-                            </div>
-                            <span class="text-xs font-semibold text-neutral-content block pl-5">
-                                <?= !empty($submissionUpdatedAt) ? $submissionUpdatedAt : '' ?>
+                        <div class="flex items-center gap-2 border-b border-base-200 pb-2.5">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                            <span class="text-lg font-black text-gray-400 uppercase tracking-widest block">
+                                Status Penilaian
                             </span>
+                        </div>
+
+                        <div class="space-y-4 text-sm mt-1">
+                            <!-- Status Badge -->
+                            <div>
+                                <div
+                                    class="flex w-full items-center gap-2.5 px-4 py-2.5 rounded-lg border text-xs font-bold <?= !empty($classEvaluasi) ? $classEvaluasi : '' ?>">
+                                    <span class="w-2 h-2 rounded-full bg-current"></span>
+                                    <?= !empty($statusEvaluasi) ? $statusEvaluasi : '' ?>
+                                </div>
+                            </div>
+
+                            <!-- Feedback -->
+                            <div>
+                                <div class="flex items-center gap-1.5 mb-1.5">
+                                    <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                                    </svg>
+                                    <span
+                                        class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">Feedback
+                                        Juri</span>
+                                </div>
+                                <div class="bg-base-200/30 p-3 rounded-lg border border-base-200/60">
+                                    <p class="text-xs text-gray-500 leading-relaxed italic">
+                                        "<?= !empty($feedbackText) ? htmlspecialchars($feedbackText) : '' ?>"
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Last Updated -->
+                            <div>
+                                <div class="flex items-center gap-1.5 mb-1">
+                                    <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span
+                                        class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">Terakhir
+                                        Diperbarui</span>
+                                </div>
+                                <span class="text-xs font-semibold text-neutral-content block pl-5">
+                                    <?= !empty($submissionUpdatedAt) ? $submissionUpdatedAt : '' ?>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             <?php endif; ?>
 
         </div>

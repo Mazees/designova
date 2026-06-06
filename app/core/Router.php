@@ -92,8 +92,6 @@ class Router
 
     private function sendNotFound()
     {
-        header("HTTP/1.0 404 Not Found");
-        echo "<h1>404 Not Found</h1>";
-        echo "<p>Halaman yang Anda cari tidak ditemukan di server Designova.</p>";
+        require_once __DIR__ . '/../views/errors/404.php';
     }
 }

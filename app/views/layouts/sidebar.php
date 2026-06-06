@@ -10,7 +10,7 @@ $roleClass = match (strtolower($user['role'] ?? 'peserta')) {
 };
 
 // Deteksi menu aktif
-$request_uri = $_SERVER['REQUEST_URI'];
+$request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 $navbar = [
     'peserta' => [
@@ -128,7 +128,7 @@ confirmLogout() {
                     <?php foreach ($navs as $navItem): ?>
                         <li>
                             <a href="<?= BASE_URL . $navItem['route']; ?>"
-                                class="w-full rounded-xl px-4 py-2 <?= strpos($request_uri, $navItem['route']) ? 'active bg-primary text-primary-content' : 'text-base-content/70 hover:bg-base-200 hover:text-base-content'; ?>">
+                                class="w-full rounded-xl px-4 py-2 <?= strpos($request_uri, $navItem['route']) !== false ? 'active bg-primary text-primary-content' : 'text-base-content/70 hover:bg-base-200 hover:text-base-content'; ?>">
                                 <?= $navItem['icon'] ?>
                                 <span><?= $navItem['title'] ?></span>
                             </a>
