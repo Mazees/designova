@@ -67,7 +67,7 @@ $router->add('/payment', 'PaymentController', 'index', ['GET', 'POST']);
 $router->add('/submission', 'DashboardController', 'submission', ['GET', 'POST']);
 
 // 3. Halaman Juri (Dashboard Penilaian)
-$router->add('/juri/dashboard', 'JuriController', 'index', ['GET']);
+$router->add('/juri/review', 'JuriController', 'index', ['GET']);
 $router->add('/juri/leaderboard', 'AdminController', 'leaderboard', ['GET']);
 $router->add('/juri/review/{team_id}', 'JuriController', 'review', ['GET', 'POST']);
 

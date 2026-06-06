@@ -63,7 +63,7 @@ class Controller
             if ($role === 'admin') {
                 header('Location: ' . BASE_URL . '/admin/dashboard');
             } elseif ($role === 'juri') {
-                header('Location: ' . BASE_URL . '/juri/dashboard');
+                header('Location: ' . BASE_URL . '/juri/review');
             } else {
                 // Peserta
                 $isActive = (isset($_SESSION['team']['is_active']) && $_SESSION['team']['is_active'] == 1);

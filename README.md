@@ -83,7 +83,7 @@ Aplikasi menerapkan **Role-Based Access Control (RBAC)** yang ketat dan aman lew
     - Memiliki akses penuh ke Halaman Overview Tim (`/dashboard`) dan Pengumpulan Karya (`/submission`).
     - Tidak dapat mengakses kembali halaman pembayaran (`/payment`) atau halaman milik Juri/Admin.
 4.  **Juri (Sudah Login)**
-    - Memiliki akses eksklusif ke Dashboard Evaluasi (`/juri/dashboard`) dan Form Penilaian (`/juri/review/{team_id}`).
+    - Memiliki akses eksklusif ke Dashboard Evaluasi (`/juri/review`) dan Form Penilaian (`/juri/review/{team_id}`).
 5.  **Admin (Sudah Login - Super User)**
     - Memiliki akses penuh ke semua modul administrasi di bawah rute `/admin/*` (Dashboard statistik, verifikasi tim, papan leaderboard, dan pengaturan sistem).
 
@@ -112,11 +112,11 @@ Peta rute aplikasi didaftarkan pada Front Controller [public/index.php](file:///
 
 ### 3. Dashboard Juri
 
-| URL / Route              | HTTP Method   | Controller & Method                 | Tampilan File View   | Deskripsi                                            |
-| :----------------------- | :------------ | :---------------------------------- | :------------------- | :--------------------------------------------------- |
-| `/juri/dashboard`        | `GET`         | `JuriController::index()`           | `juri/dashboard.php` | Tabel ringkasan daftar karya peserta lomba           |
-| `/juri/leaderboard`      | `GET`         | `AdminController::leaderboard()`    | `admin/leaderboard.php` | Papan peringkat tim kompetisi                      |
-| `/juri/review/{team_id}` | `GET`, `POST` | `JuriController::review($team_id)`  | `juri/review.php`    | Form input nilai kriteria (UI, UX, Figma) & feedback |
+| URL / Route              | HTTP Method   | Controller & Method                | Tampilan File View      | Deskripsi                                            |
+| :----------------------- | :------------ | :--------------------------------- | :---------------------- | :--------------------------------------------------- |
+| `/juri/review`           | `GET`         | `JuriController::index()`          | `juri/dashboard.php`    | Tabel ringkasan daftar karya peserta lomba           |
+| `/juri/leaderboard`      | `GET`         | `AdminController::leaderboard()`   | `admin/leaderboard.php` | Papan peringkat tim kompetisi                        |
+| `/juri/review/{team_id}` | `GET`, `POST` | `JuriController::review($team_id)` | `juri/review.php`       | Form input nilai kriteria (UI, UX, Figma) & feedback |
 
 ### 4. Dashboard Admin (Pengelola)
 
@@ -198,17 +198,21 @@ Skrip akan memberikan laporan teks di terminal mengenai jumlah _statement_ SQL y
 Jika ingin membuat atau memperbarui akun admin tanpa membuka phpMyAdmin, Anda dapat menjalankan script CLI berikut dari direktori root proyek.
 
 Jalankan perintah default (menggunakan data admin default):
+
 ```bash
 php create_admin.php
 ```
-*Data default: Nama = "Administrator", Email = "admin@designova.local", Password = "admin123"*
+
+_Data default: Nama = "Administrator", Email = "admin@designova.local", Password = "admin123"_
 
 Atau, Anda dapat menentukan parameter/argumen kustom secara berurutan `"[Nama Admin]" "[Email Admin]" "[Password Admin]"` seperti berikut:
+
 ```bash
 php create_admin.php "Nama Admin" "admin@domain.com" "password_baru"
 ```
 
 Script ini akan otomatis melakukan hal berikut:
+
 1. Memeriksa ketersediaan koneksi database.
 2. Melakukan registrasi admin baru jika email belum terdaftar di tabel `users`.
 3. Memperbarui nama, password, dan mengubah role menjadi `admin` jika email sudah terdaftar.
@@ -219,12 +223,15 @@ Script ini akan otomatis melakukan hal berikut:
 Sama halnya dengan pembuatan admin, Anda dapat membuat atau memperbarui akun Dewan Juri via CLI secara mudah:
 
 Jalankan perintah default (menggunakan data juri default):
+
 ```bash
 php create_juri.php
 ```
-*Data default: Nama = "Dewan Juri", Email = "juri@designova.local", Password = "password123"*
+
+_Data default: Nama = "Dewan Juri", Email = "juri@designova.local", Password = "password123"_
 
 Atau gunakan argumen kustom:
+
 ```bash
 php create_juri.php "Nama Juri" "juri@domain.com" "password_baru"
 ```
@@ -239,18 +246,18 @@ php create_bulk_participants.php
 
 Script ini akan otomatis melakukan registrasi 10 ketua tim baru dan data timnya dengan rincian berikut (semua akun menggunakan password default **`password123`**):
 
-| No | Nama Ketua | Email Login | Password | Nama Tim | Status Awal (is_active) | Deskripsi Status |
-|---|---|---|---|---|---|---|
-| 1 | Ahmad Fauzi | `peserta1@designova.local` | `password123` | Tim Falcon | **1 (Aktif)** | Sudah terverifikasi, langsung bisa upload karya |
-| 2 | Dewi Lestari | `peserta2@designova.local` | `password123` | Tim Aurora | **1 (Aktif)** | Sudah terverifikasi, langsung bisa upload karya |
-| 3 | Giri Wijaya | `peserta3@designova.local` | `password123` | Tim Galaxy | **1 (Aktif)** | Sudah terverifikasi, langsung bisa upload karya |
-| 4 | Joko Widodo | `peserta4@designova.local` | `password123` | Tim JavaCoder | **1 (Aktif)** | Sudah terverifikasi, langsung bisa upload karya |
-| 5 | Mada Putra | `peserta5@designova.local` | `password123` | Tim AeroUX | **1 (Aktif)** | Sudah terverifikasi, langsung bisa upload karya |
-| 6 | Putri Ayu | `peserta6@designova.local` | `password123` | Tim Phoenix | **0 (Non-Aktif)** | Menunggu verifikasi pembayaran admin |
-| 7 | Siti Aminah | `peserta7@designova.local` | `password123` | Tim Skyline | **0 (Non-Aktif)** | Menunggu verifikasi pembayaran admin |
-| 8 | Vina Panduwinata | `peserta8@designova.local` | `password123` | Tim Zenith | **0 (Non-Aktif)** | Menunggu verifikasi pembayaran admin |
-| 9 | Zulham Efendi | `peserta9@designova.local` | `password123` | Tim Alpha | **0 (Non-Aktif)** | Menunggu verifikasi pembayaran admin |
-| 10 | Chandra Kirana | `peserta10@designova.local` | `password123` | Tim Nebula | **0 (Non-Aktif)** | Menunggu verifikasi pembayaran admin |
+| No  | Nama Ketua       | Email Login                 | Password      | Nama Tim      | Status Awal (is_active) | Deskripsi Status                                |
+| --- | ---------------- | --------------------------- | ------------- | ------------- | ----------------------- | ----------------------------------------------- |
+| 1   | Ahmad Fauzi      | `peserta1@designova.local`  | `password123` | Tim Falcon    | **1 (Aktif)**           | Sudah terverifikasi, langsung bisa upload karya |
+| 2   | Dewi Lestari     | `peserta2@designova.local`  | `password123` | Tim Aurora    | **1 (Aktif)**           | Sudah terverifikasi, langsung bisa upload karya |
+| 3   | Giri Wijaya      | `peserta3@designova.local`  | `password123` | Tim Galaxy    | **1 (Aktif)**           | Sudah terverifikasi, langsung bisa upload karya |
+| 4   | Joko Widodo      | `peserta4@designova.local`  | `password123` | Tim JavaCoder | **1 (Aktif)**           | Sudah terverifikasi, langsung bisa upload karya |
+| 5   | Mada Putra       | `peserta5@designova.local`  | `password123` | Tim AeroUX    | **1 (Aktif)**           | Sudah terverifikasi, langsung bisa upload karya |
+| 6   | Putri Ayu        | `peserta6@designova.local`  | `password123` | Tim Phoenix   | **0 (Non-Aktif)**       | Menunggu verifikasi pembayaran admin            |
+| 7   | Siti Aminah      | `peserta7@designova.local`  | `password123` | Tim Skyline   | **0 (Non-Aktif)**       | Menunggu verifikasi pembayaran admin            |
+| 8   | Vina Panduwinata | `peserta8@designova.local`  | `password123` | Tim Zenith    | **0 (Non-Aktif)**       | Menunggu verifikasi pembayaran admin            |
+| 9   | Zulham Efendi    | `peserta9@designova.local`  | `password123` | Tim Alpha     | **0 (Non-Aktif)**       | Menunggu verifikasi pembayaran admin            |
+| 10  | Chandra Kirana   | `peserta10@designova.local` | `password123` | Tim Nebula    | **0 (Non-Aktif)**       | Menunggu verifikasi pembayaran admin            |
 
 ### 5. Konfigurasi Aplikasi
 
