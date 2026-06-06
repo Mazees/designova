@@ -26,7 +26,7 @@ class Team
         if ($this->conn) {
             $query = "SELECT t.*, s.final_score 
                       FROM teams t 
-                      LEFT JOIN submissions s ON t.id = s.team_id 
+                      INNER JOIN submissions s ON t.id = s.team_id 
                       ORDER BY t.created_at DESC";
             $stmt = $this->conn->query($query);
             return $stmt ? $stmt->fetch_all(MYSQLI_ASSOC) : [];

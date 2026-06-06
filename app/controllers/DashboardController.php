@@ -88,39 +88,10 @@ class DashboardController extends Controller
         $feedbackText = 'Belum Ada';
         $submissionUpdatedAt = '-';
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $team) {
-            $figma_link = $_POST['figma_link'] ?? '';
-            $docs_link = $_POST['docs_link'] ?? '';
-
-            // Validasi Link figma dan docs
-            if (empty($figma_link) || empty($docs_link)) {
-                $error = 'Semua field wajib diisi!';
-            } else {
-              // Cek apakah sudah ada submisi
-                    if ($submission) {
-
-                        // Update
-                        $update = $sub->updateSubmission($submission['id'], $figma_link, $docs_link);
-                        if ($update) {
-                            $success = 'Karya Anda berhasil diperbarui!';
-                        } else {
-                            $error = 'Gagal menyimpan karya. Silakan coba lagi.';
-                        }
-                    } else {
-                        // Insert
-                        $add = $sub->addSubmission($team['id'], $figma_link, $docs_link);
-                        if ($add) {
-                            $success = 'Karya Anda berhasil dikirim!';
-                        } else {
-                            $error = 'Gagal mengirim karya. Silakan coba lagi.';
-                        }
-                    }
-            }
-        }
-           
     // Deadline Calculation
     $submissionModel = new Submissions();
     $deadline = $submissionModel->getSubmissionDeadline();
+    $isDeadlinePassed = false;
         if (empty($deadline)) {
             $formattedDeadline = 'Tidak Ada Batas Waktu';
             $remainingText     = 'Tanpa Tenggat Waktu';
@@ -142,10 +113,44 @@ class DashboardController extends Controller
                         $remainingClass = "text-error bg-error/10 border-error/20 animate-pulse";
                     }
                 } else {
+                    $isDeadlinePassed = true;
                     $remainingText  = "Tenggat Waktu Habis";
                     $remainingClass = "text-error bg-error/10 border-error/20 font-black";
                 }
                 $formattedDeadline = date('d M Y - H:i', $deadlineTime) . ' WIB';
+            }
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $team) {
+            if ($isDeadlinePassed) {
+                $error = 'Batas waktu pengumpulan karya telah habis. Anda tidak dapat lagi mengirim atau mengubah karya.';
+            } else {
+                $figma_link = $_POST['figma_link'] ?? '';
+                $docs_link = $_POST['docs_link'] ?? '';
+
+                // Validasi Link figma dan docs
+                if (empty($figma_link) || empty($docs_link)) {
+                    $error = 'Semua field wajib diisi!';
+                } else {
+                  // Cek apakah sudah ada submisi
+                        if ($submission) {
+                            // Update
+                            $update = $sub->updateSubmission($submission['id'], $figma_link, $docs_link);
+                            if ($update) {
+                                $success = 'Karya Anda berhasil diperbarui!';
+                            } else {
+                                $error = 'Gagal menyimpan karya. Silakan coba lagi.';
+                            }
+                        } else {
+                            // Insert
+                            $add = $sub->addSubmission($team['id'], $figma_link, $docs_link);
+                            if ($add) {
+                                $success = 'Karya Anda berhasil dikirim!';
+                            } else {
+                                $error = 'Gagal mengirim karya. Silakan coba lagi.';
+                            }
+                        }
+                }
             }
         }
 
@@ -182,7 +187,8 @@ class DashboardController extends Controller
             'statusEvaluasi' => $statusEvaluasi,
             'classEvaluasi' => $classEvaluasi,
             'feedbackText' => $feedbackText,
-            'submissionUpdatedAt' => $submissionUpdatedAt
+            'submissionUpdatedAt' => $submissionUpdatedAt,
+            'isDeadlinePassed' => $isDeadlinePassed
         ]);
     }
 }
