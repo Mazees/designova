@@ -29,7 +29,7 @@
                 class="btn btn-primary btn-md px-8 font-black rounded-xl text-primary-content shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform duration-200">
                 Daftar Sekarang
             </a>
-            <a href="#fokus"
+            <a href="#tema"
                 class="btn btn-ghost btn-md px-6 font-black rounded-xl border border-base-200 hover:bg-base-200">
                 Pelajari Detail
             </a>
