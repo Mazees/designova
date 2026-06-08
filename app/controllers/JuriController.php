@@ -11,7 +11,7 @@ class JuriController extends Controller
         $teams = $teamModel->getAllWithSubmissions();
 
         // Memanggil View dan mengirimkan data '$teams' ke tampilan dashboard
-        $this->view('juri/dashboard', [
+        $this->viewjuri/review('juri/review', [
             'title' => 'Daftar Karya - Juri Designova',
             'teams' => $teams
         ]);
@@ -24,8 +24,7 @@ class JuriController extends Controller
         // 1. Inisialisasi Model yang dibutuhkan
         $teamModel = new Team();
         $userModel = new User();
-        // Anda mungkin butuh ReviewModel jika menggunakan class model terpisah untuk penilaian
-        // $reviewModel = new Review(); 
+
 
         // 2. JIKA ADA KIRIMAN FORM (METHOD POST)
         if (isset($_POST['submit-review'])) {

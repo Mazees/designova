@@ -114,7 +114,7 @@ Peta rute aplikasi didaftarkan pada Front Controller [public/index.php](file:///
 
 | URL / Route              | HTTP Method   | Controller & Method                | Tampilan File View      | Deskripsi                                            |
 | :----------------------- | :------------ | :--------------------------------- | :---------------------- | :--------------------------------------------------- |
-| `/juri/review`           | `GET`         | `JuriController::index()`          | `juri/dashboard.php`    | Tabel ringkasan daftar karya peserta lomba           |
+| `/juri/review`           | `GET`         | `JuriController::index()`          | `juri/review.php`       | Tabel ringkasan daftar karya peserta lomba           |
 | `/juri/leaderboard`      | `GET`         | `AdminController::leaderboard()`   | `admin/leaderboard.php` | Papan peringkat tim kompetisi                        |
 | `/juri/review/{team_id}` | `GET`, `POST` | `JuriController::review($team_id)` | `juri/review.php`       | Form input nilai kriteria (UI, UX, Figma) & feedback |
 
