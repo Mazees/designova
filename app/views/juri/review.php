@@ -95,7 +95,7 @@
                             placeholder="Berikan ulasan detail mengenai aspek desain yang sudah baik serta area yang perlu diperbaiki"><?= isset($team['feedback']) ? htmlspecialchars($team['feedback']) : '' ?></textarea>
                     </div>
 
-                    <!-- SubmBukan URL Google Docs yang valid!it Actions -->
+                    <!-- Submit Actions -->
                     <div class="flex items-center justify-end gap-3 pt-4 border-t border-base-200">
                         <a href="<?= BASE_URL; ?>/juri/review"
                             class=" btn btn-ghost font-bold text-xs h-10 px-5 rounded-xl">
@@ -110,7 +110,7 @@
             </div>
         </div>
 
-        <!-- Right: Team Card Summary (col-span-5) -->
+        <!-- Right: Team Card Summary -->
         <div class="lg:col-span-5 space-y-6">
             <div class="card bg-base-100 border border-base-200 shadow-sm rounded-2xl">
                 <div class="card-body p-6 gap-5">

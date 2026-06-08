@@ -24,8 +24,7 @@ class JuriController extends Controller
         // 1. Inisialisasi Model yang dibutuhkan
         $teamModel = new Team();
         $userModel = new User();
-        // Anda mungkin butuh ReviewModel jika menggunakan class model terpisah untuk penilaian
-        // $reviewModel = new Review(); 
+
 
         // 2. JIKA ADA KIRIMAN FORM (METHOD POST)
         if (isset($_POST['submit-review'])) {

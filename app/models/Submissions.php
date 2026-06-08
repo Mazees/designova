@@ -91,21 +91,6 @@ class Submissions
         }
         return false;
     }
-    public function checkSubmission($teamId)
-    {
-        if ($this->conn) {
-            $query = $this->conn->prepare("SELECT id FROM submissions WHERE team_id = ? LIMIT 1");
-
-            $query->bind_param("s", $teamId);
-            $query->execute();
-
-            $hasil = $query->get_result();
-            $existing = $hasil ? $hasil->fetch_assoc() : null;
-            $query->close();
-            return $existing;
-        }
-        return null;
-    }
 
     public function getSubmission($teamId)
     {
