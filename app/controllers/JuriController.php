@@ -11,7 +11,7 @@ class JuriController extends Controller
         $teams = $teamModel->getAllWithSubmissions();
 
         // Memanggil View dan mengirimkan data '$teams' ke tampilan dashboard
-        $this->view('juri/review', [
+        $this->view('juri/dashboard', [
             'title' => 'Daftar Karya - Juri Designova',
             'teams' => $teams
         ]);
