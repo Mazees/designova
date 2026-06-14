@@ -1,4 +1,6 @@
 <?php require_once '../app/views/layouts/header.php';
+$team = isset($team) ? $team : [];
+$leaderName = isset($leaderName) ? $leaderName : '';
 ?>
 
 <div class="max-w-5xl mx-auto space-y-6 pb-12" data-aos="fade-up">

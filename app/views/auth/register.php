@@ -1,4 +1,6 @@
-<?php require_once __DIR__ . '/../layouts/header.php'; ?>
+<?php require_once __DIR__ . '/../layouts/header.php'; 
+$isRegOpen = isset($isRegOpen) ? $isRegOpen : false;
+?>
 
 <div class="card lg:card-side w-full max-w-5xl mx-auto shadow-2xl border border-base-200 overflow-hidden my-6" data-aos="fade-up"
     x-data="{
