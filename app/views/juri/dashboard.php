@@ -1,4 +1,6 @@
-<?php require_once '../app/views/layouts/header.php'; ?>
+<?php require_once '../app/views/layouts/header.php'; 
+$teams = isset($teams) ? $teams : [];
+?>
 
 <div class="max-w-5xl mx-auto space-y-8 pb-12" data-aos="fade-up">
     <!-- Header -->
@@ -23,7 +25,7 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-base-200 text-xs font-semibold text-gray-700">
-                    <?php foreach($data['teams'] as $team): ?>
+                    <?php foreach($teams as $team): ?>
                         <tr class="hover:bg-base-200/40 transition-colors">
                             <!-- Menampilkan Nama Tim dari Database -->
                             <td class="py-5 pl-8">
